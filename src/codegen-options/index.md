@@ -3,44 +3,40 @@
 All of these options are passed to `rustc` via the `-C` flag, short for "codegen." You can see
 a version of this list for your exact compiler by running `rustc -C help`.
 
+所有的这些选项都通过 `-C` 标签传递给 `rustc` ，是 "codegen" 的缩写。通过运行 `rustc -C help` 来查看确切编译器的此列表版本。
+
 ## ar
 
-This option is deprecated and does nothing.
+此选项已弃用，并且不执行任何操作。
 
 ## code-model
 
-This option lets you choose which code model to use. \
-Code models put constraints on address ranges that the program and its symbols may use. \
-With smaller address ranges machine instructions
-may be able to use more compact addressing modes.
+这个选项让你可以选择要使用的代码模型。 \
+代码模型对程序及其符号可能使用的地址范围进行了约束。 \
+有了更小的地址范围，机器指令就可以使用更紧凑的寻址模式。
 
-The specific ranges depend on target architectures and addressing modes available to them. \
-For x86 more detailed description of its code models can be found in
-[System V Application Binary Interface](https://github.com/hjl-tools/x86-psABI/wiki/x86-64-psABI-1.0.pdf)
-specification.
+该具体范围依赖于目标体系结构及其可用的寻址模式。 \
+对于 x86 体系结构，更多细节性的描述可以在 [System V Application Binary Interface](https://github.com/hjl-tools/x86-psABI/wiki/x86-64-psABI-1.0.pdf) 规范中找到。
 
-Supported values for this option are:
+该选项支持的值有：
 
-- `tiny` - Tiny code model.
-- `small` - Small code model. This is the default model for majority of supported targets.
-- `kernel` - Kernel code model.
-- `medium` - Medium code model.
-- `large` - Large code model.
+- `tiny` - 微代码模型。
+- `small` - 小代码模型。这是大多数所支持的目标的默认模式。
+- `kernel` - 内核代码模式。
+- `medium` - 中型代码模式。
+- `large` - 大型代码模式。
 
-Supported values can also be discovered by running `rustc --print code-models`.
+也可以通过运行 `rustc --print code-models` 查找受支持的值。
 
 ## codegen-units
 
-This flag controls the maximum number of code generation units the crate is
-split into. It takes an integer greater than 0.
+该标签控制将 crate 分隔进多少个代码生成单元，这个（代码生成单元数）大于 0 。
 
-When a crate is split into multiple codegen units, LLVM is able to process
-them in parallel. Increasing parallelism may speed up compile times, but may
-also produce slower code. Setting this to 1 may improve the performance of
-generated code, but may be slower to compile.
+当一个 crate 被分割进多个代码生成单元，LLVM 就可以并行处理它们。
+提高并行性或许会加快编译时间（缩短编译耗时），但是也可能会产生更慢的代码。
+设置该标签为 1 可能会提升生成代码的性能，但是也可能会编译得更慢。
 
-The default value, if not specified, is 16 for non-incremental builds. For
-incremental builds the default is 256 which allows caching to be more granular.
+如果没有指明默认值，对于非增量构建默认值就是 16 。对于增量构建，默认值是 256，可以使缓存更加细粒度。
 
 ## control-flow-guard
 
@@ -49,62 +45,58 @@ Guard](https://docs.microsoft.com/en-us/windows/win32/secbp/control-flow-guard)
 platform security feature. This flag is currently ignored for non-Windows targets.
 It takes one of the following values:
 
-* `y`, `yes`, `on`, `true`, `checks`, or no value: enable Control Flow Guard.
-* `nochecks`: emit Control Flow Guard metadata without runtime enforcement checks (this
-should only be used for testing purposes as it does not provide security enforcement).
-* `n`, `no`, `off`, `false`: do not enable Control Flow Guard (the default).
+该标签控制 LLVM 是否启用 Windows 的 [Control Flow
+Guard](https://docs.microsoft.com/en-us/windows/win32/secbp/control-flow-guard) 平台安全功能。
+该标签当前会忽略非 Windows 目标。它使用下列值中的一个：
+
+* `y`， `yes`， `on`， `checks`， 或者没有值： 启用控制流守卫。
+* `nochecks`： 不进行运行时强制检查的情况下触发控制流守卫元数据（这理应只用于测试目的，因为它不提供安全强制）。
+* `n`， `no`， `off`： 不启用控制流守卫（默认值）。
 
 ## debug-assertions
 
-This flag lets you turn `cfg(debug_assertions)` [conditional
-compilation](../../reference/conditional-compilation.md#debug_assertions) on
-or off. It takes one of the following values:
+该标签让你可以打开或关闭 `cfg(debug_assertions)` [conditional
+compilation](https://doc.rust-lang.org/reference/conditional-compilation.html#debug_assertions)。
+其采用以下值之一：
 
-* `y`, `yes`, `on`, `true`, or no value: enable debug-assertions.
-* `n`, `no`, `off` or `false`: disable debug-assertions.
+* `y`， `yes`， `on`， 或者无值 ：开启 debug-assertions。
+* `n`， `no`， 或 `off` ： 禁用 debug-assertions。
 
-If not specified, debug assertions are automatically enabled only if the
-[opt-level](#opt-level) is 0.
+如果没有指定，仅在 [opt-level](#opt-level) 是 0 的时候开启。
 
 ## debuginfo
 
-This flag controls the generation of debug information. It takes one of the
-following values:
+此标志控制调试信息的生成。它采用以下值之一：
 
-* `0` or `none`: no debug info at all (the default).
-* `line-directives-only`: line info directives only. For the nvptx* targets this enables [profiling](https://reviews.llvm.org/D46061). For other use cases, `line-tables-only` is the better, more compatible choice.
-* `line-tables-only`: line tables only. Generates the minimal amount of debug info for backtraces with filename/line number info, but not anything else, i.e. no variable or function parameter info.
-* `1` or `limited`: debug info without type or variable-level information.
-* `2` or `full`: full debug info.
+* `0` or `none`: 根本没有调试信息（默认值）。
+* `line-directives-only`: 只有行信息指令。对于 nvptx* 目标，这启用[profiling](https://reviews.llvm.org/D46061)。对于其他使用情况，`line-tables-only`是更好、更兼容的选择。
+* `line-tables-only`: 只有行表。生成用于包含文件名/行号信息的回溯的最少的调试信息，但不包括任何其他信息，即没有变量或函数参数信息。
+* `1` or `limited`: 没有类型或变量级别信息的调试信息。
+* `2` or `full`: 完整的调试信息。
 
-Note: The [`-g` flag][option-g-debug] is an alias for `-C debuginfo=2`.
+注意：[`-g` 标签][option-g-debug] 是 `-C debuginfo=2` 的别名。
 
 ## default-linker-libraries
 
-This flag controls whether or not the linker includes its default libraries.
-It takes one of the following values:
+此标志控制链接器是否包含其默认库。它采用以下值之一：
 
-* `y`, `yes`, `on`, `true`: include default libraries.
-* `n`, `no`, `off` or `false` or no value: exclude default libraries (the default).
+* `y`, `yes`, `on`, `true`: 包括默认库。
+* `n`, `no`, `off` or `false` 排除默认库（默认值）。
 
-For example, for gcc flavor linkers, this issues the `-nodefaultlibs` flag to
-the linker.
+例如，对于 gcc flavor 链接器，这会向链接器传递 `-nodefaultlibs` 标签。
 
 ## dlltool
 
-On `windows-gnu` targets, this flag controls which dlltool `rustc` invokes to
-generate import libraries when using the [`raw-dylib` link kind](../../reference/items/external-blocks.md#the-link-attribute).
-It takes a path to [the dlltool executable](https://sourceware.org/binutils/docs/binutils/dlltool.html).
-If this flag is not specified, a dlltool executable will be inferred based on
-the host environment and target.
+在 `windows-gnu` 目标上，此标志控制 `rustc` 在使用[`raw-dylib` link kind](../../reference/items/external-blocks.md#the-link-attribute)时调用哪个`dlltool`来生成导入库。
+它采用到[the dlltool executable](https://sourceware.org/binutils/docs/binutils/dlltool.html)的路径。
+如果未指定此标志，将根据主机环境和目标推断 `dlltool` 可执行文件的路径。
 
 ## embed-bitcode
 
-This flag controls whether or not the compiler embeds LLVM bitcode into object
-files. It takes one of the following values:
+该标签控制编译器是否将 LLVM 位码嵌入目标文件（object files）中。其采用以下值之一：
 
-* `y`, `yes`, `on`, `true` or no value: put bitcode in rlibs (the default).
-* `n`, `no`, `off` or `false`: omit bitcode from rlibs.
+* `y`, `yes`, `on`, `true` 或者无值： 将位码放入 rlib （默认值）。
+* `n`, `no`, `off` or `false`: 省略 rlibs 中的位码。
 
 LLVM bitcode is required when rustc is performing link-time optimization (LTO).
 It is also required on some targets like iOS ones where vendors look for LLVM
@@ -112,76 +104,60 @@ bitcode. Embedded bitcode will appear in rustc-generated object files inside of
 a section whose name is defined by the target platform. Most of the time this is
 `.llvmbc`.
 
-The use of `-C embed-bitcode=no` can significantly improve compile times and
-reduce generated file sizes if your compilation does not actually need bitcode
-(e.g. if you're not compiling for iOS or you're not performing LTO). For these
-reasons, Cargo uses `-C embed-bitcode=no` whenever possible. Likewise, if you
-are building directly with `rustc` we recommend using `-C embed-bitcode=no`
-whenever you are not using LTO.
+当 rustc 进行链接时优化（LTO）时，需要 LLVM bitcode。
+在某些目标上也需要它，比如 iOS，这样的目标平台上也需要。
+嵌入的 bitcode 将出现在 rustc 生成的目标文件中，位于由目标平台定义的部分中。大多数情况下，这是`.llvmbc`。
 
-If combined with `-C lto`, `-C embed-bitcode=no` will cause `rustc` to abort
-at start-up, because the combination is invalid.
+如果你的编译实际上不需要位码（例如，如果你不针对 iOS 进行编译或不执行 LTO ），`-C embed-bitcode=no` 的使用可以大大缩短编译时间并且减少生成文件的大小.由于这些原因，Cargo 会尽可能使用 `-C embed-bitcode=no` 。
+同样，如果你直接用 rustc 进行构建，我们推荐你在不使用 LTO 的时候使用 `-C embed-bitcode=no` 。
 
-> **Note**: if you're building Rust code with LTO then you probably don't even
-> need the `embed-bitcode` option turned on. You'll likely want to use
-> `-Clinker-plugin-lto` instead which skips generating object files entirely and
-> simply replaces object files with LLVM bitcode. The only purpose for
-> `-Cembed-bitcode` is when you're generating an rlib that is both being used
-> with and without LTO. For example Rust's standard library ships with embedded
-> bitcode since users link to it both with and without LTO.
->
-> This also may make you wonder why the default is `yes` for this option. The
-> reason for that is that it's how it was for rustc 1.44 and prior. In 1.45 this
-> option was added to turn off what had always been the default.
+如果结合 `-C lto`，`-C embed-bitcode=no` 将会导致 `rustc` 启动时就中止，因为该（标签）组合是无效的。
+
+> **注意**： 如果你使用 LTO 构建 Rust 代码，你就可能甚至不需要打开 `embed-bitcode` 选项。
+你可能会想要使用 `-Clinker-plugin-lto` 来代替，它会完全跳过生成目标文件，并且用 LLVM 位码来简单替换目标文件。
+唯一的使用 `-Cembed-bitcode` 的目的是当你要生成同时使用和不使用 LTO 的 rlib 时，例如 Rust 标准库带有嵌入的位码，因为用户可以使用或不使用 LTO 进行链接。
+> 
+> 这也可能会让你想知道为什么该选项的默认值是 `yes` 。理由是在 1.44 中及更早版本中是这样的。在 1.45 中，将此选项默认值调整为关闭。
 
 ## extra-filename
 
-This option allows you to put extra data in each output filename. It takes a
-string to add as a suffix to the filename. See the [`--emit`
-flag][option-emit] for more information.
+该选项允许你将额外的数据放进每个输出文件。
+它需要一个字符串作为后缀添加到文件名中。
+更多信息请参阅 [`--emit` flag][option-emit]。
 
 ## force-frame-pointers
 
-This flag forces the use of frame pointers. It takes one of the following
-values:
+该标签可以强制栈帧指针的使用。其采用以下值之一：
 
-* `y`, `yes`, `on`, `true` or no value: force-enable frame pointers.
-* `n`, `no`, `off` or `false`: do not force-enable frame pointers. This does
-  not necessarily mean frame pointers will be removed.
+* `y`, `yes`, `on`, `true` 或者无值： 强制启用栈帧指针。
+* `n`, `no`, `off` or `false`: 不强制启用栈帧指针，但这并不意味着移除栈帧指针。
 
-The default behaviour, if frame pointers are not force-enabled, depends on the
-target.
+如果没有强制启用栈帧指针，则默认行为取决于目标平台。
 
 ## force-unwind-tables
 
-This flag forces the generation of unwind tables. It takes one of the following
-values:
+此标志强制生成展开表。它采用以下值之一：
 
-* `y`, `yes`, `on`, `true` or no value: Unwind tables are forced to be generated.
-* `n`, `no`, `off` or `false`: Unwind tables are not forced to be generated. If unwind
-  tables are required by the target an error will be emitted.
+* `y`, `yes`, `on`, `true` 无值：强制生成展开表。
+* `n`, `no`, `off` or `false`: 不强制生成展开表。如果目标需要展开表，则会发出错误。
 
-The default if not specified depends on the target.
+如果未指定，则默认值取决于目标。
 
 ## incremental
 
-This flag allows you to enable incremental compilation, which allows `rustc`
-to save information after compiling a crate to be reused when recompiling the
-crate, improving re-compile times. This takes a path to a directory where
-incremental files will be stored.
+该标签允许你启用增量编译，这允许 `rustc` 在编译完 crate 之后保存信息，以便重新编译 crate 的时候可以重用，缩短重编译的时间。
+这将采用一个存放增量文件的目录的路径。
 
 ## inline-threshold
 
-This option lets you set the default threshold for inlining a function. It
-takes an unsigned integer as a value. Inlining is based on a cost model, where
-a higher threshold will allow more inlining.
+该选项使你可以设置内联函数的默认阈值。其值采用无符号整数。内联基于成本模型，较高的阈值将会允许更多的内联。
 
-The default depends on the [opt-level](#opt-level):
+默认（阈值）取决于 [opt-level](#opt-level):
 
 | opt-level | Threshold |
 |-----------|-----------|
-| 0         | N/A, only inlines always-inline functions |
-| 1         | N/A, only inlines always-inline functions and LLVM lifetime intrinsics |
+| 0         | N/A, 仅内联强制内联函数 |
+| 1         | N/A, 仅内联强制内联函数和 LLVM 生命周期内联函数 |
 | 2         | 225 |
 | 3         | 275 |
 | s         | 75 |
@@ -189,34 +165,29 @@ The default depends on the [opt-level](#opt-level):
 
 ## instrument-coverage
 
-This option enables instrumentation-based code coverage support. See the
-chapter on [instrumentation-based code coverage] for more information.
+这个选项启用了基于仪器代码覆盖支持。有关更多信息，请参阅有关 [instrumentation-based code coverage] 的章节。
 
-Note that while the `-C instrument-coverage` option is stable, the profile data
-format produced by the resulting instrumentation may change, and may not work
-with coverage tools other than those built and shipped with the compiler.
+请注意，尽管`-C instrument-coverage`选项是稳定的，但由此产生的仪器生成的配置文件数据格式可能会发生变化，\
+并且可能与除编译器自带的工具之外的其他覆盖工具不兼容。
 
 ## link-arg
 
-This flag lets you append a single extra argument to the linker invocation.
+该标签使你可以在链接器调用后附加一个额外的参数。
 
-"Append" is significant; you can pass this flag multiple times to add multiple arguments.
+“附加” 是很重要的；你可以多次传递该标签以添加多个参数。
 
 ## link-args
 
-This flag lets you append multiple extra arguments to the linker invocation. The
-options should be separated by spaces.
+该标签使你可以在链接器调用后附加多个额外的参数。该选项（后的参数）应该用空格分隔。
 
 ## link-dead-code
 
-This flag controls whether the linker will keep dead code. It takes one of
-the following values:
+该标签控制链接器是否保留无效代码。其采用以下值之一：
 
-* `y`, `yes`, `on`, `true` or no value: keep dead code.
-* `n`, `no`, `off` or `false`: remove dead code (the default).
+* `y`, `yes`, `on`, `true` 或者无值： 保留无效代码。
+* `n`, `no`, `off` or `false`: 移除无效代码（默认值）。
 
-An example of when this flag might be useful is when trying to construct code coverage
-metrics.
+这个标志可能有用的一个例子是当试图构建代码覆盖率指标时。
 
 ## link-self-contained
 
