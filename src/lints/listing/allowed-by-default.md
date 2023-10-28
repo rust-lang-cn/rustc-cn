@@ -1,7 +1,6 @@
 # Allowed-by-default Lints
 
-These lints are all set to the 'allow' level by default. As such, they won't show up
-unless you set them to a higher lint level with a flag or attribute.
+默认情况下，这些 lint 都设置为'allow'级别。因此，除非您使用标志或属性将它们设置为更高的 lint 级别，否则它们将不会显示。
 
 * [`absolute_paths_not_starting_with_crate`](#absolute-paths-not-starting-with-crate)
 * [`box_pointers`](#box-pointers)
@@ -47,9 +46,7 @@ unless you set them to a higher lint level with a flag or attribute.
 
 ## absolute-paths-not-starting-with-crate
 
-The `absolute_paths_not_starting_with_crate` lint detects fully
-qualified paths that start with a module name instead of `crate`,
-`self`, or an extern crate name
+`absolute_paths_not_starting_with_crate` lint 检测以模块名而不是 `crate`、`self` 或外部 crate 名开始的完全限定路径。
 
 ### Example
 
@@ -86,32 +83,24 @@ note: the lint level is defined here
 
 ### Explanation
 
-Rust [editions] allow the language to evolve without breaking
-backwards compatibility. This lint catches code that uses absolute
-paths in the style of the 2015 edition. In the 2015 edition, absolute
-paths (those starting with `::`) refer to either the crate root or an
-external crate. In the 2018 edition it was changed so that they only
-refer to external crates. The path prefix `crate::` should be used
-instead to reference items from the crate root.
+Rust [editions]允许在不破坏向后兼容性的情况下使语言不断发展。
+此 lint 捕获使用 2015 年版风格的绝对路径的代码。
+在 2015 年版中，绝对路径（以 `::` 开头的路径）指的是 crate 根目录或外部 crate。
+在 2018 年版中，它被修改为只引用外部 crate。应该使用路径前缀 `crate::` 来引用 crate 根目录中的项。
 
-If you switch the compiler from the 2015 to 2018 edition without
-updating the code, then it will fail to compile if the old style paths
-are used. You can manually change the paths to use the `crate::`
-prefix to transition to the 2018 edition.
+如果您将编译器从 2015 版切换到 2018 版而没有更新代码，那么如果使用旧样式路径，将无法编译。
+您可以手动更改路径以使用 `crate::` 前缀来过渡到 2018 版。
 
-This lint solves the problem automatically. It is "allow" by default
-because the code is perfectly valid in the 2015 edition. The [`cargo
-fix`] tool with the `--edition` flag will switch this lint to "warn"
-and automatically apply the suggested fix from the compiler. This
-provides a completely automated way to update old code to the 2018
-edition.
+此 lint 可以自动解决此问题。默认情况下它被“允许”，因为这段代码在 2015 年版中是完全有效的。
+使用带有 `--edition` 标志的 [`cargo fix`] 工具将此 lint 切换为“警告”，并自动应用编译器建议的修复。
+这为将旧代码更新到 2018 年版提供了完全自动化的方法。
 
 [editions]: https://doc.rust-lang.org/edition-guide/
 [`cargo fix`]: https://doc.rust-lang.org/cargo/commands/cargo-fix.html
 
 ## box-pointers
 
-The `box_pointers` lints use of the Box type.
+`box_pointers` 限制了（lints）Box 类型使用
 
 ### Example
 
@@ -141,14 +130,12 @@ note: the lint level is defined here
 
 ### Explanation
 
-This lint is mostly historical, and not particularly useful. `Box<T>`
-used to be built into the language, and the only way to do heap
-allocation. Today's Rust can call into other allocators, etc.
+这个 lint 主要是出于历史原因，并不是特别有用。
+`Box<T>` 曾经是语言内置的，是进行堆分配的唯一方式。今天的 Rust 可以调用其他分配器等。
 
 ## elided-lifetimes-in-paths
 
-The `elided_lifetimes_in_paths` lint detects the use of hidden
-lifetime parameters.
+`elided_lifetimes_in_paths` lint 用于检测隐藏生命周期参数。
 
 ### Example
 
@@ -186,20 +173,15 @@ help: indicate the anonymous lifetime
 
 ### Explanation
 
-Elided lifetime parameters can make it difficult to see at a glance
-that borrowing is occurring. This lint ensures that lifetime
-parameters are always explicitly stated, even if it is the `'_`
-[placeholder lifetime].
+省略了 生命周期参数 会使人们难以 一眼看出 正在发生 借用。此 lint 确保始终明确声明生命周期参数，即使它是 `'_` [placeholder lifetime]。
 
-This lint is "allow" by default because it has some known issues, and
-may require a significant transition for old code.
+此 lint 默认情况下为 "allow"，因为它存在一些已知问题，并且可能需要针对旧代码进行重大更改。
 
 [placeholder lifetime]: https://doc.rust-lang.org/reference/lifetime-elision.html#lifetime-elision-in-functions
 
 ## explicit-outlives-requirements
 
-The `explicit_outlives_requirements` lint detects unnecessary
-lifetime bounds that can be inferred.
+`explicit_outlives_requirements` lint 检测指出不必要的生命周期约束（bounds）
 
 ### Example
 
@@ -238,28 +220,21 @@ note: the lint level is defined here
 
 ### Explanation
 
-If a `struct` contains a reference, such as `&'a T`, the compiler
-requires that `T` outlives the lifetime `'a`. This historically
-required writing an explicit lifetime bound to indicate this
-requirement. However, this can be overly explicit, causing clutter and
-unnecessary complexity. The language was changed to automatically
-infer the bound if it is not specified. Specifically, if the struct
-contains a reference, directly or indirectly, to `T` with lifetime
-`'x`, then it will infer that `T: 'x` is a requirement.
+如果一个 `struct` 包含一个引用，例如 `&'a T`，编译器要求 `T` 的生命周期必须比 `'a` 长。
+历史上，这要求编写一个显式的生命周期约束来表示此要求。但是，这可能过于明确，导致代码混乱和不必要的复杂性。
+语言被修改为在未指定的情况下自动推断边界。
+具体来说，如果结构体直接或间接地包含一个具有生命周期 `'x` 的 `T` 的引用，那么它将推断 `T: 'x` 是要求。
 
-This lint is "allow" by default because it can be noisy for existing
-code that already had these requirements. This is a stylistic choice,
-as it is still valid to explicitly state the bound. It also has some
-false positives that can cause confusion.
+此 lint 默认情况下为 "allow"，因为对于已经满足这些要求的现有代码来说，它可能会很嘈杂。
+这是一种风格选择，因为显式声明边界仍然是有效的。它还有一些可能造成混淆的误报。
 
-See [RFC 2093] for more details.
+参见 [RFC 2093] 了解更多。
 
 [RFC 2093]: https://github.com/rust-lang/rfcs/blob/master/text/2093-infer-outlives.md
 
 ## ffi-unwind-calls
 
-The `ffi_unwind_calls` lint detects calls to foreign functions or function pointers with
-`C-unwind` or other FFI-unwind ABIs.
+`ffi_unwind_calls` lint 检测使用 `C-unwind` 或其他 FFI-unwind ABI 调用外部函数或函数指针的情况。
 
 ### Example
 
@@ -303,14 +278,12 @@ warning: call to function pointer with FFI-unwind ABI
 
 ### Explanation
 
-For crates containing such calls, if they are compiled with `-C panic=unwind` then the
-produced library cannot be linked with crates compiled with `-C panic=abort`. For crates
-that desire this ability it is therefore necessary to avoid such calls.
+对于包含此类调用的 crate，如果它们使用 `-C panic=unwind` 编译，则产生的库无法与使用 `-C panic=abort` 编译的 crate 链接。
+因此，对于需要这种能力的 crate，必须避免此类调用。
 
 ## fuzzy-provenance-casts
 
-The `fuzzy_provenance_casts` lint detects an `as` cast between an integer
-and a pointer.
+`fuzzy_provenance_casts` lint 检测整数和指针之间的 `as` 转换。
 
 ### Example
 
@@ -347,21 +320,14 @@ help: use `.with_addr()` to adjust a valid pointer in the same allocation, to th
 
 ### Explanation
 
-This lint is part of the strict provenance effort, see [issue #95228].
-Casting an integer to a pointer is considered bad style, as a pointer
-contains, besides the *address* also a *provenance*, indicating what
-memory the pointer is allowed to read/write. Casting an integer, which
-doesn't have provenance, to a pointer requires the compiler to assign
-(guess) provenance. The compiler assigns "all exposed valid" (see the
-docs of [`ptr::from_exposed_addr`] for more information about this
-"exposing"). This penalizes the optimiser and is not well suited for
-dynamic analysis/dynamic program verification (e.g. Miri or CHERI
-platforms).
+该 lint 是严格 provenance 工作的一部分，请参考 [issue #95228]。
+将整数转换为指针被认为是不良风格，因为指针除了包含地址外还包含 provenance，表明指针可以读取/写入的内存。
+将没有 provenance 的整数转换为指针需要编译器进行分配（猜测）provenance。
+编译器分配“所有暴露的有效”（有关更多信息，请参阅 [`ptr::from_exposed_addr`] 的文档）。
+这不利于优化器，也不适合 动态分析/动态程序验证（例如 Miri 或 CHERI 平台）。
 
-It is much better to use [`ptr::with_addr`] instead to specify the
-provenance you want. If using this function is not possible because the
-code relies on exposed provenance then there is as an escape hatch
-[`ptr::from_exposed_addr`].
+使用 [`ptr::with_addr`] 而不是指定您想要的 provenance 要好得多。
+如果因为代码依赖于暴露出的 provenance 而无法使用此函数，那么可以使用 [`ptr::from_exposed_addr`] 作为替代方案。
 
 [issue #95228]: https://github.com/rust-lang/rust/issues/95228
 [`ptr::with_addr`]: https://doc.rust-lang.org/core/ptr/fn.with_addr
@@ -369,8 +335,7 @@ code relies on exposed provenance then there is as an escape hatch
 
 ## keyword-idents
 
-The `keyword_idents` lint detects edition keywords being used as an
-identifier.
+`keyword-idents` lint 检测被用作标识符的版本关键字。
 
 ### Example
 
@@ -401,22 +366,15 @@ note: the lint level is defined here
 
 ### Explanation
 
-Rust [editions] allow the language to evolve without breaking
-backwards compatibility. This lint catches code that uses new keywords
-that are added to the language that are used as identifiers (such as a
-variable name, function name, etc.). If you switch the compiler to a
-new edition without updating the code, then it will fail to compile if
-you are using a new keyword as an identifier.
+Rust [editions][edition_guide]允许语言向前发展而不破坏其向后兼容性。
+此 lint 捕获代码中的被用作标识符（例如变量名、函数名等等）的新增关键。
+如果你没有更新代码就切换编译器到一个新语义版本，就会在你将新关键字作为标识符的情况下编译失败。
 
-You can manually change the identifiers to a non-keyword, or use a
-[raw identifier], for example `r#dyn`, to transition to a new edition.
+可以手动将标识符改为非关键字，或者使用 [raw identifier]，例如`r#dyn`，来过渡到新版本。
 
-This lint solves the problem automatically. It is "allow" by default
-because the code is perfectly valid in older editions. The [`cargo
-fix`] tool with the `--edition` flag will switch this lint to "warn"
-and automatically apply the suggested fix from the compiler (which is
-to use a raw identifier). This provides a completely automated way to
-update old code for a new edition.
+该 lint 可自动解决该问题，其默认为 “allow”等级，因为该代码在旧版本中完全有效。
+[`cargo fix`] 工具自带的 `--edition` 标签会将此 lint 的等级切换为 “warn” ，并自动应用编译器建议的修复（即使用原始标识符）。
+这提供了一种完全自动化的方法来将旧代码更新到新版本。
 
 [editions]: https://doc.rust-lang.org/edition-guide/
 [raw identifier]: https://doc.rust-lang.org/reference/identifiers.html
@@ -424,10 +382,7 @@ update old code for a new edition.
 
 ## let-underscore-drop
 
-The `let_underscore_drop` lint checks for statements which don't bind
-an expression which has a non-trivial Drop implementation to anything,
-causing the expression to be dropped immediately instead of at end of
-scope.
+`let_underscore_drop` lint 检查不将具有非平凡 Drop 实现的表达式绑定到任何东西的语句，这会导致表达式立即被丢弃，而不是在作用域结束时被丢弃。
 
 ### Example
 
@@ -477,17 +432,11 @@ help: consider immediately dropping the value
 
 ### Explanation
 
-Statements which assign an expression to an underscore causes the
-expression to immediately drop instead of extending the expression's
-lifetime to the end of the scope. This is usually unintended,
-especially for types like `MutexGuard`, which are typically used to
-lock a mutex for the duration of an entire scope.
+将表达式分配给下划线会导致表达式立即丢弃，而不是将表达式的生命周期延长到作用域的末尾。
+这通常是意料之外的，尤其是对于像 `MutexGuard` 这样的类型，它们通常被用来在整个作用域期间锁定互斥锁。
 
-If you want to extend the expression's lifetime to the end of the scope,
-assign an underscore-prefixed name (such as `_foo`) to the expression.
-If you do actually want to drop the expression immediately, then
-calling `std::mem::drop` on the expression is clearer and helps convey
-intent.
+如果你想将表达式的生命周期延长到作用域的末尾，将下划线前缀的名称（例如 `_foo`）分配给表达式。
+如果你确实想立即丢弃表达式，那么对表达式调用 `std::mem::drop` 是更清晰且有助于传达意图的做法。
 
 ## lossy-provenance-casts
 

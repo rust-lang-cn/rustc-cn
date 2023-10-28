@@ -1,29 +1,27 @@
 # Lint Groups
 
-`rustc` has the concept of a "lint group", where you can toggle several warnings
-through one name.
+`rustc` 有个叫做 "lint group" 的概念， 你可以通过一个名称来切换其余几个 lint。
 
-For example, the `nonstandard-style` lint sets `non-camel-case-types`,
-`non-snake-case`, and `non-upper-case-globals` all at once. So these are
-equivalent:
+例如， `nonstandard-style` lint 一次便可设置 `non-camel-case-types`,
+`non-snake-case`， 和 `non-upper-case-globals`。所以以下两条命令是等价的:
 
 ```bash
 $ rustc -D nonstandard-style
 $ rustc -D non-camel-case-types -D non-snake-case -D non-upper-case-globals
 ```
 
-Here's a list of each lint group, and the lints that they are made up of:
+这儿有一个包含每个 lint group，和组成它们的 lint 的列表:
 
 | Group | Description | Lints |
 |-------|-------------|-------|
-| warnings | All lints that are set to issue warnings | See [warn-by-default] for the default set of warnings |
-| future-incompatible | Lints that detect code that has future-compatibility problems | [ambiguous-associated-items], [ambiguous-glob-imports], [byte-slice-in-packed-struct-with-derive], [cenum-impl-drop-cast], [coherence-leak-check], [coinductive-overlap-in-coherence], [conflicting-repr-hints], [const-evaluatable-unchecked], [const-patterns-without-partial-eq], [deprecated-cfg-attr-crate-type-name], [deref-into-dyn-supertrait], [elided-lifetimes-in-associated-constant], [forbidden-lint-groups], [ill-formed-attribute-input], [illegal-floating-point-literal-pattern], [implied-bounds-entailment], [indirect-structural-match], [invalid-alignment], [invalid-doc-attributes], [invalid-type-param-default], [late-bound-lifetime-arguments], [legacy-derive-helpers], [macro-expanded-macro-exports-accessed-by-absolute-paths], [missing-fragment-specifier], [nontrivial-structural-match], [order-dependent-trait-objects], [patterns-in-fns-without-body], [pointer-structural-match], [proc-macro-back-compat], [proc-macro-derive-resolution-fallback], [pub-use-of-private-extern-crate], [repr-transparent-external-private-fields], [semicolon-in-expressions-from-macros], [soft-unstable], [suspicious-auto-trait-impls], [uninhabited-static], [unstable-name-collisions], [unstable-syntax-pre-expansion], [unsupported-calling-conventions], [where-clauses-object-safety] |
-| let-underscore | Lints that detect wildcard let bindings that are likely to be invalid | [let-underscore-drop], [let-underscore-lock] |
-| nonstandard-style | Violation of standard naming conventions | [non-camel-case-types], [non-snake-case], [non-upper-case-globals] |
-| rust-2018-compatibility | Lints used to transition code from the 2015 edition to 2018 | [absolute-paths-not-starting-with-crate], [anonymous-parameters], [keyword-idents], [tyvar-behind-raw-pointer] |
-| rust-2018-idioms | Lints to nudge you toward idiomatic features of Rust 2018 | [bare-trait-objects], [elided-lifetimes-in-paths], [ellipsis-inclusive-range-patterns], [explicit-outlives-requirements], [unused-extern-crates] |
-| rust-2021-compatibility | Lints used to transition code from the 2018 edition to 2021 | [array-into-iter], [bare-trait-objects], [ellipsis-inclusive-range-patterns], [non-fmt-panics], [rust-2021-incompatible-closure-captures], [rust-2021-incompatible-or-patterns], [rust-2021-prefixes-incompatible-syntax], [rust-2021-prelude-collisions] |
-| unused | Lints that detect things being declared but not used, or excess syntax | [dead-code], [map-unit-fn], [path-statements], [redundant-semicolons], [unreachable-code], [unreachable-patterns], [unused-allocation], [unused-assignments], [unused-attributes], [unused-braces], [unused-doc-comments], [unused-extern-crates], [unused-features], [unused-imports], [unused-labels], [unused-macro-rules], [unused-macros], [unused-must-use], [unused-mut], [unused-parens], [unused-unsafe], [unused-variables] |
+| warnings | 所有设置为发出问题警告的 lint | See [warn-by-default] for the default set of warnings |
+| future-incompatible | 用来检测代码未来兼容性问题的 lint | [ambiguous-associated-items], [ambiguous-glob-imports], [byte-slice-in-packed-struct-with-derive], [cenum-impl-drop-cast], [coherence-leak-check], [coinductive-overlap-in-coherence], [conflicting-repr-hints], [const-evaluatable-unchecked], [const-patterns-without-partial-eq], [deprecated-cfg-attr-crate-type-name], [deref-into-dyn-supertrait], [elided-lifetimes-in-associated-constant], [forbidden-lint-groups], [ill-formed-attribute-input], [illegal-floating-point-literal-pattern], [implied-bounds-entailment], [indirect-structural-match], [invalid-alignment], [invalid-doc-attributes], [invalid-type-param-default], [late-bound-lifetime-arguments], [legacy-derive-helpers], [macro-expanded-macro-exports-accessed-by-absolute-paths], [missing-fragment-specifier], [nontrivial-structural-match], [order-dependent-trait-objects], [patterns-in-fns-without-body], [pointer-structural-match], [proc-macro-back-compat], [proc-macro-derive-resolution-fallback], [pub-use-of-private-extern-crate], [repr-transparent-external-private-fields], [semicolon-in-expressions-from-macros], [soft-unstable], [suspicious-auto-trait-impls], [uninhabited-static], [unstable-name-collisions], [unstable-syntax-pre-expansion], [unsupported-calling-conventions], [where-clauses-object-safety] |
+| let-underscore | 检测可能无效的通配符 let 绑定。 | [let-underscore-drop], [let-underscore-lock] |
+| nonstandard-style | 违反标准命令约定 | [non-camel-case-types], [non-snake-case], [non-upper-case-globals] |
+| rust-2018-compatibility | 用来将代码从 Rust 2015 向 Rust 2018 转移的 lint | [absolute-paths-not-starting-with-crate], [anonymous-parameters], [keyword-idents], [tyvar-behind-raw-pointer] |
+| rust-2018-idioms | 用来推动你适应Rust 2018 惯用features的 lint | [bare-trait-objects], [elided-lifetimes-in-paths], [ellipsis-inclusive-range-patterns], [explicit-outlives-requirements], [unused-extern-crates] |
+| rust-2021-compatibility | 用于将代码从 2018 迁移到 2021 的 lint。 | [array-into-iter], [bare-trait-objects], [ellipsis-inclusive-range-patterns], [non-fmt-panics], [rust-2021-incompatible-closure-captures], [rust-2021-incompatible-or-patterns], [rust-2021-prefixes-incompatible-syntax], [rust-2021-prelude-collisions] |
+| unused | 用来检测声明但未使用，或是语法冗余的 lint | [dead-code], [map-unit-fn], [path-statements], [redundant-semicolons], [unreachable-code], [unreachable-patterns], [unused-allocation], [unused-assignments], [unused-attributes], [unused-braces], [unused-doc-comments], [unused-extern-crates], [unused-features], [unused-imports], [unused-labels], [unused-macro-rules], [unused-macros], [unused-must-use], [unused-mut], [unused-parens], [unused-unsafe], [unused-variables] |
 
 [warn-by-default]: listing/warn-by-default.md
 [ambiguous-associated-items]: listing/deny-by-default.md#ambiguous-associated-items
@@ -110,8 +108,6 @@ Here's a list of each lint group, and the lints that they are made up of:
 [unused-unsafe]: listing/warn-by-default.md#unused-unsafe
 [unused-variables]: listing/warn-by-default.md#unused-variables
 
+此外，有一个 `bad-style` lint 组是 `nonstandard-style` 的已弃用别名。
 
-Additionally, there's a `bad-style` lint group that's a deprecated alias for `nonstandard-style`.
-
-Finally, you can also see the table above by invoking `rustc -W help`. This will give you the exact values for the specific
-compiler you have installed.
+最后，您可以通过调用 `rustc -W help` 来查看上面的表格。这将为您安装的特定编译器提供确切的值。
