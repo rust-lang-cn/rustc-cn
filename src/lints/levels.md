@@ -1,42 +1,38 @@
 # Lint Levels
 
-In `rustc`, lints are divided into five *levels*:
+在 `rustc` 里, lints 被分为 5 个 *levels*（级别）:
 
-1. allow
-2. warn
-3. force-warn
-4. deny
-5. forbid
+1. allow (允许)
+2. warn（警告）
+3. force-warn（强制警告）
+4. deny（拒绝）
+5. forbid（禁止）
 
-Each lint has a default level (explained in the lint listing later in this
-chapter), and the compiler has a default warning level. First, let's explain
-what these levels mean, and then we'll talk about configuration.
+每一个 lint 都有一个默认级别 (会在本章后面lint列表中解释), 并且编译器有一个默认的警告级别。
+首先, 让我们解释一下这些级别的含义, 然后再去讨论关于它们的配置.
 
 ## allow
 
-These lints exist, but by default, do nothing. For example, consider this
-source:
+这个 lints 存在, 但默认情况下不执行任何操作. 例如下面这个源码:
 
 ```rust
 pub fn foo() {}
 ```
 
-Compiling this file produces no warnings:
+编译这个文件不会产生任何警告:
 
 ```bash
 $ rustc lib.rs --crate-type=lib
 $
 ```
 
-But this code violates the `missing_docs` lint.
+但是此代码违反了 `missing_docs` lint.
 
-These lints exist mostly to be manually turned on via configuration, as we'll
-talk about later in this section.
+这些 lints 主要是通过配置手动去开启的, 我们将在本章节后面再讨论.
 
 ## warn
 
-The 'warn' lint level will produce a warning if you violate the lint. For example,
-this code runs afoul of the `unused_variables` lint:
+如果你违反了 warn 这种 lint 的级别，将会在编译时产生一些警告. 例如下面的代码与 `unused_variables` lint 发生冲突:
 
 ```rust
 pub fn foo() {
@@ -44,7 +40,7 @@ pub fn foo() {
 }
 ```
 
-This will produce this warning:
+这将会产生如下所示的 warn:
 
 ```bash
 $ rustc lib.rs --crate-type=lib
@@ -60,16 +56,12 @@ warning: unused variable: `x`
 
 ## force-warn
 
-'force-warn' is a special lint level. It's the same as 'warn' in that a lint
-at this level will produce a warning, but unlike the 'warn' level, the
-'force-warn' level cannot be overridden. If a lint is set to 'force-warn', it
-is guaranteed to warn: no more, no less. This is true even if the overall lint
-level is capped via cap-lints.
+'force-warn' 是一种特殊的 lint 级别。它和 'warn' 一样，都会产生警告，但与 'warn' 不同的是，'force-warn' 级别无法被覆盖。
+如果将 lint 设置为 'force-warn'，则一定会产生警告：不多也不少。即使通过 cap-lints 限制了整体 lint 级别，也是如此。
 
 ## deny
 
-A 'deny' lint produces an error if you violate it. For example, this code
-runs into the `exceeding_bitshifts` lint.
+一个 'deny' lint 将会在你违反其规则时产生一个错误。例如下面的代码与 `exceeding_bitshifts` lint 相冲突。
 
 ```rust,no_run
 fn main() {
@@ -88,24 +80,17 @@ error: bitshift exceeds the type's number of bits
   = note: `#[deny(exceeding_bitshifts)]` on by default
 ```
 
-What's the difference between an error from a lint and a regular old error?
-Lints are configurable via levels, so in a similar way to 'allow' lints,
-warnings that are 'deny' by default let you allow them. Similarly, you may
-wish to set up a lint that is `warn` by default to produce an error instead.
-This lint level gives you that.
+ lint 和普通错误之间的区别是什么？
+ 可以通过级别配置 lints，因此，与 'allow' lints 类似，默认 'deny' 的警告可以允许。
+ 同样，你可能希望设置一个默认 `warn` 的 lint 来产生错误。这个 lint 级别为你提供了这种可能性。
 
 ## forbid
 
-'forbid' is a special lint level that fills the same role for 'deny' that
-'force-warn' does for 'warn'. It's the same as 'deny' in that a lint at this
-level will produce an error, but unlike the 'deny' level, the 'forbid' level
-can not be overridden to be anything lower than an error.  However, lint
-levels may still be capped with `--cap-lints` (see below) so `rustc --cap-lints warn`
-will make lints set to 'forbid' just warn.
+'forbid' 是一种特殊的 lint 级别，它比 'deny' 等级更高。 它与 'deny' 一样会发出一个错误，但是与 'deny' 级别不同的是, 'forbid' 级别不能被比错误更低的情况覆盖了。然而, lint 仍然被 `--cap-lints` (参阅下文) 限制, 因此 `rustc --cap-lints warn` 命令将 'forbid' 级别的lints 设置为仅有警告信息。
 
 ## Configuring warning levels
 
-Remember our `missing_docs` example from the 'allow' lint level?
+记得我们上面默认级别为 'allow' 的 lint `missing_docs` 的例子的吗?
 
 ```bash
 $ cat lib.rs
@@ -114,16 +99,13 @@ $ rustc lib.rs --crate-type=lib
 $
 ```
 
-We can configure this lint to operate at a higher level, both with
-compiler flags, as well as with an attribute in the source code.
+这样可以配置此 lint 在更高级别上运行,两者都使用编译器标志以及源代码中的属性。
 
-You can also "cap" lints so that the compiler can choose to ignore
-certain lint levels. We'll talk about that last.
+你还可以 "cap" lints 以便编译器可以选择忽略某些 lint 级别. 我们将在最后讨论。
 
 ### Via compiler flag
 
-The `-A`, `-W`, `--force-warn` `-D`, and `-F` flags let you turn one or more lints
-into allowed, warning, force-warn, deny, or forbid levels, like this:
+比如 `-A`, `-W`, `--force-warn` `-D`, 和 `-F` 标志允许你将一个或多个 lint 转换为允许、警告、强制警告、拒绝或禁止级别，如下所示：
 
 ```bash
 $ rustc lib.rs --crate-type=lib -W missing-docs
@@ -161,37 +143,36 @@ error: missing documentation for a function
 error: aborting due to 2 previous errors
 ```
 
-You can also pass each flag more than once for changing multiple lints:
+你也可以多次传递每个标签，来修改多个 lints 的级别:
 
 ```bash
 $ rustc lib.rs --crate-type=lib -D missing-docs -D unused-variables
 ```
 
-And of course, you can mix these five flags together:
+当然，你可以将这 5 个 flags 混合在一起使用：
 
 ```bash
 $ rustc lib.rs --crate-type=lib -D missing-docs -A unused-variables
 ```
 
-The order of these command line arguments is taken into account. The following allows the `unused-variables` lint, because it is the last argument for that lint:
+这些命令行参数的顺序也考虑在内了。以下内容允许 `unused-variables` lint， 是因为它是该 lint 的最后一个参数：
 
 ```bash
 $ rustc lib.rs --crate-type=lib -D unused-variables -A unused-variables
 ```
 
-You can make use of this behavior by overriding the level of one specific lint out of a group of lints. The following example denies all the lints in the `unused` group, but explicitly allows the `unused-variables` lint in that group (forbid still trumps everything regardless of ordering):
+您可以通过此举在一组 lints 中覆盖某个特定的 lint 的级别来。
+以下例子将在 `unused` 组中所有 lint 设置为 拒绝（ denies ）级别，但是将此组中的 `unused-variables` lint 设置为允许( allows )。(无论顺序如何，"forbid" 仍然胜过一切):
 
 ```bash
 $ rustc lib.rs --crate-type=lib -D unused -A unused-variables
 ```
 
-Since `force-warn` and `forbid` cannot be overridden, setting
-one of them will prevent any later level for the same lint from
-taking effect.
+由于 `force-warn` and `forbid` 无法被覆盖，设置其中一个将防止相同 lint 的任何后续级别生效。
 
 ### Via an attribute
 
-You can also modify the lint level with a crate-wide attribute:
+你也可以通过设置一个 `crate-wide` 属性来修改 lint 的级别:
 
 ```bash
 $ cat lib.rs
@@ -220,10 +201,9 @@ warning: missing documentation for a function
   | ^^^^^^^^^^^^
 ```
 
-`warn`, `allow`, `deny`, and `forbid` all work this way. There is
-no way to set a lint to `force-warn` using an attribute.
+`warn`, `allow`, `deny`, and `forbid`  都是以这种方式工作的。无法使用属性将 lint 设置为 `force-warn` 。
 
-You can also pass in multiple lints per attribute:
+你还可以为每个属性传递多个 lint ：
 
 ```rust
 #![warn(missing_docs, unused_variables)]
@@ -231,7 +211,7 @@ You can also pass in multiple lints per attribute:
 pub fn foo() {}
 ```
 
-And use multiple attributes together:
+同时使用多个属性：
 
 ```rust
 #![warn(missing_docs)]
@@ -242,9 +222,8 @@ pub fn foo() {}
 
 ### Capping lints
 
-`rustc` supports a flag, `--cap-lints LEVEL` that sets the "lint cap level."
-This is the maximum level for all lints. So for example, if we take our
-code sample from the "deny" lint level above:
+`rustc` 支持一个标签, `--cap-lints LEVEL` 用来设置 "lint cap level"。即此设置所有的 lint 的最高级别。
+如下所示， 如果我们采用上面 "deny" lint 级别代码示例:
 
 ```rust,no_run
 fn main() {
@@ -252,7 +231,7 @@ fn main() {
 }
 ```
 
-And we compile it, capping lints to warn:
+然后我们编译它, 限制 lints 为 warn 级别:
 
 ```bash
 $ rustc lib.rs --cap-lints warn
@@ -273,11 +252,11 @@ warning: this expression will panic at run-time
 
 It now only warns, rather than errors. We can go further and allow all lints:
 
+现在它只发出 warns，而不是 errors。我们可以进一步允许所有 lint：
+
 ```bash
 $ rustc lib.rs --cap-lints allow
 $
 ```
 
-This feature is used heavily by Cargo; it will pass `--cap-lints allow` when
-compiling your dependencies, so that if they have any warnings, they do not
-pollute the output of your build.
+在 Cargo 中这个特性被使用的很多; 它会在我们编译依赖时设置 `--cap-lints allow` 命令, 以便在有任何警告信息的时候, 不会影响到我们的构建输出。
