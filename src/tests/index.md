@@ -1,11 +1,9 @@
 # Tests
 
-`rustc` has a built-in facility for building and running tests for a crate.
-More information about writing and running tests may be found in the [Testing
-Chapter] of the Rust Programming Language book.
+`rustc` 有一个内置的用于为 crate 构建和运行测试的设备。
+更多关于编写和运行测试的信息可以在 Rust 编程语言书的 [Testing Chapter] 中找到。
 
-Tests are written as free functions with the [`#[test]`
-attribute][attribute-test]. For example:
+测试被编写为带有 `#[test]` 属性的自由函数。例如：
 
 ```rust
 #[test]

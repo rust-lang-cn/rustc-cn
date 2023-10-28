@@ -12,15 +12,11 @@ JSON 消息每行都被发送到 stderr。
 
 ## Diagnostics
 
-Diagnostic messages provide errors or possible concerns generated during
-compilation. `rustc` provides detailed information about where the diagnostic
-originates, along with hints and suggestions.
+诊断消息会提供错误或在编译中可能产生的问题。 `rustc` 提供有关诊断来源的详细信息，以及提示和建议。
 
-Diagnostics are arranged in a parent/child relationship where the parent
-diagnostic value is the core of the diagnostic, and the attached children
-provide additional context, help, and information.
+诊断以 parent/child 关系排列，其中 parent 诊断是诊断的核心，附加的 children 提供了其他的上下文，帮助和信息。
 
-Diagnostics have the following format:
+诊断有如下格式：
 
 ```javascript
 {
@@ -205,10 +201,8 @@ Diagnostics have the following format:
 
 ## Artifact notifications
 
-Artifact notifications are emitted when the [`--json=artifacts`
-flag][option-json] is used. They indicate that a file artifact has been saved
-to disk. More information about emit kinds may be found in the [`--emit`
-flag][option-emit] documentation.
+当使用[`--json=artifacts` flag][option-json]时，会发出artifact通知。
+这表明文件工件已保存到磁盘。有关 emit kinds 的更多信息，请参阅`--emit`标志文档。
 
 ```javascript
 {
@@ -225,12 +219,9 @@ flag][option-emit] documentation.
 
 ## Future-incompatible reports
 
-If the [`--json=future-incompat`][option-json] flag is used, then a separate
-JSON structure will be emitted if the crate may stop compiling in the future.
-This contains diagnostic information about the particular warnings that may be
-turned into a hard error in the future. This will include the diagnostic
-information, even if the diagnostics have been suppressed (such as with an
-`#[allow]` attribute or the `--cap-lints` option).
+如果使用 [`--json=future-incompat`][option-json] 标志，那么如果 crate 可能在未来停止编译，将发出一个单独的 JSON 结构。
+这包含有关可能在将来变成硬错误的特定警告的诊断信息。
+即使诊断被抑制（例如使用 `#[allow]` 属性或 `--cap-lints` 选项），这仍将包括诊断信息。
 
 ```javascript
 {
