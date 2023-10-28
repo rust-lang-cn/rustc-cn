@@ -1,11 +1,10 @@
 # Lints
 
-In software, a "lint" is a tool used to help improve your source code. The
-Rust compiler contains a number of lints, and when it compiles your code, it will
-also run the lints. These lints may produce a warning, an error, or nothing at all,
-depending on how you've configured things.
+在软件开发中，"lint" 是一个帮助你改善源代码的工具。
+Rust 编译器中包含了一些 lints，并且它在编译你的代码时会运行这些 lints。
+这些 lints 可能会产生警告，错误或者什么都没有，这些依赖于你对它的配置。
 
-Here's a small example:
+这里有一个小例子:
 
 ```bash
 $ cat main.rs
@@ -23,23 +22,18 @@ warning: unused variable: `x`
   = note: to avoid this warning, consider using `_x` instead
 ```
 
-This is the `unused_variables` lint, and it tells you that you've introduced
-a variable that you don't use in your code. That's not *wrong*, so it's not
-an error, but it might be a bug, so you get a warning.
+这是 `unused_variables` lint，并且它告诉你在代码中引入了你没有使用过的变量。
+这不是一种 *wrong* (错误)，但可能是一个Bug，因此你得到了一个警告。
 
 ## Future-incompatible lints
 
-Sometimes the compiler needs to be changed to fix an issue that can cause
-existing code to stop compiling. "Future-incompatible" lints are issued in
-these cases to give users of Rust a smooth transition to the new behavior.
-Initially, the compiler will continue to accept the problematic code and issue
-a warning. The warning has a description of the problem, a notice that this
-will become an error in the future, and a link to a tracking issue that
-provides detailed information and an opportunity for feedback. This gives
-users some time to fix the code to accommodate the change. After some time,
-the warning may become an error.
+有时，为了修复一个问题，需要更改编译器，这个问题可能会导致现有代码停止编译。
+在这些情况下，会发出`Future-incompatible`的 lint，以便为 Rust 的用户提供一个平稳的过渡到新的行为。
+最初，编译器将继续接受有问题的代码并发出警告。
+该警告有一个问题的描述，一个说明这在未来将成为错误的通知，以及一个链接到跟踪问题的机会，提供了详细的信息和反馈的机会。
+这给用户一些时间来修复代码以适应更改。经过一段时间后，警告可能会变成错误。
 
-The following is an example of what a future-incompatible looks like:
+以下是一个 `future-incompatible` 的例子：
 
 ```text
 warning: borrow of packed field is unsafe and requires unsafe function or block (error E0133)
@@ -54,7 +48,6 @@ warning: borrow of packed field is unsafe and requires unsafe function or block 
    = note: fields of packed structs might be misaligned: dereferencing a misaligned pointer or even just creating a misaligned reference is undefined behavior
 ```
 
-For more information about the process and policy of future-incompatible
-changes, see [RFC 1589].
+有关更多 `future-incompatible` 流程和策略的变更，请参见 [RFC 1589]
 
 [RFC 1589]: https://github.com/rust-lang/rfcs/blob/master/text/1589-rustc-bug-fix-procedure.md
