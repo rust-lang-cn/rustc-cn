@@ -1,19 +1,14 @@
 # JSON Output
 
-This chapter documents the JSON structures emitted by `rustc`. JSON may be
-enabled with the [`--error-format=json` flag][option-error-format]. Additional
-options may be specified with the [`--json` flag][option-json] which can
-change which messages are generated, and the format of the messages.
+本章节介绍由 `rustc` 所发出的 JSON 的结构。可以通过 [`--error-format=json` flag][option-error-format] 启用 JSON。
+可以使用 [`--json` flag][option-json] 指定其他可以更改生成的消息以及消息的格式的选项。
 
-JSON messages are emitted one per line to stderr.
+JSON 消息每行都被发送到 stderr。
 
-If parsing the output with Rust, the
-[`cargo_metadata`](https://crates.io/crates/cargo_metadata) crate provides
-some support for parsing the messages.
+如果使用 Rust 解析输出，[`cargo_metadata`](https://crates.io/crates/cargo_metadata) crate 提供了解析消息的一些支持。
 
-When parsing, care should be taken to be forwards-compatible with future changes
-to the format. Optional values may be `null`. New fields may be added. Enumerated
-fields like "level" or "suggestion_applicability" may add new values.
+当解析时，应注意与将来的格式更改保持向前兼容（译者注：向前兼容指的是以前的兼容以后的，而向后兼容就是以后的兼容以前的）。
+可选值可以为 `null` 。新的字段可能会添加。枚举字段如 "level" 或 "suggestion_applicability" 可以添加新的值。
 
 ## Diagnostics
 
