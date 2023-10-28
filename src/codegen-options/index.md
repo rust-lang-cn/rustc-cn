@@ -1,8 +1,5 @@
 # Codegen Options
 
-All of these options are passed to `rustc` via the `-C` flag, short for "codegen." You can see
-a version of this list for your exact compiler by running `rustc -C help`.
-
 所有的这些选项都通过 `-C` 标签传递给 `rustc` ，是 "codegen" 的缩写。通过运行 `rustc -C help` 来查看确切编译器的此列表版本。
 
 ## ar
