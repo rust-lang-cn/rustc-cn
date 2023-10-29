@@ -12,98 +12,50 @@
 
 ## General
 
-Rust provides three tiers of target support:
+Rust 提供三个层次的目标支持：
 
-- Rust provides no guarantees about tier 3 targets; they exist in the codebase,
-  but may or may not build.
-- Rust's continuous integration checks that tier 2 targets will always build,
-  but they may or may not pass tests.
-- Rust's continuous integration checks that tier 1 targets will always build
-  and pass tests.
+- Rust 对第3层目标不提供任何保证；它们存在于代码库中，但可能会或不会构建。
+- Rust 的持续集成检查第2层目标是否始终能够构建，但可能会或不会通过测试。
+- Rust 的持续集成检查第1层目标是否始终能够构建并通过测试。
 
-Adding a new tier 3 target imposes minimal requirements; we focus primarily on
-avoiding disruption to other ongoing Rust development.
+添加新的第3层目标的要求很低；我们主要关注避免对其他正在进行的 Rust 开发造成中断。
 
-Tier 2 and tier 1 targets place work on Rust project developers as a whole, to
-avoid breaking the target. The broader Rust community may also feel more
-inclined to support higher-tier targets in their crates (though they are not
-obligated to do so). Thus, these tiers require commensurate and ongoing efforts
-from the maintainers of the target, to demonstrate value and to minimize any
-disruptions to ongoing Rust development.
+第2层和第1层目标对整个 Rust 项目开发人员的工作提出了要求，以避免破坏目标。更广泛的 Rust 社区也可能更倾向于支持他们 crates 中的更高层次的目标（尽管他们没有义务这样做）。
+因此，这些层次需要目标维护者进行相应和持续的努力，以证明价值并尽量减少对正在进行的 Rust 开发的任何中断。
 
-This policy defines the requirements for accepting a proposed target at a given
-level of support.
+本政策定义了接受给定支持级别的拟议目标的要求。
 
-Each tier builds on all the requirements from the previous tier, unless
-overridden by a stronger requirement. Targets at tier 2 and tier 1 may also
-provide *host tools* (such as `rustc` and `cargo`); each of those tiers
-includes a set of supplementary requirements that must be met if supplying host
-tools for the target. A target at tier 2 or tier 1 is not required to supply
-host tools, but if it does, it must meet the corresponding additional
-requirements for host tools.
+每个层次都建立在前一个层次的所有要求之上，除非被更严格的要求所覆盖。第2层和第1层的目标也可以提供 *主机工具*（如`rustc`和`cargo`）；
+每个层次都包括一组补充要求，如果为目标提供主机工具，则必须满足这些要求。第2层或第1层的目标不需要提供主机工具，但如果提供，则必须满足相应的主机工具附加要求。
 
-The policy for each tier also documents the Rust governance teams that must
-approve the addition of any target at that tier. Those teams are responsible
-for reviewing and evaluating the target, based on these requirements and their
-own judgment. Those teams may apply additional requirements, including
-subjective requirements, such as to deal with issues not foreseen by this
-policy. (Such requirements may subsequently motivate additions to this policy.)
+每个层次的政策还记录了必须批准在该层次添加任何目标的 Rust 治理团队。这些团队负责根据这些要求和自己的判断对目标进行审查和评估。
+这些团队可能会应用额外的要求，包括主观要求，以处理本政策未预见的问题。（这些要求可能会随后促使对本政策的添加。）
 
-While these criteria attempt to document the policy, that policy still involves
-human judgment. Targets must fulfill the spirit of the requirements as well, as
-determined by the judgment of the approving teams. Reviewers and team members
-evaluating targets and target-specific patches should always use their own best
-judgment regarding the quality of work, and the suitability of a target for the
-Rust project. Neither this policy nor any decisions made regarding targets
-shall create any binding agreement or estoppel by any party.
+虽然这些标准试图记录政策，但政策仍然涉及人为判断。目标必须满足要求的精神，由批准团队的判断决定。
+审查员和团队成员评估目标和特定于目标的补丁时，应始终使用自己最佳的判断来评估工作质量以及目标是否适合 Rust 项目。
+本政策或就目标做出的任何决定均不得创建任何具有约束力的协议或任何一方的不容反悔。
 
-Before filing an issue or pull request (PR) to introduce or promote a target,
-the target should already meet the corresponding tier requirements. This does
-not preclude an existing target's maintainers using issues (on the Rust
-repository or otherwise) to track requirements that have not yet been met, as
-appropriate; however, before officially proposing the introduction or promotion
-of a target, it should meet all of the necessary requirements. A target
-proposal must quote the corresponding requirements verbatim and respond to them
-as part of explaining how the target meets those requirements. (For the
-requirements that simply state that the target or the target developers must
-not do something, it suffices to acknowledge the requirement.)
+在提交问题或拉取请求（PR）以引入或推广目标之前，目标应已经满足相应的层次要求。
+这并不排除现有目标的维护者使用问题（在 Rust 存储库或其他地方）来跟踪尚未满足的要求，但在正式提议引入或推广目标之前，它应满足所有必要的要求。
+目标提案必须逐字引用相应的要求，并回应这些要求，作为解释目标如何满足这些要求的一部分。
+（对于简单陈述目标或目标开发人员不得做某事的要求，确认该要求就足够了。）
 
-For a list of all supported targets and their corresponding tiers ("tier 3",
-"tier 2", "tier 2 with host tools", "tier 1", or "tier 1 with host tools"), see
-[platform support](platform-support.md).
+有关所有受支持的目标及其对应的层次（“第3层”、“第2层”、“带主机工具的第2层”、“第1层”或“带主机工具的第1层”）的列表，请参阅 [platform support](platform-support.md)。
 
-Several parts of this policy require providing target-specific documentation.
-Such documentation should typically appear in a subdirectory of the
-platform-support section of this rustc manual, with a link from the target's
-entry in [platform support](platform-support.md). Use
-[TEMPLATE.md](platform-support/TEMPLATE.md) as a base, and see other
-documentation in that directory for examples.
+本政策的几部分需要提供特定于目标的文档。这些文档通常应出现在本 rustc 手册的平台支持部分的子目录中，并从 [platform support](platform-support.md) 中的目标条目链接。
+使用 [TEMPLATE.md](platform-support/TEMPLATE.md) 作为基础，并查看该目录中的其他文档以获取示例。
 
-Note that a target must have already received approval for the next lower tier,
-and spent a reasonable amount of time at that tier, before making a proposal
-for promotion to the next higher tier; this is true even if a target meets the
-requirements for several tiers at once. This policy leaves the precise
-interpretation of "reasonable amount of time" up to the approving teams; those
-teams may scale the amount of time required based on their confidence in the
-target and its demonstrated track record at its current tier. At a minimum,
-multiple stable releases of Rust should typically occur between promotions of a
-target.
+请注意，目标在提议晋升到更高的层次之前，必须已经获得下一个较低层次的批准，并在该层次上花费了合理的时间；即使目标同时满足多个层次的要求，也是如此。
+本政策将“合理的时间”的精确解释留给批准团队；这些团队可以根据他们对目标的信心和目标在当前层次的既往表现来调整所需的时间。
+至少，在目标的晋升之间，通常应该发生多个 Rust 的稳定版本发布。
 
-The availability or tier of a target in stable Rust is not a hard stability
-guarantee about the future availability or tier of that target. Higher-level
-target tiers are an increasing commitment to the support of a target, and we
-will take that commitment and potential disruptions into account when
-evaluating the potential demotion or removal of a target that has been part of
-a stable release. The promotion or demotion of a target will not generally
-affect existing stable releases, only current development and future releases.
+稳定Rust中目标的可用性或层次并不是对未来该目标的可用性或层次的硬性稳定性保证。
+更高级别的目标层次是对支持目标的越来越大的承诺，我们将在评估已经成为稳定版本一部分的目标的可能降级或删除时，考虑这一承诺和潜在的中断。
+目标的晋升或降级一般不会影响现有的稳定版本，只会影响当前的开发和未来版本。
 
-In this policy, the words "must" and "must not" specify absolute requirements
-that a target must meet to qualify for a tier. The words "should" and "should
-not" specify requirements that apply in almost all cases, but for which the
-approving teams may grant an exception for good reason. The word "may"
-indicates something entirely optional, and does not indicate guidance or
-recommendations. This language is based on [IETF RFC
-2119](https://tools.ietf.org/html/rfc2119).
+在此政策中，“必须”和“必须不”这两个词明确规定了目标必须符合的绝对要求，才能获得相应层次。
+而“应该”和“不应该”这两个词则规定了大多数情况下适用的要求，但批准团队在有充分理由的情况下可以例外处理。
+最后，“可以”这个词表示某件事是完全可选的，并不表示指导或建议。这种措辞基于 [IETF RFC 2119](https://tools.ietf.org/html/rfc2119)。
 
 ## Adding a new target
 
