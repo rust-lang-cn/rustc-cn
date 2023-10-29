@@ -12,32 +12,19 @@ fn it_works() {
 }
 ```
 
-Tests "pass" if they return without an error. They "fail" if they [panic], or
-return a type such as [`Result`] that implements the [`Termination`] trait
-with a non-zero value.
+测试“通过”的条件是它们无错误地返回。如果它们 “失败”，则它们要么 [panic]，要么返回一种类型，如[`Result`]，它实现了 [`Termination`] trait 并且值不为零。
 
-By passing the [`--test` option] to `rustc`, the compiler will build the crate
-in a special mode to construct an executable that will run the tests in the
-crate. The `--test` flag will make the following changes:
+通过将 [`--test` option] 传递给 `rustc`，编译器将以特殊模式构建 crate，以构造一个可执行文件，该文件将运行 crate 中的测试。`--test`标志将进行以下更改：
 
-* The crate will be built as a `bin` [crate type], forcing it to be an
-  executable.
-* Links the executable with [`libtest`], the test harness that is part of the
-  standard library, which handles running the tests.
-* Synthesizes a [`main` function] which will process command-line arguments
-  and run the tests. This new `main` function will replace any existing `main`
-  function as the entry point of the executable, though the existing `main`
-  will still be compiled.
-* Enables the [`test` cfg option], which allows your code to use conditional
-  compilation to detect if it is being built as a test.
-* Enables building of functions annotated with the [`test`][attribute-test]
-  and [`bench`](#benchmarks) attributes, which will be run by the test
-  harness.
+* crate将构建为 `bin` [crate type]，强制其为可执行文件。
+* 将可执行文件与 [`libtest`] 链接，这是标准库中的测试工具，用于处理运行测试。
+* 合成一个 [`main` function]，它将处理命令行参数并运行测试。
+  这个新的 `main` 函数将替换现有的 `main` 函数作为可执行文件的入口点，尽管现有的 `main` 仍将被编译。
+* 启用 [`test` cfg option]，它允许您的代码使用条件编译来检测其是否作为测试构建。
+* 启用带有 [`test`][attribute-test] 和 [`bench`](#benchmarks) 属性的函数的构建，测试工具将运行这些函数。
 
-After the executable is created, you can run it to execute the tests and
-receive a report on what passes and fails. If you are using [Cargo] to manage
-your project, it has a built-in [`cargo test`] command which handles all of
-this automatically. An example of the output looks like this:
+创建可执行文件后，您可以运行它以执行测试并接收有关通过和失败的报告。
+如果您使用 [Cargo] 来管理项目，它有一个内置的 [`cargo test`] 命令，可以自动处理这些。输出的示例如下所示：
 
 ```text
 running 4 tests
@@ -49,252 +36,182 @@ test walks_the_dog ... ok
 test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
 ```
 
-> **Note**: Tests must be built with the [`unwind` panic
-> strategy][panic-strategy]. This is because all tests run in the same
-> process, and they are intended to catch panics, which is not possible with
-> the `abort` strategy. See the unstable [`-Z panic-abort-tests`] option for
-> experimental support of the `abort` strategy by spawning tests in separate
-> processes.
+> **注意**：测试必须使用 [`unwind` panic strategy][panic-strategy] 构建。
+> 这是因为所有测试都在同一进程中运行，并且旨在捕获 panics，而使用 `abort` 策略无法实现这一点。
+> 可以使用不稳定的 [`-Z panic-abort-tests`] 选项在实验上通过分别在单独的进程中运行测试来支持 `abort` 策略。
 
 ## Test attributes
 
-Tests are indicated using attributes on free functions. The following
-attributes are used for testing, see the linked documentation for more
-details:
+测试通过在自由函数上使用属性来表示。以下属性用于测试，更多详情请参阅链接的文档：
 
-* [`#[test]`][attribute-test] — Indicates a function is a test to be run.
-* `#[bench]` — Indicates a function is a benchmark to be
-  run. Benchmarks are currently unstable and only available in the nightly
-  channel, see the [unstable docs][bench-docs] for more details.
-* [`#[should_panic]`][attribute-should_panic] — Indicates that the test
-  function will only pass if the function [panics][panic].
-* [`#[ignore]`][attribute-ignore] — Indicates that the test function will be
-  compiled, but not run by default. See the [`--ignored`](#--ignored) and
-  [`--include-ignored`](#--include-ignored) options to run these tests.
+* [`#[test]`][attribute-test] - 表示一个函数是要运行的测试。
+* `#[bench]` - 表示一个函数是要运行的基准测试。
+  基准测试目前不稳定，仅在 nightly 频道可用，更多详情请参阅 [unstable docs][bench-docs]。
+* [`#[should_panic]`][attribute-should_panic] - 表示测试函数只有在函数 [panics][panic] 时才会通过。
+* [`#[ignore]`][attribute-ignore] - 表示测试函数将被编译，但默认不运行。
+  请参阅 [`--ignored`](#--ignored) 和 [`--include-ignored`](#--include-ignored) 选项以运行这些测试。
 
 ## CLI arguments
 
-The libtest harness has several command-line arguments to control its
-behavior.
+libtest 测试工具具有几个命令行参数来控制其行为。
 
-> Note: When running with [`cargo test`], the libtest CLI arguments must be
-> passed after the `--` argument to differentiate between flags for Cargo and
-> those for the harness. For example: `cargo test -- --nocapture`
+> 注意：在使用 [`cargo test`] 运行时，libtest CLI 参数必须在 `--` 参数之后传递，以区分 Cargo 的标志和测试工具的标志。例如：`cargo test -- --nocapture`
 
 ### Filters
 
-Positional arguments (those without a `-` prefix) are treated as filters which
-will only run tests whose name matches one of those strings. The filter will
-match any substring found in the full path of the test function. For example,
-if the test function `it_works` is located in the module
-`utils::paths::tests`, then any of the filters `works`, `path`, `utils::`, or
-`utils::paths::tests::it_works` will match that test.
+位置参数（没有 `-` 前缀的参数）被视为过滤器，只会运行名称与这些字符串之一匹配的测试。
+过滤器将匹配测试函数完整路径中找到的任何子字符串。
+例如，如果测试函数 `it_works` 位于模块 `utils::paths::tests` 中，那么任何过滤器 `works`、`path`、`utils::`或 `utils::paths::tests::it_works` 都会匹配该测试。
 
-See [Selection options](#selection-options) for more options to control which
-tests are run.
+有关更多选项来控制运行的测试，请参阅 [Selection options](#selection-options)。
 
 ### Action options
 
-The following options perform different actions other than running tests.
+以下选项执行除运行测试之外的不同操作。
 
 #### `--list`
 
-Prints a list of all tests and benchmarks. Does not run any of the tests.
-[Filters](#filters) can be used to list only matching tests.
+打印所有测试和基准测试的列表。不运行任何测试。[Filters](#filters) 可用于仅列出匹配的测试。
 
 #### `-h`, `--help`
 
-Displays usage information and command-line options.
+显示使用信息和命令行选项。
 
 ### Selection options
 
-The following options change how tests are selected.
+以下选项更改测试的选择方式。
 
 #### `--test`
 
-This is the default mode where all tests will be run as well as running all
-benchmarks with only a single iteration (to ensure the benchmark works,
-without taking the time to actually perform benchmarking). This can be
-combined with the `--bench` flag to run both tests and perform full
-benchmarking.
+这是默认模式，将运行所有测试以及仅进行一次迭代的所有基准测试（以确保基准测试有效，而无需花费实际进行基准测试的时间）。这可与 `--bench` 标志结合使用，以运行测试并执行完整的基准测试。
 
 #### `--bench`
 
-This runs in a mode where tests are ignored, and only runs benchmarks. This
-can be combined with `--test` to run both benchmarks and tests.
+此模式将忽略测试，仅运行基准测试。这可与 `--test` 结合使用，以同时运行基准测试和测试。
 
 #### `--exact`
 
-This forces [filters](#filters) to match the full path of the test exactly.
-For example, if the test `it_works` is in the module `utils::paths::tests`,
-then only the string `utils::paths::tests::it_works` will match that test.
+这将强制 [filters](#filters) 与测试的完整路径完全匹配。例如，如果测试 `it_works` 在模块`utils::paths::tests`中，则只有字符串 `utils::paths::tests::it_works` 才会匹配该测试。
 
 #### `--skip` _FILTER_
 
-Skips any tests whose name contains the given _FILTER_ string. This flag may
-be passed multiple times.
+跳过名称包含给定 _FILTER_ 字符串的任何测试。此标志可以传递多次。
 
 #### `--ignored`
 
-Runs only tests that are marked with the [`ignore`
-attribute][attribute-ignore].
+仅运行标记为 [`ignore`
+attribute][attribute-ignore] 的测试。
 
 #### `--include-ignored`
 
-Runs both [ignored](#--ignored) and non-ignored tests.
+运行[被忽略的](#--ignored)和未被忽略的测试。
 
 #### `--exclude-should-panic`
 
-Excludes tests marked with the [`should_panic`
-attribute][attribute-should_panic].
+排除标记为 [`should_panic`
+attribute][attribute-should_panic] 的测试。
 
-⚠️ 🚧 This option is [unstable](#unstable-options), and requires the `-Z
-unstable-options` flag. See [tracking issue
-#82348](https://github.com/rust-lang/rust/issues/82348) for more information.
+⚠️ 🚧此选项 [unstable](#unstable-options)，需要使用 `-Z unstable-options` 标志。
+有关更多信息，请参阅 [tracking issue #82348](https://github.com/rust-lang/rust/issues/82348)。
 
 ### Execution options
 
-The following options affect how tests are executed.
+以下选项会影响测试的执行方式。
 
 #### `--test-threads` _NUM_THREADS_
 
-Sets the number of threads to use for running tests in parallel. By default,
-uses the amount of concurrency available on the hardware as indicated by
-[`available_parallelism`].
+设置用于并行运行测试的线程数。默认情况下，使用 [`available_parallelism`] 指示的硬件上的并发量。
 
-This can also be specified with the `RUST_TEST_THREADS` environment variable.
+也可以使用 `RUST_TEST_THREADS` 环境变量指定。
 
 #### `--force-run-in-process`
 
-Forces the tests to run in a single process when using the [`abort` panic
-strategy][panic-strategy].
+在使用 [`abort` panic
+strategy][panic-strategy] 时，强制测试在单个进程中运行。
 
-⚠️ 🚧 This only works with the unstable [`-Z panic-abort-tests`] option, and
-requires the `-Z unstable-options` flag. See [tracking issue
-#67650](https://github.com/rust-lang/rust/issues/67650) for more information.
+⚠️ 🚧这仅适用于不稳定的 [`-Z panic-abort-tests`] 选项，并需要使用 `-Z unstable-options` 标志。有关更多信息，请参阅[tracking issue #67650](https://github.com/rust-lang/rust/issues/67650)。
 
 #### `--ensure-time`
 
-⚠️ 🚧 This option is [unstable](#unstable-options), and requires the `-Z
-unstable-options` flag. See [tracking issue
-#64888](https://github.com/rust-lang/rust/issues/64888) and the [unstable
-docs](../../unstable-book/compiler-flags/report-time.html) for more information.
+⚠️ 🚧此选项 [unstable](#unstable-options)，需要使用 `-Z unstable-options` 标志。有关更多信息，请参阅 [tracking issue #64888](https://github.com/rust-lang/rust/issues/64888) 和 [unstable docs](../../unstable-book/compiler-flags/report-time.html)。
 
 #### `--shuffle`
 
-Runs the tests in random order, as opposed to the default alphabetical order.
+以随机顺序运行测试，而不是默认的字母顺序。
 
-This may also be specified by setting the `RUST_TEST_SHUFFLE` environment
-variable to anything but `0`.
+也可以通过将 `RUST_TEST_SHUFFLE` 环境变量设置为除 `0` 以外的任何值来指定。
 
-The random number generator seed that is output can be passed to
-[`--shuffle-seed`](#--shuffle-seed-seed) to run the tests in the same order
-again.
+输出的随机数生成器种子可以传递给[`--shuffle-seed`](#--shuffle-seed-seed)，以再次以相同的顺序运行测试。
 
-Note that `--shuffle` does not affect whether the tests are run in parallel. To
-run the tests in random order sequentially, use `--shuffle --test-threads 1`.
+请注意，`--shuffle`不会影响测试是否并行运行。要以随机顺序依次运行测试，请使用`--shuffle --test-threads 1`。
 
-⚠️ 🚧 This option is [unstable](#unstable-options), and requires the `-Z
-unstable-options` flag. See [tracking issue
-#89583](https://github.com/rust-lang/rust/issues/89583) for more information.
+⚠️ 🚧此选项 [unstable](#unstable-options)，需要使用 `-Z unstable-options` 标志。有关更多信息，请参阅 [tracking issue #89583](https://github.com/rust-lang/rust/issues/89583)。
 
 #### `--shuffle-seed` _SEED_
 
-Like [`--shuffle`](#--shuffle), but seeds the random number generator with
-_SEED_. Thus, calling the test harness with `--shuffle-seed` _SEED_ twice runs
-the tests in the same order both times.
+与 [`--shuffle`](#--shuffle) 类似，但使用 _SEED_ 为随机数生成器种子。因此，使用 `--shuffle-seed` _SEED_ 两次调用测试工具，两次都以相同的顺序运行测试。
 
-_SEED_ is any 64-bit unsigned integer, for example, one produced by
-[`--shuffle`](#--shuffle).
+_SEED_ 是任何 64 位无符号整数，例如由 [`--shuffle`](#--shuffle) 生成的整数。
 
-This can also be specified with the `RUST_TEST_SHUFFLE_SEED` environment
-variable.
+也可以使用 `RUST_TEST_SHUFFLE_SEED` 环境变量指定。
 
-⚠️ 🚧 This option is [unstable](#unstable-options), and requires the `-Z
-unstable-options` flag. See [tracking issue
-#89583](https://github.com/rust-lang/rust/issues/89583) for more information.
+⚠️ 🚧此选项 [unstable](#unstable-options)，需要使用 `-Z unstable-options` 标志。有关更多信息，请参阅[tracking issue #89583](https://github.com/rust-lang/rust/issues/89583)。
 
 ### Output options
 
-The following options affect the output behavior.
+以下选项会影响输出行为。
 
 #### `-q`, `--quiet`
 
-Displays one character per test instead of one line per test. This is an alias
-for [`--format=terse`](#--format-format).
+每个测试显示一个字符，而不是每行一个测试。这是 [`--format=terse`](#--format-format) 的别名。
 
 #### `--nocapture`
 
-Does not capture the stdout and stderr of the test, and allows tests to print
-to the console. Usually the output is captured, and only displayed if the test
-fails.
+不捕获测试的 stdout 和 stderr，并允许测试打印到控制台。通常输出被捕获，并且只在测试失败时显示。
 
-This may also be specified by setting the `RUST_TEST_NOCAPTURE` environment
-variable to anything but `0`.
+也可以通过将 `RUST_TEST_NOCAPTURE` 环境变量设置为除 `0` 以外的任何值来指定。
 
 #### `--show-output`
 
-Displays the stdout and stderr of successful tests after all tests have run.
+在所有测试运行完毕后，显示成功测试的 stdout 和 stderr。
 
-Contrast this with [`--nocapture`](#--nocapture) which allows tests to print
-*while they are running*, which can cause interleaved output if there are
-multiple tests running in parallel, `--show-output` ensures the output is
-contiguous, but requires waiting for all tests to finish.
+与 [`--nocapture`](#--nocapture) 不同，它允许测试 *在运行时* 打印，如果有多个测试并行运行，可能会导致交错输出，`--show-output` 确保输出是连续的，但需要等待所有测试完成。
 
 #### `--color` _COLOR_
 
-Control when colored terminal output is used. Valid options:
+控制何时使用彩色终端输出。有效选项：
 
-* `auto`: Colorize if stdout is a tty and [`--nocapture`](#--nocapture) is not
-  used. This is the default.
-* `always`: Always colorize the output.
-* `never`: Never colorize the output.
+* `auto`：如果 stdout 是 tty 且未使用 [`--nocapture`](#--nocapture)，则进行彩色化。这是默认值。
+* `always`：总是对输出进行彩色化。
+* `never`：从不对输出进行彩色化。
 
 #### `--format` _FORMAT_
 
-Controls the format of the output. Valid options:
+控制输出格式。有效选项：
 
-* `pretty`: This is the default format, with one line per test.
-* `terse`: Displays only a single character per test. [`--quiet`](#-q---quiet)
-  is an alias for this option.
-* `json`: Emits JSON objects, one per line. ⚠️ 🚧 This option is
-  [unstable](#unstable-options), and requires the `-Z unstable-options` flag.
-  See [tracking issue #49359](https://github.com/rust-lang/rust/issues/49359)
-  for more information.
+* `pretty`：这是默认格式，每个测试一行。
+* `terse`：每个测试仅显示一个字符。[`--quiet`](#-q---quiet) 是此选项的别名。
+* `json`：逐行输出JSON对象。⚠️ 🚧此选项 [unstable](#unstable-options)，需要使用 `-Z unstable-options` 标志。有关更多信息，请参阅 [tracking issue #49359](https://github.com/rust-lang/rust/issues/49359)。
 
 #### `--logfile` _PATH_
 
-Writes the results of the tests to the given file.
+将测试结果写入给定文件。
 
 #### `--report-time`
 
-⚠️ 🚧 This option is [unstable](#unstable-options), and requires the `-Z
-unstable-options` flag. See [tracking issue
-#64888](https://github.com/rust-lang/rust/issues/64888) and the [unstable
-docs](../../unstable-book/compiler-flags/report-time.html) for more information.
+⚠️ 🚧此选项 [unstable](#unstable-options)，需要使用 `-Z unstable-options` 标志。有关更多信息，请参阅 [tracking issue #64888](https://github.com/rust-lang/rust/issues/64888) 和 [unstable docs](../../unstable-book/compiler-flags/report-time.html)。
 
 ### Unstable options
 
-Some CLI options are added in an "unstable" state, where they are intended for
-experimentation and testing to determine if the option works correctly, has
-the right design, and is useful. The option may not work correctly, break, or
-change at any time. To signal that you acknowledge that you are using an
-unstable option, they require passing the `-Z unstable-options` command-line
-flag.
+一些 CLI 选项以 “不稳定” 状态添加，它们旨在进行实验和测试，以确定选项是否正常工作、设计正确且有用。该选项可能无法正常工作、中断或随时更改。为了表示您确认正在使用不稳定的选项，它们需要传递 `-Z unstable-options` 命令行标志。
 
 ## Benchmarks
 
-The libtest harness supports running benchmarks for functions annotated with
-the `#[bench]` attribute. Benchmarks are currently unstable, and only
-available on the [nightly channel]. More information may be found in the
-[unstable book][bench-docs].
+libtest 工具支持运行用 `#[bench]` 属性注释的函数的基准测试。基准测试目前不稳定，只在 [nightly channel] 上可用。更多信息可以在 [unstable book][bench-docs] 中找到。
 
 ## Custom test frameworks
 
-Experimental support for using custom test harnesses is available on the
-[nightly channel]. See [tracking issue
-#50297](https://github.com/rust-lang/rust/issues/50297) and the
-[custom_test_frameworks documentation] for more information.
+在 [nightly channel] 上可以使用自定义测试工具的实验性支持。有关更多信息，请参阅 [tracking issue #50297](https://github.com/rust-lang/rust/issues/50297) 和 [custom_test_frameworks documentation]。
 
 [`--test` option]: ../command-line-arguments.md#option-test
 [`-Z panic-abort-tests`]: https://github.com/rust-lang/rust/issues/67650
