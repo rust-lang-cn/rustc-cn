@@ -6,29 +6,19 @@
     }
 </style>
 
-Support for different platforms ("targets") are organized into three tiers,
-each with a different set of guarantees. For more information on the policies
-for targets at each tier, see the [Target Tier Policy](target-tier-policy.md).
+对不同平台的 ("targets") 支持分为三个层次，每个层次都有不同的保证。有关每个目标层次策略的更多信息，请参阅 [Target Tier Policy](target-tier-policy.md)。
 
-Targets are identified by their "target triple" which is the string to inform
-the compiler what kind of output should be produced.
+目标通过其 "target triple" 来识别，该字符串用于通知编译器应生成哪种类型的输出。
 
-Component availability is tracked [here](https://rust-lang.github.io/rustup-components-history/).
+组件可用性 [here](https://rust-lang.github.io/rustup-components-history/) 跟踪。
 
 ## Tier 1 with Host Tools
 
-Tier 1 targets can be thought of as "guaranteed to work". The Rust project
-builds official binary releases for each tier 1 target, and automated testing
-ensures that each tier 1 target builds and passes tests after each change.
+第1层目标可以被认为是 "guaranteed to work"。Rust 项目为每个第 1 层目标构建官方二进制版本，自动化测试确保每个第 1 层目标在每次更改后都能构建并通过测试。
 
-Tier 1 targets with host tools additionally support running tools like `rustc`
-and `cargo` natively on the target, and automated testing ensures that tests
-pass for the host tools as well. This allows the target to be used as a
-development platform, not just a compilation target. For the full requirements,
-see [Tier 1 with Host Tools](target-tier-policy.md#tier-1-with-host-tools) in
-the Target Tier Policy.
+具有主机工具的第1层目标还支持在本机上运行像 `rustc` 和 `cargo` 这样的工具，自动化测试也确保主机工具的测试通过。这使得目标可以作为开发平台使用，而不仅仅是编译目标。有关完整要求，请参阅目标层次策略中的 [Tier 1 with Host Tools](target-tier-policy.md#tier-1-with-host-tools)。
 
-All tier 1 targets with host tools support the full standard library.
+所有具有主机工具的第1层目标都支持完整的标准库。
 
 target | notes
 -------|-------
@@ -54,35 +44,22 @@ target | notes
 
 ## Tier 1
 
-Tier 1 targets can be thought of as "guaranteed to work". The Rust project
-builds official binary releases for each tier 1 target, and automated testing
-ensures that each tier 1 target builds and passes tests after each change. For
-the full requirements, see [Tier 1 target
-policy](target-tier-policy.md#tier-1-target-policy) in the Target Tier Policy.
+第1层目标可以被认为是 "guaranteed to work"。Rust 项目为每个第1层目标构建官方二进制版本，自动化测试确保每个第1层目标在每次更改后都能构建并通过测试。有关完整要求，请参阅目标层次策略中的 [Tier 1 target
+policy](target-tier-policy.md#tier-1-target-policy)。
 
-At this time, all Tier 1 targets are [Tier 1 with Host
-Tools](#tier-1-with-host-tools).
+目前，所有第1层目标都是 [Tier 1 with Host
+Tools](#tier-1-with-host-tools)。
 
 ## Tier 2 with Host Tools
 
-Tier 2 targets can be thought of as "guaranteed to build". The Rust project
-builds official binary releases of the standard library (or, in some cases,
-only the `core` library) for each tier 2 target, and automated builds
-ensure that each tier 2 target can be used as build target after each change. Automated tests are
-not always run so it's not guaranteed to produce a working build, but tier 2
-targets often work to quite a good degree and patches are always welcome!
+第2层目标可以被认为是 "guaranteed to build"。Rust 项目为每个第2层目标构建标准库（或某些情况下的 `core` 库）的官方二进制版本，自动化构建确保每个第2层目标在每次更改后都可以用作构建目标。并不总是运行自动化测试，因此无法保证构建一定可用，但第2层目标通常在很大程度上可用，而且总是欢迎补丁！
 
-Tier 2 targets with host tools additionally support running tools like `rustc`
-and `cargo` natively on the target, and automated builds ensure that the host
-tools build as well. This allows the target to be used as a development
-platform, not just a compilation target. For the full requirements, see [Tier 2
-with Host Tools](target-tier-policy.md#tier-2-with-host-tools) in the Target
-Tier Policy.
+具有主机工具的第2层目标还支持在本机上运行像 `rustc` 和 `cargo` 这样的工具，自动化构建也确保主机工具能够构建。这使得目标可以作为开发平台使用，而不仅仅是编译目标。有关完整要求，请参阅目标层次策略中的 [Tier 2
+with Host Tools](target-tier-policy.md#tier-2-with-host-tools)。
 
-All tier 2 targets with host tools support the full standard library.
+所有具有主机工具的第2层目标都支持完整的标准库。
 
-**NOTE:** The `rust-docs` component is not usually built for tier 2 targets,
-so Rustup may install the documentation for a similar tier 1 target instead.
+**注意：** 通常不为第2层目标构建 `rust-docs` 组件，因此 Rustup 可能会安装类似的第1层目标的文档。
 
 target | notes
 -------|-------
@@ -105,24 +82,15 @@ target | notes
 
 ## Tier 2 without Host Tools
 
-Tier 2 targets can be thought of as "guaranteed to build". The Rust project
-builds official binary releases of the standard library (or, in some cases,
-only the `core` library) for each tier 2 target, and automated builds
-ensure that each tier 2 target can be used as build target after each change. Automated tests are
-not always run so it's not guaranteed to produce a working build, but tier 2
-targets often work to quite a good degree and patches are always welcome! For
-the full requirements, see [Tier 2 target
-policy](target-tier-policy.md#tier-2-target-policy) in the Target Tier Policy.
+第2层目标可以被认为是 "guaranteed to build"。Rust 项目为每个第2层目标构建标准库（或某些情况下的 `core` 库）的官方二进制版本，自动化构建确保每个第2层目标在每次更改后都可以用作构建目标。并不总是运行自动化测试，因此无法保证构建一定可用，但第2层目标通常在很大程度上可用，而且总是欢迎补丁！有关完整要求，请参阅目标层次策略中的[Tier 2 target
+policy](target-tier-policy.md#tier-2-target-policy)。
 
-The `std` column in the table below has the following meanings:
+下表中的 `std` 列有以下含义：
 
-* ✓ indicates the full standard library is available.
-* \* indicates the target only supports [`no_std`] development.
+* ✓ 表示完整的标准库可用。
+* \* 表示目标只支持 [`no_std`] 开发。
 
-[`no_std`]: https://rust-embedded.github.io/book/intro/no-std.html
-
-**NOTE:** The `rust-docs` component is not usually built for tier 2 targets,
-so Rustup may install the documentation for a similar tier 1 target instead.
+**注意：** 通常不为第2层目标构建 `rust-docs` 组件，因此 Rustup 可能会安装类似的第1层目标的文档。
 
 target | std | notes
 -------|:---:|-------
@@ -196,22 +164,16 @@ target | std | notes
 
 ## Tier 3
 
-Tier 3 targets are those which the Rust codebase has support for, but which the
-Rust project does not build or test automatically, so they may or may not work.
-Official builds are not available. For the full requirements, see [Tier 3
-target policy](target-tier-policy.md#tier-3-target-policy) in the Target Tier
-Policy.
+第3层目标是 Rust 代码库支持的目标，但 Rust 项目不会自动构建或测试这些目标，因此它们可能有效，也可能无效。没有可用的官方构建。有关完整要求，请参阅目标层次策略中的 [Tier 3
+target policy](target-tier-policy.md#tier-3-target-policy)。
 
-The `std` column in the table below has the following meanings:
+下表中的 `std` 列有以下含义：
 
-* ✓ indicates the full standard library is available.
-* \* indicates the target only supports [`no_std`] development.
-* ? indicates the standard library support is unknown or a work-in-progress.
+* ✓ 表示完整的标准库可用。
+* \* 表示目标只支持 [`no_std`] 开发。
+* ? 表示标准库支持未知或正在进行中。
 
-[`no_std`]: https://rust-embedded.github.io/book/intro/no-std.html
-
-The `host` column indicates whether the codebase includes support for building
-host tools.
+`host` 列表示代码库是否包括构建主机工具的支持。
 
 target | std | host | notes
 -------|:---:|:----:|-------
