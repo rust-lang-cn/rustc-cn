@@ -1,30 +1,21 @@
 # Linker-plugin-based LTO
 
-The `-C linker-plugin-lto` flag allows for deferring the LTO optimization
-to the actual linking step, which in turn allows for performing
-interprocedural optimizations across programming language boundaries if
-all the object files being linked were created by LLVM based toolchains.
-The prime example here would be linking Rust code together with
-Clang-compiled C/C++ code.
+`-C linker-plugin-lto` 标签允许将 LTO 优化推迟到实际链接步骤中，如果要链接的所有「目标文件 object files」都是基于 LLVM 工具链优化的，则此标签又允许跨编程语言边界执行过程间优化，本文示例主要展示如何将 Rust 代码与使用 Clang 编译的 C/C++ 代码链接在一起。
 
 ## Usage
 
-There are two main cases how linker plugin based LTO can be used:
+链接器插件基于 LTO 的使用主要有两种情况：
 
- - compiling a Rust `staticlib` that is used as a C ABI dependency
- - compiling a Rust binary where `rustc` invokes the linker
+ - 编译 Rust `staticlib` 用于 C ABI 的依赖项。
+ - 在 `rustc` 调用链接器的地方编译 Rust 二进制文件。
 
-In both cases the Rust code has to be compiled with `-C linker-plugin-lto` and
-the C/C++ code with `-flto` or `-flto=thin` so that object files are emitted
-as LLVM bitcode.
+在这两种情况下，Rust 代码需要用 `-C linker-plugin-lto` 编译，并且 c/c++ 代码使用 `-flto` 或 `-flto=thin` 以便将目标文件生成 LLVM 位码。
 
 ### Rust `staticlib` as dependency in C/C++ program
 
-In this case the Rust compiler just has to make sure that the object files in
-the `staticlib` are in the right format. For linking, a linker with the
-LLVM plugin must be used (e.g. LLD).
+在这种情况下，Rust 编译器只需要确保 `staticlib` 中的目标文件格式正确即可。要想进行链接，必须使用带有 LLVM 插件的链接器（例如 LLD）。
 
-Using `rustc` directly:
+直接使用 `rustc` ：
 
 ```bash
 # Compile the Rust staticlib
@@ -35,7 +26,7 @@ clang -c -O2 -flto=thin -o cmain.o ./cmain.c
 clang -flto=thin -fuse-ld=lld -L . -l"name-of-your-rust-lib" -o main -O2 ./cmain.o
 ```
 
-Using `cargo`:
+使用 `cargo`:
 
 ```bash
 # Compile the Rust staticlib
@@ -48,10 +39,9 @@ clang -flto=thin -fuse-ld=lld -L . -l"name-of-your-rust-lib" -o main -O2 ./cmain
 
 ### C/C++ code as a dependency in Rust
 
-In this case the linker will be invoked by `rustc`. We again have to make sure
-that an appropriate linker is used.
+在这种情况下，将由 `rustc` 调用链接器。我们再次必须确保使用合适的链接器。
 
-Using `rustc` directly:
+直接使用 `rustc` ：
 
 ```bash
 # Compile C code with `-flto`
@@ -63,7 +53,7 @@ ar crus ./libxyz.a ./clib.o
 rustc -Clinker-plugin-lto -L. -Copt-level=2 -Clinker=clang -Clink-arg=-fuse-ld=lld ./main.rs
 ```
 
-Using `cargo` directly:
+直接使用 `cargo`：
 
 ```bash
 # Compile C code with `-flto`
@@ -77,10 +67,7 @@ RUSTFLAGS="-Clinker-plugin-lto -Clinker=clang -Clink-arg=-fuse-ld=lld" cargo bui
 
 ### Explicitly specifying the linker plugin to be used by `rustc`
 
-If one wants to use a linker other than LLD, the LLVM linker plugin has to be
-specified explicitly. Otherwise the linker cannot read the object files. The
-path to the plugin is passed as an argument to the `-Clinker-plugin-lto`
-option:
+如果想要使用 LLD 以外的链接器，需要明确指定使用的 LLVM 链接器插件。否则链接器无法读取目标文件。插件的路径通过作为 `-Clinker-plugin-lto` 选项的参数传递：
 
 ```bash
 rustc -Clinker-plugin-lto="/path/to/LLVMgold.so" -L. -Copt-level=2 ./main.rs
@@ -176,16 +163,11 @@ for clang, rust in sorted(version_map.items()):
 
 -->
 
-In order for this kind of LTO to work, the LLVM linker plugin must be able to
-handle the LLVM bitcode produced by both `rustc` and `clang`.
+为了使这种 LTO 生效，LLVM 链接器插件必须能够处理由 `rustc` 和 `clang` 产生的 LLVM 位码。
 
-Best results are achieved by using a `rustc` and `clang` that are based on the
-exact same version of LLVM. One can use `rustc -vV` in order to view the LLVM
-used by a given `rustc` version. Note that the version number given
-here is only an approximation as Rust sometimes uses unstable revisions of
-LLVM. However, the approximation is usually reliable.
+通过使用基于相同版本的 LLVM 的 `rustc` 和 `clang` 实现可获得最佳结果。可以使用 `rustc -vV` 来查看给定 `rustc` 版本所使用的 LLVM。注意因为Rust有时会使用 LLVM 的不稳定版本，所以此处所给出的版本号只是一个近似值，但是这种近似通常是可靠的。
 
-The following table shows known good combinations of toolchain versions.
+下表展示了已知工具链的良好组合。
 
 | Rust Version | Clang Version |
 |--------------|---------------|
@@ -198,4 +180,4 @@ The following table shows known good combinations of toolchain versions.
 | 1.60 - 1.64  |      14       |
 | 1.65         |      15       |
 
-Note that the compatibility policy for this feature might change in the future.
+注意，此处的兼容性策略将来可能会更改。

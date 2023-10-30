@@ -8,12 +8,9 @@
 
 ## code-model
 
-这个选项让你可以选择要使用的代码模型。 \
-代码模型对程序及其符号可能使用的地址范围进行了约束。 \
-有了更小的地址范围，机器指令就可以使用更紧凑的寻址模式。
+这个选项让你可以选择要使用的代码模型。代码模型对程序及其符号可能使用的地址范围进行了约束。有了更小的地址范围，机器指令就可以使用更紧凑的寻址模式。
 
-该具体范围依赖于目标体系结构及其可用的寻址模式。 \
-对于 x86 体系结构，更多细节性的描述可以在 [System V Application Binary Interface](https://github.com/hjl-tools/x86-psABI/wiki/x86-64-psABI-1.0.pdf) 规范中找到。
+该具体范围依赖于目标体系结构及其可用的寻址模式。对于 x86 体系结构，更多细节性的描述可以在 [System V Application Binary Interface](https://github.com/hjl-tools/x86-psABI/wiki/x86-64-psABI-1.0.pdf) 规范中找到。
 
 该选项支持的值有：
 
@@ -47,9 +44,7 @@ Guard](https://docs.microsoft.com/en-us/windows/win32/secbp/control-flow-guard) 
 
 ## debug-assertions
 
-该标签让你可以打开或关闭 `cfg(debug_assertions)` [conditional
-compilation](https://doc.rust-lang.org/reference/conditional-compilation.html#debug_assertions)。
-其采用以下值之一：
+该标签让你可以打开或关闭 `cfg(debug_assertions)` [conditional compilation](https://doc.rust-lang.org/reference/conditional-compilation.html#debug_assertions)。其采用以下值之一：
 
 * `y`， `yes`， `on`， 或者无值 ：开启 debug-assertions。
 * `n`， `no`， 或 `off` ： 禁用 debug-assertions。
@@ -61,7 +56,7 @@ compilation](https://doc.rust-lang.org/reference/conditional-compilation.html#de
 此标志控制调试信息的生成。它采用以下值之一：
 
 * `0` or `none`: 根本没有调试信息（默认值）。
-* `line-directives-only`: 只有行信息指令。对于 nvptx* 目标，这启用[profiling](https://reviews.llvm.org/D46061)。对于其他使用情况，`line-tables-only`是更好、更兼容的选择。
+* `line-directives-only`: 只有行信息指令。对于 nvptx* 目标，这启用 [profiling](https://reviews.llvm.org/D46061)。对于其他使用情况，`line-tables-only`是更好、更兼容的选择。
 * `line-tables-only`: 只有行表。生成用于包含文件名/行号信息的回溯的最少的调试信息，但不包括任何其他信息，即没有变量或函数参数信息。
 * `1` or `limited`: 没有类型或变量级别信息的调试信息。
 * `2` or `full`: 完整的调试信息。

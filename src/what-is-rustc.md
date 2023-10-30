@@ -16,11 +16,11 @@ $ cargo build --verbose
 
 ## 基本用法
 
-假设您在一个文件中 `hello.rs` 有一个小小的 hello world 程序：
+假设在你的 `hello.rs` 文件中，有一个 Hello World 程序：
 
 ```rust
 fn main() {
-    println!("Hello, world!");
+    println!("Hello, World!");
 }
 ```
 

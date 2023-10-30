@@ -20,56 +20,36 @@ Rust 提供三个层次的目标支持：
 
 添加新的第3层目标的要求很低；我们主要关注避免对其他正在进行的 Rust 开发造成中断。
 
-第2层和第1层目标对整个 Rust 项目开发人员的工作提出了要求，以避免破坏目标。更广泛的 Rust 社区也可能更倾向于支持他们 crates 中的更高层次的目标（尽管他们没有义务这样做）。
-因此，这些层次需要目标维护者进行相应和持续的努力，以证明价值并尽量减少对正在进行的 Rust 开发的任何中断。
+第2层和第1层目标对整个 Rust 项目开发人员的工作提出了要求，以避免破坏目标。更广泛的 Rust 社区也可能更倾向于支持他们 crates 中的更高层次的目标（尽管他们没有义务这样做）。因此，这些层次需要目标维护者进行相应和持续的努力，以证明价值并尽量减少对正在进行的 Rust 开发的任何中断。
 
 本政策定义了接受给定支持级别的拟议目标的要求。
 
-每个层次都建立在前一个层次的所有要求之上，除非被更严格的要求所覆盖。第2层和第1层的目标也可以提供 *主机工具*（如`rustc`和`cargo`）；
-每个层次都包括一组补充要求，如果为目标提供主机工具，则必须满足这些要求。第2层或第1层的目标不需要提供主机工具，但如果提供，则必须满足相应的主机工具附加要求。
+每个层次都建立在前一个层次的所有要求之上，除非被更严格的要求所覆盖。第2层和第1层的目标也可以提供 *主机工具*（如`rustc`和`cargo`）；每个层次都包括一组补充要求，如果为目标提供主机工具，则必须满足这些要求。第2层或第1层的目标不需要提供主机工具，但如果提供，则必须满足相应的主机工具附加要求。
 
-每个层次的政策还记录了必须批准在该层次添加任何目标的 Rust 治理团队。这些团队负责根据这些要求和自己的判断对目标进行审查和评估。
-这些团队可能会应用额外的要求，包括主观要求，以处理本政策未预见的问题。（这些要求可能会随后促使对本政策的添加。）
+每个层次的政策还记录了必须批准在该层次添加任何目标的 Rust 治理团队。这些团队负责根据这些要求和自己的判断对目标进行审查和评估。这些团队可能会应用额外的要求，包括主观要求，以处理本政策未预见的问题。（这些要求可能会随后促使对本政策的添加）
 
-虽然这些标准试图记录政策，但政策仍然涉及人为判断。目标必须满足要求的精神，由批准团队的判断决定。
-审查员和团队成员评估目标和特定于目标的补丁时，应始终使用自己最佳的判断来评估工作质量以及目标是否适合 Rust 项目。
-本政策或就目标做出的任何决定均不得创建任何具有约束力的协议或任何一方的不容反悔。
+虽然这些标准试图记录政策，但政策仍然涉及人为判断。目标必须满足要求的精神，由批准团队的判断决定。审查员和团队成员评估目标和特定于目标的补丁时，应始终使用自己最佳的判断来评估工作质量以及目标是否适合 Rust 项目。本政策或就目标做出的任何决定均不得创建任何具有约束力的协议或任何一方的不容反悔。
 
-在提交问题或拉取请求（PR）以引入或推广目标之前，目标应已经满足相应的层次要求。
-这并不排除现有目标的维护者使用问题（在 Rust 存储库或其他地方）来跟踪尚未满足的要求，但在正式提议引入或推广目标之前，它应满足所有必要的要求。
-目标提案必须逐字引用相应的要求，并回应这些要求，作为解释目标如何满足这些要求的一部分。
-（对于简单陈述目标或目标开发人员不得做某事的要求，确认该要求就足够了。）
+在提交问题或拉取请求（PR）以引入或推广目标之前，目标应已经满足相应的层次要求。这并不排除现有目标的维护者使用问题（在 Rust 存储库或其他地方）来跟踪尚未满足的要求，但在正式提议引入或推广目标之前，它应满足所有必要的要求。目标提案必须逐字引用相应的要求，并回应这些要求，作为解释目标如何满足这些要求的一部分。（对于简单陈述目标或目标开发人员不得做某事的要求，确认该要求就足够了。）
 
 有关所有受支持的目标及其对应的层次（“第3层”、“第2层”、“带主机工具的第2层”、“第1层”或“带主机工具的第1层”）的列表，请参阅 [platform support](platform-support.md)。
 
-本政策的几部分需要提供特定于目标的文档。这些文档通常应出现在本 rustc 手册的平台支持部分的子目录中，并从 [platform support](platform-support.md) 中的目标条目链接。
-使用 [TEMPLATE.md](platform-support/TEMPLATE.md) 作为基础，并查看该目录中的其他文档以获取示例。
+本政策的几部分需要提供特定于目标的文档。这些文档通常应出现在本 rustc 手册的平台支持部分的子目录中，并从 [platform support](platform-support.md) 中的目标条目链接。使用 [TEMPLATE.md](platform-support/TEMPLATE.md) 作为基础，并查看该目录中的其他文档以获取示例。
 
-请注意，目标在提议晋升到更高的层次之前，必须已经获得下一个较低层次的批准，并在该层次上花费了合理的时间；即使目标同时满足多个层次的要求，也是如此。
-本政策将“合理的时间”的精确解释留给批准团队；这些团队可以根据他们对目标的信心和目标在当前层次的既往表现来调整所需的时间。
-至少，在目标的晋升之间，通常应该发生多个 Rust 的稳定版本发布。
+请注意，目标在提议晋升到更高的层次之前，必须已经获得下一个较低层次的批准，并在该层次上花费了合理的时间；即使目标同时满足多个层次的要求，也是如此。本政策将“合理的时间”的精确解释留给批准团队；这些团队可以根据他们对目标的信心和目标在当前层次的既往表现来调整所需的时间。至少，在目标的晋升之间，通常应该发生多个 Rust 的稳定版本发布。
 
-稳定Rust中目标的可用性或层次并不是对未来该目标的可用性或层次的硬性稳定性保证。
-更高级别的目标层次是对支持目标的越来越大的承诺，我们将在评估已经成为稳定版本一部分的目标的可能降级或删除时，考虑这一承诺和潜在的中断。
-目标的晋升或降级一般不会影响现有的稳定版本，只会影响当前的开发和未来版本。
+稳定Rust中目标的可用性或层次并不是对未来该目标的可用性或层次的硬性稳定性保证。更高级别的目标层次是对支持目标的越来越大的承诺，我们将在评估已经成为稳定版本一部分的目标的可能降级或删除时，考虑这一承诺和潜在的中断。目标的晋升或降级一般不会影响现有的稳定版本，只会影响当前的开发和未来版本。
 
-在此政策中，“必须”和“必须不”这两个词明确规定了目标必须符合的绝对要求，才能获得相应层次。
-而“应该”和“不应该”这两个词则规定了大多数情况下适用的要求，但批准团队在有充分理由的情况下可以例外处理。
-最后，“可以”这个词表示某件事是完全可选的，并不表示指导或建议。这种措辞基于 [IETF RFC 2119](https://tools.ietf.org/html/rfc2119)。
+在此政策中，“必须” 和 “必须不” 这两个词明确规定了目标必须符合的绝对要求，才能获得相应层次。而 “应该” 和 “不应该” 这两个词则规定了大多数情况下适用的要求，但批准团队在有充分理由的情况下可以例外处理。最后，“可以” 这个词表示某件事是完全可选的，并不表示指导或建议。这种措辞基于 [IETF RFC 2119](https://tools.ietf.org/html/rfc2119)。
 
 ## Adding a new target
 
-New targets typically start as Tier 3 and then can be promoted later.
-To propose addition of a new target, open a pull request on [`rust-lang/rust`]:
+新的目标通常从第3层开始，然后可以在稍后晋升。要提议添加新的目标，请在 [`rust-lang/rust`] 上打开一个「拉取请求 pull request」：
 
-- Copy the [Tier 3 target policy](#tier-3-target-policy) to the description
-  and fill it out, see [example][tier3example].
-- Add a new description for the target in `src/doc/rustc/src/platform-support`
-  using the [template][platform_template].
-- Add the target to the [SUMMARY.md][summary] (allows wildcards) and
-  [platform-support.md][platformsupport] (must name all targets verbatim).
-  Link to the created description page.
-- Ensure the pull request is assigned to a member of the [Rust compiler team][rust_compiler_team] by commenting:
+- 将 [第3层目标政策](#tier-3-target-policy) 复制到描述中并填写，参见 [示例][tier3example]。
+- 使用 [模板][platform_template] 在 `src/doc/rustc/src/platform-support` 中添加目标的新描述。
+- 将目标添加到 [SUMMARY.md][summary]（允许使用通配符）和 [platform-support.md][platformsupport] 中（必须逐字命名所有目标）。链接到创建的描述页面。
+- 通过评论确保拉取请求分配给 [Rust compiler team][rust_compiler_team] 的成员：
   ```text
   r? compiler-team
   ```
@@ -83,16 +63,11 @@ To propose addition of a new target, open a pull request on [`rust-lang/rust`]:
 
 ## Tier 3 target policy
 
-At this tier, the Rust project provides no official support for a target, so we
-place minimal requirements on the introduction of targets.
+在这一层，Rust 项目不提供对目标的官方支持，因此我们对引入目标的要求最低。
 
-A proposed new tier 3 target must be reviewed and approved by a member of the
-compiler team based on these requirements. The reviewer may choose to gauge
-broader compiler team consensus via a [Major Change Proposal (MCP)][MCP].
+拟议的新第3层目标必须由编译器团队的成员根据这些要求进行审查和批准。审查员可以选择通过 [重大变更提案（MCP）][MCP] 来衡量编译器团队更广泛的共识。
 
-A proposed target or target-specific patch that substantially changes code
-shared with other targets (not just target-specific code) must be reviewed and
-approved by the appropriate team for that shared code before acceptance.
+拟议的目标或目标特定补丁，如果对其他共享代码（不仅仅是目标特定代码）进行了重大更改，必须在接受之前由相应的共享代码团队进行审查和批准。
 
 - A tier 3 target must have a designated developer or developers (the "target
   maintainers") on record to be CCed when issues arise regarding the target.

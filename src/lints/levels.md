@@ -2,7 +2,7 @@
 
 在 `rustc` 里, lints 被分为 5 个 *levels*（级别）:
 
-1. allow (允许)
+1. allow (允许) 
 2. warn（警告）
 3. force-warn（强制警告）
 4. deny（拒绝）

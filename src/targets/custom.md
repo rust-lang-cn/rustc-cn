@@ -1,17 +1,15 @@
 # Custom Targets
 
-If you'd like to build for a target that is not yet supported by `rustc`, you can use a
-"custom target specification" to define a target. These target specification files
-are JSON. To see the JSON for the host target, you can run:
+如果你想要构建 `rustc` 尚不支持的目标， 你可以用 「自定义目标规范 custom target specification」 来定义目标。这些目标规范文件是 JSON 格式的。要查看主机目标的 JSON，可以运行：
 
 ```bash
 rustc +nightly -Z unstable-options --print target-spec-json
 ```
 
-To see it for a different target, add the `--target` flag:
+要查看不同的目标 `targets`，添加 `--target` 标签：
 
 ```bash
 rustc +nightly -Z unstable-options --target=wasm32-unknown-unknown --print target-spec-json
 ```
 
-To use a custom target, see the (unstable) [`build-std` feature](../../cargo/reference/unstable.html#build-std) of `cargo`.
+要使用自定义目标，查看 `cargo` 的 (尚不稳定) [`build-std` feature](../../cargo/reference/unstable.html#build-std) of `cargo`.

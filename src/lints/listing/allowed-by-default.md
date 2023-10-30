@@ -552,8 +552,7 @@ that has not been settled, see [issue #52043] for more information.
 
 ## meta-variable-misuse
 
-The `meta_variable_misuse` lint detects possible meta-variable misuse
-in macro definitions.
+`meta_variable_misuse` lint 检测宏定义中可能存在的元变量滥用。
 
 ### Example
 
@@ -589,13 +588,10 @@ note: the lint level is defined here
 
 ### Explanation
 
-There are quite a few different ways a [`macro_rules`] macro can be
-improperly defined. Many of these errors were previously only detected
-when the macro was expanded or not at all. This lint is an attempt to
-catch some of these problems when the macro is *defined*.
+[`macro_rules`] 宏有许多不恰当的定义方式，这些错误以前只有在宏被展开或根本不展开时才能才能检测得到。
+当宏被 *定义* 时，这个 lint 试图捕获一些问题。
 
-This lint is "allow" by default because it may have false positives
-and other issues. See [issue #61053] for more details.
+这个 lint 默认等级是 “allow” 的，因为其有误报或其他问题。更多细节请参阅 [issue #61053]
 
 [`macro_rules`]: https://doc.rust-lang.org/reference/macros-by-example.html
 [issue #61053]: https://github.com/rust-lang/rust/issues/61053
