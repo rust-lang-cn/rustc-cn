@@ -1,6 +1,6 @@
 # Warn-by-default Lints
 
-These lints are all set to the 'warn' level by default.
+默认情况下，这些 lint 都被设置为` warn `级别。
 
 * [`ambiguous_glob_imports`](#ambiguous-glob-imports)
 * [`ambiguous_glob_reexports`](#ambiguous-glob-reexports)

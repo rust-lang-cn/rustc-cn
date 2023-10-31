@@ -74,49 +74,34 @@ Guard](https://docs.microsoft.com/en-us/windows/win32/secbp/control-flow-guard) 
 
 ## dlltool
 
-在 `windows-gnu` 目标上，此标志控制 `rustc` 在使用[`raw-dylib` link kind](../../reference/items/external-blocks.md#the-link-attribute)时调用哪个`dlltool`来生成导入库。
-它采用到[the dlltool executable](https://sourceware.org/binutils/docs/binutils/dlltool.html)的路径。
-如果未指定此标志，将根据主机环境和目标推断 `dlltool` 可执行文件的路径。
+在 `windows-gnu` 目标上，此标志控制 `rustc` 在使用[`raw-dylib` link kind](../../reference/items/external-blocks.md#the-link-attribute) 时调用哪个`dlltool`来生成导入库。它采用到 [the dlltool executable](https://sourceware.org/binutils/docs/binutils/dlltool.html) 的路径。如果未指定此标志，将根据主机环境和目标推断 `dlltool` 可执行文件的路径。
 
 ## embed-bitcode
 
-该标签控制编译器是否将 LLVM 位码嵌入目标文件（object files）中。其采用以下值之一：
+该标签控制编译器是否将 LLVM 位码嵌入「目标文件 object files」中。其采用以下值之一：
 
-* `y`, `yes`, `on`, `true` 或者无值： 将位码放入 rlib （默认值）。
+* `y`, `yes`, `on`, `true` 或者无值: 将位码放入 rlib（默认值）。
 * `n`, `no`, `off` or `false`: 省略 rlibs 中的位码。
 
-LLVM bitcode is required when rustc is performing link-time optimization (LTO).
-It is also required on some targets like iOS ones where vendors look for LLVM
-bitcode. Embedded bitcode will appear in rustc-generated object files inside of
-a section whose name is defined by the target platform. Most of the time this is
-`.llvmbc`.
+当 rustc 进行链接时优化（LTO）时，需要 LLVM bitcode。在某些目标上也需要它，比如 iOS，这样的目标平台上也需要。嵌入的 bitcode 将出现在 rustc 生成的目标文件中，位于由目标平台定义的部分中。大多数情况下，这是 `.llvmbc`。
 
-当 rustc 进行链接时优化（LTO）时，需要 LLVM bitcode。
-在某些目标上也需要它，比如 iOS，这样的目标平台上也需要。
-嵌入的 bitcode 将出现在 rustc 生成的目标文件中，位于由目标平台定义的部分中。大多数情况下，这是`.llvmbc`。
-
-如果你的编译实际上不需要位码（例如，如果你不针对 iOS 进行编译或不执行 LTO ），`-C embed-bitcode=no` 的使用可以大大缩短编译时间并且减少生成文件的大小.由于这些原因，Cargo 会尽可能使用 `-C embed-bitcode=no` 。
-同样，如果你直接用 rustc 进行构建，我们推荐你在不使用 LTO 的时候使用 `-C embed-bitcode=no` 。
+如果你的编译实际上不需要位码（例如，如果你不针对 iOS 进行编译或不执行 LTO），`-C embed-bitcode=no` 的使用可以大大缩短编译时间并且减少生成文件的大小。由于这些原因，Cargo 会尽可能使用 `-C embed-bitcode=no`。同样，如果你直接用 rustc 进行构建，我们推荐你在不使用 LTO 的时候使用 `-C embed-bitcode=no`。
 
 如果结合 `-C lto`，`-C embed-bitcode=no` 将会导致 `rustc` 启动时就中止，因为该（标签）组合是无效的。
 
-> **注意**： 如果你使用 LTO 构建 Rust 代码，你就可能甚至不需要打开 `embed-bitcode` 选项。
-你可能会想要使用 `-Clinker-plugin-lto` 来代替，它会完全跳过生成目标文件，并且用 LLVM 位码来简单替换目标文件。
-唯一的使用 `-Cembed-bitcode` 的目的是当你要生成同时使用和不使用 LTO 的 rlib 时，例如 Rust 标准库带有嵌入的位码，因为用户可以使用或不使用 LTO 进行链接。
+> **注意**： 如果你使用 LTO 构建 Rust 代码，你就可能甚至不需要打开 `embed-bitcode` 选项。你可能会想要使用 `-Clinker-plugin-lto` 来代替，它会完全跳过生成目标文件，并且用 LLVM 位码来简单替换目标文件。唯一的使用 `-Cembed-bitcode` 的目的是当你要生成同时使用和不使用 LTO 的 rlib 时，例如 Rust 标准库带有嵌入的位码，因为用户可以使用或不使用 LTO 进行链接。
 > 
-> 这也可能会让你想知道为什么该选项的默认值是 `yes` 。理由是在 1.44 中及更早版本中是这样的。在 1.45 中，将此选项默认值调整为关闭。
+> 这也可能会让你想知道为什么该选项的默认值是 `yes`。理由是在 1.44 中及更早版本中是这样的。在 1.45 中，将此选项默认值调整为关闭。
 
 ## extra-filename
 
-该选项允许你将额外的数据放进每个输出文件。
-它需要一个字符串作为后缀添加到文件名中。
-更多信息请参阅 [`--emit` flag][option-emit]。
+该选项允许你将额外的数据放进每个输出文件。它需要一个字符串作为后缀添加到文件名中。更多信息请参阅 [`--emit` flag][option-emit]。
 
 ## force-frame-pointers
 
 该标签可以强制栈帧指针的使用。其采用以下值之一：
 
-* `y`, `yes`, `on`, `true` 或者无值： 强制启用栈帧指针。
+* `y`, `yes`, `on`, `true` 或者无值: 强制启用栈帧指针。
 * `n`, `no`, `off` or `false`: 不强制启用栈帧指针，但这并不意味着移除栈帧指针。
 
 如果没有强制启用栈帧指针，则默认行为取决于目标平台。

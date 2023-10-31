@@ -1,6 +1,6 @@
 # Allowed-by-default Lints
 
-默认情况下，这些 lint 都设置为'allow'级别。因此，除非您使用标志或属性将它们设置为更高的 lint 级别，否则它们将不会显示。
+默认情况下，这些 lint 都设置为 `allow` 级别。因此，除非您使用标志或属性将它们设置为更高的 lint 级别，否则它们将不会显示。
 
 * [`absolute_paths_not_starting_with_crate`](#absolute-paths-not-starting-with-crate)
 * [`box_pointers`](#box-pointers)
@@ -83,7 +83,7 @@ note: the lint level is defined here
 
 ### Explanation
 
-Rust [editions]允许在不破坏向后兼容性的情况下使语言不断发展。
+Rust [editions] 允许在不破坏向后兼容性的情况下使语言不断发展。
 此 lint 捕获使用 2015 年版风格的绝对路径的代码。
 在 2015 年版中，绝对路径（以 `::` 开头的路径）指的是 crate 根目录或外部 crate。
 在 2018 年版中，它被修改为只引用外部 crate。应该使用路径前缀 `crate::` 来引用 crate 根目录中的项。
@@ -91,7 +91,7 @@ Rust [editions]允许在不破坏向后兼容性的情况下使语言不断发�
 如果您将编译器从 2015 版切换到 2018 版而没有更新代码，那么如果使用旧样式路径，将无法编译。
 您可以手动更改路径以使用 `crate::` 前缀来过渡到 2018 版。
 
-此 lint 可以自动解决此问题。默认情况下它被“允许”，因为这段代码在 2015 年版中是完全有效的。
+此 lint 可以自动解决此问题。默认情况下它被 `allow`，因为这段代码在 2015 年版中是完全有效的。
 使用带有 `--edition` 标志的 [`cargo fix`] 工具将此 lint 切换为“警告”，并自动应用编译器建议的修复。
 这为将旧代码更新到 2018 年版提供了完全自动化的方法。
 
@@ -100,7 +100,7 @@ Rust [editions]允许在不破坏向后兼容性的情况下使语言不断发�
 
 ## box-pointers
 
-`box_pointers` 限制了（lints）Box 类型使用
+`box_pointers` lints 限制了 Box 类型使用
 
 ### Example
 
@@ -130,8 +130,7 @@ note: the lint level is defined here
 
 ### Explanation
 
-这个 lint 主要是出于历史原因，并不是特别有用。
-`Box<T>` 曾经是语言内置的，是进行堆分配的唯一方式。今天的 Rust 可以调用其他分配器等。
+这个 lint 主要是出于历史原因，并不是特别有用。`Box<T>` 曾经是语言内置的，是进行堆分配的唯一方式。今天的 Rust 可以调用其他分配器等。
 
 ## elided-lifetimes-in-paths
 
@@ -173,9 +172,9 @@ help: indicate the anonymous lifetime
 
 ### Explanation
 
-省略了 生命周期参数 会使人们难以 一眼看出 正在发生 借用。此 lint 确保始终明确声明生命周期参数，即使它是 `'_` [placeholder lifetime]。
+省略了生命周期参数会使人们难以一眼看出正在发生的借用。此 lint 确保始终明确声明生命周期参数，即使它是 `'_` [placeholder lifetime]。
 
-此 lint 默认情况下为 "allow"，因为它存在一些已知问题，并且可能需要针对旧代码进行重大更改。
+此 lint 默认情况下为 `allow`，因为它存在一些已知问题，并且可能需要针对旧代码进行重大更改。
 
 [placeholder lifetime]: https://doc.rust-lang.org/reference/lifetime-elision.html#lifetime-elision-in-functions
 
@@ -440,8 +439,7 @@ help: consider immediately dropping the value
 
 ## lossy-provenance-casts
 
-The `lossy_provenance_casts` lint detects an `as` cast between a pointer
-and an integer.
+`lossy_provenance_cast` 检查指针和整数之间的转换。
 
 ### Example
 
@@ -537,8 +535,7 @@ note: the lint level is defined here
 
 [`macro_use`] 属性放在 [`extern crate`] 项上使其宏可被使用，而这个外部 crate 可能会被放进该 crate 的路径前缀，导致导入宏在作用域内无处不在。在 [2018 版本][2018 edition] 中致力于简化依赖项的处理，`extern crate` 的使用已经淘汰了。要将宏从外部 crate 导入作用域，建议使用 [`use` 导入][`use` import]。
 
-This lint is "allow" by default because this is a stylistic choice
-that has not been settled, see [issue #52043] for more information.
+这个 lint 程序的默认值是 "allow"，因为这是一个风格选择。这个问题还没有解决，请参阅[issue #52043]了解更多信息。
 
 [`macro_use` attribute]: https://doc.rust-lang.org/reference/macros-by-example.html#the-macro_use-attribute
 [`use` import]: https://doc.rust-lang.org/reference/items/use-declarations.html
@@ -592,8 +589,7 @@ note: the lint level is defined here
 
 ## missing-abi
 
-The `missing_abi` lint detects cases where the ABI is omitted from
-extern declarations.
+`missing_abi`检测在外部声明中 ABI 被遗漏的情况。
 
 ### Example
 
@@ -623,15 +619,11 @@ note: the lint level is defined here
 
 ### Explanation
 
-Historically, Rust implicitly selected C as the ABI for extern
-declarations. We expect to add new ABIs, like `C-unwind`, in the future,
-though this has not yet happened, and especially with their addition
-seeing the ABI easily will make code review easier.
+历史上，Rust 隐式地选择 C 作为 extern 的 ABI 声明。我们希望在未来添加新的 abi，比如 `C-unwind`，虽然这还没有发生，他们的加入可以使 ABI 将使代码评审变得更容易。
 
 ## missing-copy-implementations
 
-The `missing_copy_implementations` lint detects potentially-forgotten
-implementations of [`Copy`] for public types.
+`missing_copy_implementations` lint 用于检测可能为公共类型遗忘的 [`Copy`] 实现的情况。
 
 [`Copy`]: https://doc.rust-lang.org/std/marker/trait.Copy.html
 
@@ -666,15 +658,9 @@ note: the lint level is defined here
 
 ### Explanation
 
-Historically (before 1.0), types were automatically marked as `Copy`
-if possible. This was changed so that it required an explicit opt-in
-by implementing the `Copy` trait. As part of this change, a lint was
-added to alert if a copyable type was not marked `Copy`.
+在历史上（1.0 版本之前），如果可能，类型会被自动标记为 `Copy`。后来这一行为发生了改变，需要明确选择加入 `Copy` trait 来实现。作为这一改变的一部分，增加了一个 lint，用于提醒可复制的类型未被标记为 Copy。
 
-This lint is "allow" by default because this code isn't bad; it is
-common to write newtypes like this specifically so that a `Copy` type
-is no longer `Copy`. `Copy` types can result in unintended copies of
-large data which can impact performance.
+这个 lint 默认设置为 “allow”，是因为这样的代码并不糟糕；通常，人们会特意编写这样的新类型，以使得一个 `Copy` 类型不再具有 `Copy` 特性。`Copy` 类型可能导致大数据的无意复制，从而影响性能。
 
 ## missing-debug-implementations
 
