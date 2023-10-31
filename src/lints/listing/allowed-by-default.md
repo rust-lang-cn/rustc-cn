@@ -502,8 +502,7 @@ about the semantics.
 
 ## macro-use-extern-crate
 
-The `macro_use_extern_crate` lint detects the use of the
-[`macro_use` attribute].
+`macro_use_extern_crate` lint 用于检测 [`macro_use` attribute] 属性的使用
 
 ### Example
 
@@ -536,12 +535,7 @@ note: the lint level is defined here
 
 ### Explanation
 
-The [`macro_use` attribute] on an [`extern crate`] item causes
-macros in that external crate to be brought into the prelude of the
-crate, making the macros in scope everywhere. As part of the efforts
-to simplify handling of dependencies in the [2018 edition], the use of
-`extern crate` is being phased out. To bring macros from extern crates
-into scope, it is recommended to use a [`use` import].
+[`macro_use`] 属性放在 [`extern crate`] 项上使其宏可被使用，而这个外部 crate 可能会被放进该 crate 的路径前缀，导致导入宏在作用域内无处不在。在 [2018 版本][2018 edition] 中致力于简化依赖项的处理，`extern crate` 的使用已经淘汰了。要将宏从外部 crate 导入作用域，建议使用 [`use` 导入][`use` import]。
 
 This lint is "allow" by default because this is a stylistic choice
 that has not been settled, see [issue #52043] for more information.
@@ -684,8 +678,7 @@ large data which can impact performance.
 
 ## missing-debug-implementations
 
-The `missing_debug_implementations` lint detects missing
-implementations of [`fmt::Debug`] for public types.
+`missing_debug_implementations` lint 检测公共类型 [`fmt::Debug`] 的缺失实现。
 
 [`fmt::Debug`]: https://doc.rust-lang.org/std/fmt/trait.Debug.html
 
@@ -716,19 +709,13 @@ note: the lint level is defined here
 
 ### Explanation
 
-Having a `Debug` implementation on all types can assist with
-debugging, as it provides a convenient way to format and display a
-value. Using the `#[derive(Debug)]` attribute will automatically
-generate a typical implementation, or a custom implementation can be
-added by manually implementing the `Debug` trait.
+在所有类型上实现 `Debug` 有助于调试。因为它提供了个格式化和显示值的便捷方式。使用 `#[derive(Debug)]` 属性会自动生成一个典型实现，或者手动实现该 `Debug`「特质 trait」 添加自定义实现。
 
-This lint is "allow" by default because adding `Debug` to all types can
-have a negative impact on compile time and code size. It also requires
-boilerplate to be added to every type, which can be an impediment.
+该 lint 默认等级为 “allow” ，因为对所有类型添加 `Debug` 都可能会对编译时长和代码体积产生负面作用。它还要求对每种类型都添加样板，这有时会是种（编码上的）阻碍。
 
 ## missing-docs
 
-The `missing_docs` lint detects missing documentation for public items.
+`missing_docs` lint 检测公共项目的缺失文档。
 
 ### Example
 
@@ -759,12 +746,9 @@ note: the lint level is defined here
 
 ### Explanation
 
-This lint is intended to ensure that a library is well-documented.
-Items without documentation can be difficult for users to understand
-how to use properly.
+该 lint 旨在确保一个库有良好的文档记录。没有文档的项目对于用户来说很难理解如何正确使用。
 
-This lint is "allow" by default because it can be noisy, and not all
-projects may want to enforce everything to be documented.
+该 lint 默认等级是 “allow” 是因为其可能会造成干扰，并不是所有项目都需要强制将一切用文档记录。
 
 ## multiple-supertrait-upcastable
 
@@ -867,14 +851,14 @@ regularly cause problems with the `Send`-ness of async fn's returned futures (li
 
 ## non-ascii-idents
 
-The `non_ascii_idents` lint detects non-ASCII identifiers.
+`non_ascii_idents` lint 检测非 ASCII 标识符。
 
 ### Example
 
 ```rust,compile_fail
 # #![allow(unused)]
 #![deny(non_ascii_idents)]
-fn main() {
+fn main() {non
     let föö = 1;
 }
 ```
@@ -898,10 +882,7 @@ note: the lint level is defined here
 
 ### Explanation
 
-This lint allows projects that wish to retain the limit of only using
-ASCII characters to switch this lint to "forbid" (for example to ease
-collaboration or for security reasons).
-See [RFC 2457] for more details.
+该 lint 允许那些只希望使用 ASCII 字符的项目将此 lint 设置为 “禁止”（例如，为了便于协作或出于安全原因）。更多详细信息请参见 [RFC 2457]。
 
 [RFC 2457]: https://github.com/rust-lang/rfcs/blob/master/text/2457-non-ascii-idents.md
 
@@ -966,8 +947,7 @@ would not be exhaustive. This lets the user be informed if new fields/variants w
 
 ## pointer-structural-match
 
-The `pointer_structural_match` lint detects pointers used in patterns whose behaviour
-cannot be relied upon across compiler versions and optimization levels.
+`pointer_structural_match` lint 用于检测在模式中使用指针的情况，这些指针的行为在不同的编译器版本和优化级别上都无法依赖
 
 ### Example
 
@@ -1004,13 +984,7 @@ note: the lint level is defined here
 
 ### Explanation
 
-Previous versions of Rust allowed function pointers and wide raw pointers in patterns.
-While these work in many cases as expected by users, it is possible that due to
-optimizations pointers are "not equal to themselves" or pointers to different functions
-compare as equal during runtime. This is because LLVM optimizations can deduplicate
-functions if their bodies are the same, thus also making pointers to these functions point
-to the same location. Additionally functions may get duplicated if they are instantiated
-in different crates and not deduplicated again via LTO.
+早期 Rust 版本允许在模式中使用函数指针和泛（wide）原始指针。尽管许多情况下可以按用户期望的方式运行，但由于编译器进行优化，在运行时，指针可能已经 “不等于自身” 或者是指向不同函数的函数指针相等。这是因为如果函数体相等， LLVM 会优化掉重复函数（译者注：即保留一个），因此也会使得这些指向他们的函数指针指向同一位置。另外，如果重复的函数在不同 crate 中，且又没有通过 LTO 进行优化（删除相同代码数据），那么就会造成重复。
 
 ## rust-2021-incompatible-closure-captures
 
@@ -1292,8 +1266,7 @@ is called directly on a type.
 
 ## single-use-lifetimes
 
-The `single_use_lifetimes` lint detects lifetimes that are only used
-once.
+`single_use_lifetimes` lint 检测只使用一次的生命期。
 
 ### Example
 
@@ -1329,24 +1302,16 @@ help: elide the single-use lifetime
 
 ### Explanation
 
-Specifying an explicit lifetime like `'a` in a function or `impl`
-should only be used to link together two things. Otherwise, you should
-just use `'_` to indicate that the lifetime is not linked to anything,
-or elide the lifetime altogether if possible.
+显式指定一个生命周期，例如在函数或 `impl` 中的 `'a`应该用来链接这两者。否则，应该使用 `'_` 表明生命周期并未链接到两者，或者如果有可能的话干脆直接省略生命周期。
 
-This lint is "allow" by default because it was introduced at a time
-when `'_` and elided lifetimes were first being introduced, and this
-lint would be too noisy. Also, there are some known false positives
-that it produces. See [RFC 2115] for historical context, and [issue
-#44752] for more details.
+该 lint 默认等级为 “allow” ，因为它是在 `'_` 和省略生命周期第一次被引入的时候引入的，而且这个 lint 可能会有很多干扰（too noisy）。 此外，它还会产生一些已知的误报，了解历史背景请参阅 [RFC 2115]，更多细节请参阅 [issue #44752]。
 
 [RFC 2115]: https://github.com/rust-lang/rfcs/blob/master/text/2115-argument-lifetimes.md
 [issue #44752]: https://github.com/rust-lang/rust/issues/44752
 
 ## trivial-casts
 
-The `trivial_casts` lint detects trivial casts which could be replaced
-with coercion, which may require a temporary variable.
+`trivial_casts` lint 检测可以被强制类型转换替代的平凡类型转换，这可能需要一个临时变量。
 
 ### Example
 
@@ -1376,18 +1341,12 @@ note: the lint level is defined here
 
 ### Explanation
 
-A trivial cast is a cast `e as T` where `e` has type `U` and `U` is a
-subtype of `T`. This type of cast is usually unnecessary, as it can be
-usually be inferred.
+一个简单的类型转换是将`e`转换为` T`，其中`e`的类型是`U`，`U`是
+`T`的子类型。这种类型转换通常是不必要的，其通常可以被推断出来。
 
-This lint is "allow" by default because there are situations, such as
-with FFI interfaces or complex type aliases, where it triggers
-incorrectly, or in situations where it will be more difficult to
-clearly express the intent. It may be possible that this will become a
-warning in the future, possibly with an explicit syntax for coercions
-providing a convenient way to work around the current issues.
-See [RFC 401 (coercions)][rfc-401], [RFC 803 (type ascription)][rfc-803] and
-[RFC 3307 (remove type ascription)][rfc-3307] for historical context.
+这个lint程序默认是"allow"，因为在某些情况下，例如在FFI接口或复杂类型别名中触发不正确，或者在更困难的情况下明确表达意图。
+这可能会成为一个警告，可能会使用强制语法提供了一种方便的方法来解决当前的问题。
+参见[RFC 401(强制类型)][RFC -401]，[RFC 803(类型归属)][RFC -803]和 [RFC 3307(删除类型归属)][RFC -3307]用于历史上下文。
 
 [rfc-401]: https://github.com/rust-lang/rfcs/blob/master/text/0401-coercions.md
 [rfc-803]: https://github.com/rust-lang/rfcs/blob/master/text/0803-type-ascription.md
