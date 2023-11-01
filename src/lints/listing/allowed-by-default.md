@@ -365,7 +365,7 @@ note: the lint level is defined here
 
 ### Explanation
 
-Rust [editions][edition_guide]允许语言向前发展而不破坏其向后兼容性。
+Rust [editions] 允许语言向前发展而不破坏其向后兼容性。
 此 lint 捕获代码中的被用作标识符（例如变量名、函数名等等）的新增关键。
 如果你没有更新代码就切换编译器到一个新语义版本，就会在你将新关键字作为标识符的情况下编译失败。
 
