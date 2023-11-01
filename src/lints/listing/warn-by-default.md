@@ -1,6 +1,6 @@
 # Warn-by-default Lints
 
-默认情况下，这些 lint 都被设置为` warn `级别。
+默认情况下，这些 lint 都被设置为 `warn` 级别。
 
 * [`ambiguous_glob_imports`](#ambiguous-glob-imports)
 * [`ambiguous_glob_reexports`](#ambiguous-glob-reexports)
@@ -670,8 +670,7 @@ warning: `foo` redeclared with a different signature
 
 ## coherence-leak-check
 
-The `coherence_leak_check` lint detects conflicting implementations of
-a trait that are only distinguished by the old leak-check code.
+`coherence_leak_check` lint 用于检测仅通过旧的泄露检查代码区分的特质的冲突实现。
 
 ### Example
 
@@ -701,17 +700,11 @@ warning: conflicting implementations of trait `SomeTrait` for type `for<'a> fn(&
 
 ### Explanation
 
-In the past, the compiler would accept trait implementations for
-identical functions that differed only in where the lifetime binder
-appeared. Due to a change in the borrow checker implementation to fix
-several bugs, this is no longer allowed. However, since this affects
-existing code, this is a [future-incompatible] lint to transition this
-to a hard error in the future.
+过去编译器接受完全相同的函数的特质实现，仅仅是在生命周期绑定器的位置上有所不同。然而，由于借用检查器实现中的一个变化修复了一些bug，这种方式已经不再被允许。但是，由于这会影响到现有的代码，这是一个 [future-incompatible] lint，以便在未来将其转变为一个严重的错误。
 
-Code relying on this pattern should introduce "[newtypes]",
-like `struct Foo(for<'a> fn(&'a u8))`.
+依赖于此模式的代码应该引入"[newtypes]"，比如 `struct Foo(for<'a> fn(&'a u8))`。
 
-See [issue #56105] for more details.
+更多细节请参见 [issue #56105]。
 
 [issue #56105]: https://github.com/rust-lang/rust/issues/56105
 [newtypes]: https://doc.rust-lang.org/book/ch19-04-advanced-types.html#using-the-newtype-pattern-for-type-safety-and-abstraction
@@ -719,8 +712,7 @@ See [issue #56105] for more details.
 
 ## confusable-idents
 
-The `confusable_idents` lint detects visually confusable pairs between
-identifiers.
+`confusable_idents` lint 检测容易混淆的标识符对。
 
 ### Example
 
@@ -749,27 +741,17 @@ warning: found both `Ě` and `Ĕ` as identifiers, which look alike
 
 ### Explanation
 
-This lint warns when different identifiers may appear visually similar,
-which can cause confusion.
+此 lint 当不同的标识符，在视觉上可能相似时发出警告，这可能会引起混淆。
 
-The confusable detection algorithm is based on [Unicode® Technical
-Standard #39 Unicode Security Mechanisms Section 4 Confusable
-Detection][TR39Confusable]. For every distinct identifier X execute
-the function `skeleton(X)`. If there exist two distinct identifiers X
-and Y in the same crate where `skeleton(X) = skeleton(Y)` report it.
-The compiler uses the same mechanism to check if an identifier is too
-similar to a keyword.
+混淆检测算法基于 [Unicode® Technical Standard #39 Unicode Security Mechanisms Section 4 Confusable Detection][TR39Confusable]。对于每个不同的标识符X，执行函数`skeleton(X)`。如果在同一crate中存在两个不同的标识符X和Y，且`skeleton(X) = skeleton(Y)`，则报告它。编译器使用相同的机制来检查标识符是否与关键字过于相似。
 
-Note that the set of confusable characters may change over time.
-Beware that if you "forbid" this lint that existing code may fail in
-the future.
+请注意，混淆字符集可能会随时间变化。请注意，如果你禁止这个 lint，现有代码将来可能会编译失败。
 
 [TR39Confusable]: https://www.unicode.org/reports/tr39/#Confusable_Detection
 
 ## const-evaluatable-unchecked
 
-The `const_evaluatable_unchecked` lint detects a generic constant used
-in a type.
+`const_evaluatable_unchecked` lint 检测类型中使用的泛型常量。
 
 ### Example
 
@@ -804,18 +786,14 @@ warning: cannot use constants which depend on generic parameters in types
 
 ### Explanation
 
-In the 1.43 release, some uses of generic parameters in array repeat
-expressions were accidentally allowed. This is a [future-incompatible]
-lint to transition this to a hard error in the future. See [issue
-#76200] for a more detailed description and possible fixes.
+在 1.43 发行版本，会意外地允许在数组重复表达式中使用泛型参数。这是个[将来不兼容][future-incompatible]的 lint，将来会转化为固有错误。更多细节描述和可能的修复请参阅 [issue #76200]。
 
 [future-incompatible]: ../index.md#future-incompatible-lints
 [issue #76200]: https://github.com/rust-lang/rust/issues/76200
 
 ## const-item-mutation
 
-The `const_item_mutation` lint detects attempts to mutate a `const`
-item.
+`const_item_mutation` lint 检测试图更改 `const` 项。
 
 ### Example
 
@@ -850,40 +828,21 @@ note: `const` item defined here
 
 ### Explanation
 
-Trying to directly mutate a `const` item is almost always a mistake.
-What is happening in the example above is that a temporary copy of the
-`const` is mutated, but the original `const` is not. Each time you
-refer to the `const` by name (such as `FOO` in the example above), a
-separate copy of the value is inlined at that location.
+尝试直接修改一个 `const` 项几乎总是一个错误。在上面的例子中，发生的情况是 `const` 的一个临时副本被修改了，但原始的 `const` 没有被修改。每当你通过名称引用 `const`（例如上面的例子中的`FOO`）时，该值的单独副本会在该位置进行内联。
 
-This lint checks for writing directly to a field (`FOO.field =
-some_value`) or array entry (`FOO[0] = val`), or taking a mutable
-reference to the const item (`&mut FOO`), including through an
-autoderef (`FOO.some_mut_self_method()`).
+此 lint 检查是否直接写入字段（`FOO.field = some_value`）或数组条目（`FOO[0] = val`），或对 const 项进行可变引用（`&mut FOO`），包括通过自动解引用（`FOO.some_mut_self_method()`）。
 
-There are various alternatives depending on what you are trying to
-accomplish:
+根据你试图完成的目标，有各种替代方案：
 
-* First, always reconsider using mutable globals, as they can be
-  difficult to use correctly, and can make the code more difficult to
-  use or understand.
-* If you are trying to perform a one-time initialization of a global:
-    * If the value can be computed at compile-time, consider using
-      const-compatible values (see [Constant Evaluation]).
-    * For more complex single-initialization cases, consider using a
-      third-party crate, such as [`lazy_static`] or [`once_cell`].
-    * If you are using the [nightly channel], consider the new
-      [`lazy`] module in the standard library.
-* If you truly need a mutable global, consider using a [`static`],
-  which has a variety of options:
-  * Simple data types can be directly defined and mutated with an
-    [`atomic`] type.
-  * More complex types can be placed in a synchronization primitive
-    like a [`Mutex`], which can be initialized with one of the options
-    listed above.
-  * A [mutable `static`] is a low-level primitive, requiring unsafe.
-    Typically This should be avoided in preference of something
-    higher-level like one of the above.
+* 首先，重新考虑使用可变全局变量，因为它们可能难以正确使用，并可能使代码更难以使用或理解。
+* 如果你试图对全局变量进行一次性初始化：
+	+ 如果值可以在编译时计算，考虑使用与 const 兼容的值（参见 [Constant Evaluation]）。
+	+ 对于更复杂的单次初始化情况，考虑使用第三方 crate，如 [`lazy_static`] 或 [`once_cell`]。
+	+ 如果你正在使用 [nightly channel]，请考虑标准库中的新 [`lazy`] 模块。
+* 如果你真正需要一个可变的全局变量，考虑使用一个 [`static`]，它有多种选择：
+	+ 简单数据类型可以直接定义，并使用 [`atomic`] 类型进行修改。
+	+ 更复杂的类型可以放置在同步原语中，如 [`Mutex`]，它可以使用上面列出的选项之一进行初始化。
+	+ 可变的 `static` 是一个低级原语，需要 `unsafe`。通常这应该避免使用，而倾向于使用更高级别的东西，如上面列出的这些。
 
 [Constant Evaluation]: https://doc.rust-lang.org/reference/const_eval.html
 [`static`]: https://doc.rust-lang.org/reference/items/static-items.html
@@ -957,7 +916,7 @@ matching on constants.
 
 ## dead-code
 
-The `dead_code` lint detects unused, unexported items.
+`dead_code` lint 检测未使用，未导出的代码。
 
 ### Example
 
@@ -980,15 +939,11 @@ warning: function `foo` is never used
 
 ### Explanation
 
-Dead code may signal a mistake or unfinished code. To silence the
-warning for individual items, prefix the name with an underscore such
-as `_foo`. If it was intended to expose the item outside of the crate,
-consider adding a visibility modifier like `pub`. Otherwise consider
-removing the unused code.
+未使用的代码表示错误或未完成的代码。要使单个项的警告静默，在名称前加上下划线例如 `_foo`。如果打算将项导出 `crate` 之外，考虑添加可见修饰符如 `pub`。否则请考虑移除未使用的代码。
 
 ## deprecated
 
-The `deprecated` lint detects use of deprecated items.
+`deprecated` lint 检测不推荐使用的项。
 
 ### Example
 
@@ -1016,10 +971,7 @@ warning: use of deprecated function `main::foo`
 
 ### Explanation
 
-Items may be marked "deprecated" with the [`deprecated` attribute] to
-indicate that they should no longer be used. Usually the attribute
-should include a note on what to use instead, or check the
-documentation.
+物品可以通过 [`deprecated` attribute] 标记为 “已弃用”，以表示它们不应再被使用。通常，该属性应包括关于应使用什么的注释，或查看文档。
 
 [`deprecated` attribute]: https://doc.rust-lang.org/reference/attributes/diagnostics.html#the-deprecated-attribute
 
@@ -1179,8 +1131,7 @@ like `&*(0 as *const i32)` or `addr_of!(*(0 as *const i32))`.
 
 ## drop-bounds
 
-The `drop_bounds` lint checks for generics with `std::ops::Drop` as
-bounds.
+`drop_bounds` lint 检查使用 `std::ops::Drop` 作为约束的泛型。
 
 ### Example
 
@@ -1203,24 +1154,11 @@ warning: bounds on `T: Drop` are most likely incorrect, consider instead using `
 
 ### Explanation
 
-A generic trait bound of the form `T: Drop` is most likely misleading
-and not what the programmer intended (they probably should have used
-`std::mem::needs_drop` instead).
+`T: Drop` 这种形式的泛型特质约束很可能会误导程序员，并非程序员真正的意图（他们可能应该使用 `std::mem::needs_drop`）。
 
-`Drop` bounds do not actually indicate whether a type can be trivially
-dropped or not, because a composite type containing `Drop` types does
-not necessarily implement `Drop` itself. Naïvely, one might be tempted
-to write an implementation that assumes that a type can be trivially
-dropped while also supplying a specialization for `T: Drop` that
-actually calls the destructor. However, this breaks down e.g. when `T`
-is `String`, which does not implement `Drop` itself but contains a
-`Vec`, which does implement `Drop`, so assuming `T` can be trivially
-dropped would lead to a memory leak here.
+`Drop` 约束实际上并不能指示一个类型是否可以被轻易地丢弃，因为包含 `Drop` 类型的复合类型并不一定实现 `Drop`。很粗浅地，人们可能会试图编写一个假设类型可以被轻易地丢弃的实现，同时为一个 `T: Drop` 的特殊化版本提供实际的析构函数调用。然而，这会在例如 `T` 是 `String` 的情况下失效，`String` 本身并不实现 `Drop`，但是它包含一个实现了 `Drop` 的 `Vec`，所以假设 `T` 可以被轻易地丢弃在这里会导致内存泄漏。
 
-Furthermore, the `Drop` trait only contains one method, `Drop::drop`,
-which may not be called explicitly in user code (`E0040`), so there is
-really no use case for using `Drop` in trait bounds, save perhaps for
-some obscure corner cases, which can use `#[allow(drop_bounds)]`.
+此外，`Drop` 特质只包含一个方法，即 `Drop::drop`，在用户代码中可能不会被显式调用(`E0040`)，所以除了在某些晦涩的角落情况外，实际上没有使用场景会在特质约束中使用 `Drop`，这些角落情况可以使用 `#[allow(drop_bounds)]`。
 
 ## dropping-copy-types
 
@@ -1434,8 +1372,7 @@ hard error in the future.
 
 ## ellipsis-inclusive-range-patterns
 
-The `ellipsis_inclusive_range_patterns` lint detects the [`...` range
-pattern], which is deprecated.
+`ellipsis_inclusive_range_patterns` lint 检测 `...` 这种已经被遗弃的[范围模式]。
 
 [`...` range pattern]: https://doc.rust-lang.org/reference/patterns.html#range-patterns
 
@@ -1466,15 +1403,13 @@ warning: `...` range patterns are deprecated
 
 ### Explanation
 
-The `...` range pattern syntax was changed to `..=` to avoid potential
-confusion with the [`..` range expression]. Use the new form instead.
+`...` 范围模式的语法已更改为 `..=`，以避免与 [`..` 范围表达式][`..` range expression] 可能产生的混淆。请使用新形式。
 
 [`..` range expression]: https://doc.rust-lang.org/reference/expressions/range-expr.html
 
 ## exported-private-dependencies
 
-The `exported_private_dependencies` lint detects private dependencies
-that are exposed in a public interface.
+`exported_private_dependencies` lint 检测在公共接口公开的私有依赖。
 
 ### Example
 
@@ -1498,18 +1433,11 @@ warning: type `bar::Thing` from private dependency 'bar' in public interface
 
 ### Explanation
 
-Dependencies can be marked as "private" to indicate that they are not
-exposed in the public interface of a crate. This can be used by Cargo
-to independently resolve those dependencies because it can assume it
-does not need to unify them with other packages using that same
-dependency. This lint is an indication of a violation of that
-contract.
+依赖项可以被标记为 “private”，以表明它们不会在 crate 的公共接口中暴露。Cargo 可以利用这一点独立解析这些依赖项，因为它可以假设不需要将这些依赖项与使用相同依赖项的其他包进行统一。这个 lint 是违反这种合约的一个指示。
 
-To fix this, avoid exposing the dependency in your public interface.
-Or, switch the dependency to a public dependency.
+要解决这个问题，避免在你的公共接口中暴露依赖项。或者，将依赖项切换为公共依赖项。
 
-Note that support for this is only available on the nightly channel.
-See [RFC 1977] for more details, as well as the [Cargo documentation].
+请注意，此功能仅在 nightly channel 上可用。有关更多详细信息，请参阅 [RFC 1977] 以及 [Cargo 文档][Cargo documentation]。
 
 [RFC 1977]: https://github.com/rust-lang/rfcs/blob/master/text/1977-public-private-dependencies.md
 [Cargo documentation]: https://doc.rust-lang.org/nightly/cargo/reference/unstable.html#public-dependency
@@ -1679,8 +1607,7 @@ referenced value, which is likely what was intended.
 
 ## function-item-references
 
-The `function_item_references` lint detects function references that are
-formatted with [`fmt::Pointer`] or transmuted.
+`function_item_references` lint 检测使用 [`fmt::Pointer`] 格式化或转换的函数引用。
 
 [`fmt::Pointer`]: https://doc.rust-lang.org/std/fmt/trait.Pointer.html
 
@@ -1709,11 +1636,7 @@ warning: taking a reference to a function item does not give a function pointer
 
 ### Explanation
 
-Taking a reference to a function may be mistaken as a way to obtain a
-pointer to that function. This can give unexpected results when
-formatting the reference as a pointer or transmuting it. This lint is
-issued when function references are formatted as pointers, passed as
-arguments bound by [`fmt::Pointer`] or transmuted.
+引用一个函数可能被误认为是获取函数指针的一种方式。将引用格式化为指针或对其进行转换的时候可能会产生意外的结果。当函数引用被格式化为指针，作为 [`fmt::Pointer`] 约束的参数传递或转换时，就会触发该 lint。
 
 ## hidden-glob-reexports
 
@@ -1776,8 +1699,7 @@ the downstream use site.
 
 ## illegal-floating-point-literal-pattern
 
-The `illegal_floating_point_literal_pattern` lint detects
-floating-point literals used in patterns.
+`illegal_floating_point_literal_pattern` lint 检测用于模式中的浮点数字面量。
 
 ### Example
 
@@ -1807,11 +1729,7 @@ warning: floating-point types cannot be used in patterns
 
 ### Explanation
 
-Previous versions of the compiler accepted floating-point literals in
-patterns, but it was later determined this was a mistake. The
-semantics of comparing floating-point values may not be clear in a
-pattern when contrasted with "structural equality". Typically you can
-work around this by using a [match guard], such as:
+编译器的早期版本接受了模式中的浮点数字面量，但后来确定这是一个错误。在模式中，与 “结构相等性” 相比，浮点值的比较语义可能不明确。通常，您可以通过使用 [match guard] 来解决这个问题，例如：
 
 ```rust
 # let x = 42.0;
@@ -1822,8 +1740,7 @@ match x {
 }
 ```
 
-This is a [future-incompatible] lint to transition this to a hard
-error in the future. See [issue #41620] for more details.
+这是一个[将来不兼容][future-incompatible] 的 lint，将来会转化为固有错误。更多细节请参阅 [issue #41620]。
 
 [issue #41620]: https://github.com/rust-lang/rust/issues/41620
 [match guard]: https://doc.rust-lang.org/reference/expressions/match-expr.html#match-guards
@@ -1831,8 +1748,7 @@ error in the future. See [issue #41620] for more details.
 
 ## improper-ctypes
 
-The `improper_ctypes` lint detects incorrect use of types in foreign
-modules.
+`improper_ctypes` lint 检测在外部模块中错误使用的类型。
 
 ### Example
 
@@ -1859,12 +1775,7 @@ warning: `extern` block uses type `String`, which is not FFI-safe
 
 ### Explanation
 
-The compiler has several checks to verify that types used in `extern`
-blocks are safe and follow certain rules to ensure proper
-compatibility with the foreign interfaces. This lint is issued when it
-detects a probable mistake in a definition. The lint usually should
-provide a description of the issue, along with possibly a hint on how
-to resolve it.
+编译器有几项检查来验证 `extern` 块中使用的类型是否安全并遵循某些规则，以确保与外部接口的兼容性。当编译器检测到定义中可能的错误时，就会发出这个lint。lint 通常会提供问题的描述，以及可能的解决方法的提示。
 
 ## improper-ctypes-definitions
 

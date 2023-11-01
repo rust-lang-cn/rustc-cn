@@ -11,8 +11,7 @@
 ## `--cfg`: 配置编译环境
 
 
-此标志可以开启或关闭各种 `#[cfg]` 设置，
-用于 [条件编译](../reference/conditional-compilation.md)。
+此标志可以开启或关闭各种 `#[cfg]` 设置，用于[条件编译](../reference/conditional-compilation.md)。
 
 该值可以是单个标识符，也可以是两个标识符，中间用等号 `=` 分隔。
 
@@ -236,7 +235,7 @@ rustc 的每个错误都有一个错误代码，这将打印出给定错误的�
 ## `--test`: 建立一个测试工具
 
 在编译此 crate 时，`rustc` 将忽略您的 `main` 函数，而是生成一个测试工具。
-有关测试的更多信息，请参阅 [Tests chapter](tests/index.md)。
+有关测试的更多信息，请参阅 [Tests 章节](tests/index.md)。
 
 <a id="option-target"></a>
 ## `--target`: 选择要构建的目标三元组
@@ -394,7 +393,7 @@ _注意：_ 这些 lint 级别参数的顺序将被考虑，有关更多信息�
 
 请注意，`--json` 参数与 [`--color`](#option-color) 参数组合是无效的，需要将 `--json` 与 `--error format=json` 组合。
 
-更多细节请参阅 [the JSON chapter]。
+更多细节请参阅 [JSON 章节][the JSON chapter]。
 
 <a id="at-path"></a>
 ## `@path`: 从路径加载命令行标签
