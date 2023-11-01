@@ -296,7 +296,7 @@ code for a new edition. See [issue #41686] for more details.
 
 ## array-into-iter
 
-The `array_into_iter` lint detects calling `into_iter` on arrays.
+`array_into_iter` lint 检测在数组上调用 `into_iter`。
 
 ### Example
 
@@ -330,17 +330,11 @@ help: or use `IntoIterator::into_iter(..)` instead of `.into_iter()` to explicit
 
 ### Explanation
 
-Since Rust 1.53, arrays implement `IntoIterator`. However, to avoid
-breakage, `array.into_iter()` in Rust 2015 and 2018 code will still
-behave as `(&array).into_iter()`, returning an iterator over
-references, just like in Rust 1.52 and earlier.
-This only applies to the method call syntax `array.into_iter()`, not to
-any other syntax such as `for _ in array` or `IntoIterator::into_iter(array)`.
+自 Rust 1.53 以来，数组实现了 `IntoIterator`。然而，为了避免破坏，Rust 2015 和 2018 代码中的 `array.into_iter()` 仍将表现为`(&array).into_iter()`，就像 Rust 1.52 及更早版本一样，返回一个引用迭代器。这仅适用于方法调用语法 `array.into_iter()`，而不适用于其他语法，如 `for _ in array` 或 `IntoIterator::into_iter(array)`。
 
 ## asm-sub-register
 
-The `asm_sub_register` lint detects using only a subset of a register
-for inline asm inputs.
+`asm_sub_register` lint 检测仅使用寄存器子集进行内联汇编输入。
 
 ### Example
 
@@ -372,15 +366,7 @@ warning: formatting may not be suitable for sub-register argument
 
 ### Explanation
 
-Registers on some architectures can use different names to refer to a
-subset of the register. By default, the compiler will use the name for
-the full register size. To explicitly use a subset of the register,
-you can override the default by using a modifier on the template
-string operand to specify when subregister to use. This lint is issued
-if you pass in a value with a smaller data type than the default
-register size, to alert you of possibly using the incorrect width. To
-fix this, add the suggested modifier to the template, or cast the
-value to the correct size.
+某些架构的寄存器可以使用不同的名称来引用寄存器的子集。默认情况下，编译器将使用完整寄存器大小的名称。要显式使用寄存器的子集，您可以在模板字符串操作数上使用修饰符来覆盖默认值，以指定要使用的子寄存器。如果您传入的数据类型小于默认寄存器大小的值，则会发出此 lint，以提醒您可能使用了错误的宽度。要修复此问题，请将建议的修饰符添加到模板中，或将值强制转换为正确的大小。
 
 See [register template modifiers] in the reference for more details.
 
@@ -520,8 +506,7 @@ prefix register placeholders with `%` as required by AT&T syntax.
 
 ## bare-trait-objects
 
-The `bare_trait_objects` lint suggests using `dyn Trait` for trait
-objects.
+`bare_trait_objects` lint 建议对 trait 对象使用 `dyn Trait`。 
 
 ### Example
 
@@ -553,10 +538,7 @@ help: use `dyn`
 
 ### Explanation
 
-Without the `dyn` indicator, it can be ambiguous or confusing when
-reading code as to whether or not you are looking at a trait object.
-The `dyn` keyword makes it explicit, and adds a symmetry to contrast
-with [`impl Trait`].
+如果没有 `dyn` 关键字，当阅读代码时你是否是在查看 trait 对象这可能会造成模棱两可或困惑。`dyn` 关键字将其明确，并增加了一种对称性，与[`impl Trait`]形成对比。
 
 [`impl Trait`]: https://doc.rust-lang.org/book/ch10-02-traits.html#traits-as-parameters
 
@@ -646,8 +628,7 @@ temporary exception because certain crates depended on them.
 
 ## clashing-extern-declarations
 
-The `clashing_extern_declarations` lint detects when an `extern fn`
-has been declared with the same name but different types.
+`clashing_extern_declarations` lint 用于检测当一个 `extern fn` 被声明为相同的名称但类型不同的情况。
 
 ### Example
 
@@ -683,19 +664,9 @@ warning: `foo` redeclared with a different signature
 
 ### Explanation
 
-Because two symbols of the same name cannot be resolved to two
-different functions at link time, and one function cannot possibly
-have two types, a clashing extern declaration is almost certainly a
-mistake. Check to make sure that the `extern` definitions are correct
-and equivalent, and possibly consider unifying them in one location.
+因为同名的两个符号在链接时无法解析为两个不同的函数，且一个函数不能有两个类型，一个相冲突的外部声明可以肯定是个错误。检查以确保 `extern` 定义正确且有效，且考虑将它们统一在一个位置。
 
-This lint does not run between crates because a project may have
-dependencies which both rely on the same extern function, but declare
-it in a different (but valid) way. For example, they may both declare
-an opaque type for one or more of the arguments (which would end up
-distinct types), or use types that are valid conversions in the
-language the `extern fn` is defined in. In these cases, the compiler
-can't say that the clashing declaration is incorrect.
+这个 lint 不能跨 crate 运行因为一个项目可能有依赖于相同外部函数的依赖项，但是外部函数以不同（但有效）的方式声明。例如，它们可能都为一个或多个参数声明一个不透明类型（最终会得到不同的类型），或者使用 `extern fn` 定义的语言中有效的转换类型，在这些情况下，编译器无法判定冲突的声明是不正确的。
 
 ## coherence-leak-check
 
