@@ -1340,8 +1340,7 @@ note: the lint level is defined here
 
 ## trivial-numeric-casts
 
-The `trivial_numeric_casts` lint detects trivial numeric casts of types
-which could be removed.
+`trivial_numeric_casts` lint 用于检测可以移除的琐碎的数值类型转换。
 
 ### Example
 
@@ -1370,17 +1369,9 @@ note: the lint level is defined here
 
 ### Explanation
 
-A trivial numeric cast is a cast of a numeric type to the same numeric
-type. This type of cast is usually unnecessary.
+琐碎的数值类型转换是指将一种数值类型转换为同一种数值类型。这种类型的转换通常是不必要的。
 
-This lint is "allow" by default because there are situations, such as
-with FFI interfaces or complex type aliases, where it triggers
-incorrectly, or in situations where it will be more difficult to
-clearly express the intent. It may be possible that this will become a
-warning in the future, possibly with an explicit syntax for coercions
-providing a convenient way to work around the current issues.
-See [RFC 401 (coercions)][rfc-401], [RFC 803 (type ascription)][rfc-803] and
-[RFC 3307 (remove type ascription)][rfc-3307] for historical context.
+这个 lint 默认设置为 “allow”，因为在某些情况下，例如与 FFI 接口或复杂类型别名一起使用时，它可能错误地触发，或者在某些情况下，明确表达意图可能更加困难。在未来，这可能会成为一个警告，可能会通过一种显式的强制转换语法来方便地解决当前的问题。请参见[RFC 401（强制转换）][rfc-401]、[RFC 803（类型标注）][rfc-803]和[RFC 3307（移除类型标注）][rfc-3307]以了解历史背景。
 
 [rfc-401]: https://github.com/rust-lang/rfcs/blob/master/text/0401-coercions.md
 [rfc-803]: https://github.com/rust-lang/rfcs/blob/master/text/0803-type-ascription.md
@@ -1429,8 +1420,7 @@ you can name the type `T` as well, this lint attempts to enforce this rule.
 
 ## unreachable-pub
 
-The `unreachable_pub` lint triggers for `pub` items not reachable from
-the crate root.
+`unreachable_pub` lint 会在从 crate 根部无法访问的 pub 项上触发。
 
 ### Example
 
@@ -1465,24 +1455,15 @@ note: the lint level is defined here
 
 ### Explanation
 
-The `pub` keyword both expresses an intent for an item to be publicly available, and also
-signals to the compiler to make the item publicly accessible. The intent can only be
-satisfied, however, if all items which contain this item are *also* publicly accessible.
-Thus, this lint serves to identify situations where the intent does not match the reality.
+`pub` 关键字既表达了将项目公开可用的意图，也向编译器发出使项目可公开访问的信号。然而，只有当包含此项目的所有项目也都公开可访问时，这种意图才能实现。因此，这个 lint 用于识别意图与现实不匹配的情况。
 
-If you wish the item to be accessible elsewhere within the crate, but not outside it, the
-`pub(crate)` visibility is recommended to be used instead. This more clearly expresses the
-intent that the item is only visible within its own crate.
+如果你希望项目在 crate 内的其他地方可访问，但不在外部可访问，建议使用 `pub(crate)` 可见性。这更清楚地表达了项目只在自己的 crate 内可见的意图。
 
-This lint is "allow" by default because it will trigger for a large
-amount existing Rust code, and has some false-positives. Eventually it
-is desired for this to become warn-by-default.
+这个 lint 默认设置为 “allow”，因为它将为大量现有的 Rust 代码触发，并且有一些误报。最终，我们希望 lint 成为默认警告。
 
 ## unsafe-code
 
-The `unsafe_code` lint catches usage of `unsafe` code and other
-potentially unsound constructs like `no_mangle`, `export_name`,
-and `link_section`.
+`unsafe_code` lint 用于捕捉 `unsafe` 代码的使用以及其他可能不健全的结构，如 `no_mangle`、`export_name` 和 `link_section`。
 
 ### Example
 
@@ -1562,15 +1543,11 @@ error: declaration of a static with `link_section`
 
 ### Explanation
 
-This lint is intended to restrict the usage of `unsafe` blocks and other
-constructs (including, but not limited to `no_mangle`, `link_section`
-and `export_name` attributes) wrong usage of which causes undefined
-behavior.
+该 lint 旨在限制 `unsafe` 代码块和其他结构（包括但不限于`no_mangle`、`link_section` 和 `export_name`属性）的使用，这些结构的错误使用会导致未定义的行为。
 
 ## unsafe-op-in-unsafe-fn
 
-The `unsafe_op_in_unsafe_fn` lint detects unsafe operations in unsafe
-functions without an explicit unsafe block.
+`unsafe_op_in_unsafe_fn` lint 用于检测在不安全的函数中执行不安全操作，但没有显式的不安全代码块。
 
 ### Example
 
@@ -1611,20 +1588,11 @@ note: the lint level is defined here
 
 ### Explanation
 
-Currently, an [`unsafe fn`] allows any [unsafe] operation within its
-body. However, this can increase the surface area of code that needs
-to be scrutinized for proper behavior. The [`unsafe` block] provides a
-convenient way to make it clear exactly which parts of the code are
-performing unsafe operations. In the future, it is desired to change
-it so that unsafe operations cannot be performed in an `unsafe fn`
-without an `unsafe` block.
+目前，一个 [`unsafe fn`] 允许其体内执行任何 [unsafe] 的操作。然而，这会增加需要仔细检查以确保正确行为的代码的表面区域。[`unsafe` block]提供了一种方便的方式来清楚地表明代码的哪些部分正在执行不安全操作。在未来，我们希望改变这种状况，使得在 `unsafe fn` 中不能在没有 `unsafe` 块的情况下执行不安全操作。
 
-The fix to this is to wrap the unsafe code in an `unsafe` block.
+解决这个问题的方法是将不安全的代码包装在一个 `unsafe` 块中。
 
-This lint is "allow" by default on editions up to 2021, from 2024 it is
-"warn" by default; the plan for increasing severity further is
-still being considered. See [RFC #2585] and [issue #71668] for more
-details.
+这个 lint 在 2021 年之前的版本中默认是 “allow” ，从 2024 年开始默认是 “warn”；进一步提高严重性的计划仍在考虑中。更多详情见[RFC #2585]和[issue #71668]。
 
 [`unsafe fn`]: https://doc.rust-lang.org/reference/unsafe-functions.html
 [`unsafe` block]: https://doc.rust-lang.org/reference/expressions/block-expr.html#unsafe-blocks
@@ -1634,12 +1602,11 @@ details.
 
 ## unstable-features
 
-The `unstable_features` is deprecated and should no longer be used.
+`unstable_features` lint 已被废弃，不应再使用。
 
 ## unused-crate-dependencies
 
-The `unused_crate_dependencies` lint detects crate dependencies that
-are never used.
+`unused_crate_dependencies` lint 用于检测未被使用的 crate 依赖项。
 
 ### Example
 
@@ -1661,21 +1628,9 @@ note: the lint level is defined here
 
 ### Explanation
 
-After removing the code that uses a dependency, this usually also
-requires removing the dependency from the build configuration.
-However, sometimes that step can be missed, which leads to time wasted
-building dependencies that are no longer used. This lint can be
-enabled to detect dependencies that are never used (more specifically,
-any dependency passed with the `--extern` command-line flag that is
-never referenced via [`use`], [`extern crate`], or in any [path]).
+将使用了依赖项的代码移除之后，通常需要从构建配置中删除依赖。然而，有时可能会忘记这一步，导致浪费时间来构建不再使用的依赖项。该 lint 可以被用来检测从未使用的依赖项（更具体地说，那些从未被 [`use`], [`extern crate`],或者任何[path]指向的，通过 `--extern`命令行标签指定的依赖）
 
-This lint is "allow" by default because it can provide false positives
-depending on how the build system is configured. For example, when
-using Cargo, a "package" consists of multiple crates (such as a
-library and a binary), but the dependencies are defined for the
-package as a whole. If there is a dependency that is only used in the
-binary, but not the library, then the lint will be incorrectly issued
-in the library.
+该 lint 默认等级为 “allow” ，因为根据构建系统的配置不同可能会产生误报。例如，当使用 Cargo 时，一个 “package” 包含了多个 crate （例如一个库 crate 和一个二进制 crate ），但是这个包的依赖是为整体而定义的，如果有一个依赖仅在二进制 crate 中使用，在库 crate 中未使用，那么该 lint 将库 crate 运行的时候错误地被发出
 
 [path]: https://doc.rust-lang.org/reference/paths.html
 [`use`]: https://doc.rust-lang.org/reference/items/use-declarations.html
@@ -1683,8 +1638,7 @@ in the library.
 
 ## unused-extern-crates
 
-The `unused_extern_crates` lint guards against `extern crate` items
-that are never used.
+`unused_extern_crates` lint 防止从未被使用的 `extern crate` 项。
 
 ### Example
 
@@ -1713,26 +1667,15 @@ note: the lint level is defined here
 
 ### Explanation
 
-`extern crate` items that are unused have no effect and should be
-removed. Note that there are some cases where specifying an `extern
-crate` is desired for the side effect of ensuring the given crate is
-linked, even though it is not otherwise directly referenced. The lint
-can be silenced by aliasing the crate to an underscore, such as
-`extern crate foo as _`. Also note that it is no longer idiomatic to
-use `extern crate` in the [2018 edition], as extern crates are now
-automatically added in scope.
+未使用的 `extern crate` 项是无效的应该被删除。请注意，在某些情况下，需要指定 `extern crate` 以确保他们被 crate 所链接，即使没有直接引用它。可以通过为 crate 取一个下划线别名来消除检测，例如 `extern crate foo as _`。还要注意的是 `extern crate` 在 [2018 edition]中已经不常用，因为现在外部 crate（译者注：被指定的）会被自动添加到域中。
 
-This lint is "allow" by default because it can be noisy, and produce
-false-positives. If a dependency is being removed from a project, it
-is recommended to remove it from the build configuration (such as
-`Cargo.toml`) to ensure stale build entries aren't left behind.
+该 lint 默认等级为 “allow” ，因为其可能会造成干扰和误报。如果要从项目中移除依赖，推荐在构建配置中将其删除（例如 Cargo.toml）确保编译时不会留下陈旧的构建条目。
 
 [2018 edition]: https://doc.rust-lang.org/edition-guide/rust-2018/module-system/path-clarity.html#no-more-extern-crate
 
 ## unused-import-braces
 
-The `unused_import_braces` lint catches unnecessary braces around an
-imported item.
+`unused_import_braces` lint 用于捕捉导入项周围不必要的大括号。
 
 ### Example
 
@@ -1765,16 +1708,13 @@ note: the lint level is defined here
 
 ### Explanation
 
-If there is only a single item, then remove the braces (`use test::A;`
-for example).
+如果仅有单个项，应该移除大括号（例如 `use test::A;`）。
 
-This lint is "allow" by default because it is only enforcing a
-stylistic choice.
+该 lint 默认等级为 “allow” ，因为其只是强制执行样式选择。
 
 ## unused-lifetimes
 
-The `unused_lifetimes` lint detects lifetime parameters that are never
-used.
+`unused_lifetimes` lint 检测未使用的生命周期参数。
 
 ### Example
 
@@ -1803,8 +1743,7 @@ note: the lint level is defined here
 
 ### Explanation
 
-Unused lifetime parameters may signal a mistake or unfinished code.
-Consider removing the parameter.
+未使用的生命周期参数可能有错误或是代码未完成。应该考虑删除该参数
 
 ## unused-macro-rules
 
@@ -1860,8 +1799,7 @@ available outside of the crate, use the [`macro_export` attribute].
 
 ## unused-qualifications
 
-The `unused_qualifications` lint detects unnecessarily qualified
-names.
+`unused_qualifications` lint 检测不必要的限定名。
 
 ### Example
 
@@ -1901,18 +1839,13 @@ help: remove the unnecessary path segments
 
 ### Explanation
 
-If an item from another module is already brought into scope, then
-there is no need to qualify it in this case. You can call `bar()`
-directly, without the `foo::`.
+如果来自另一个模块的项已经被导入了这个域，在这种情况下无需为该项加限定名，你可以不加 `foo::` 直接调用 `bar()`。
 
-This lint is "allow" by default because it is somewhat pedantic, and
-doesn't indicate an actual problem, but rather a stylistic choice, and
-can be noisy when refactoring or moving around code.
+该 lint 默认等级为 “allow”，因为这有些花哨（pedantic），并不表示实际问题，而且是一种风格选择，并且当重构或移动代码的时候可能会带来干扰。
 
 ## unused-results
 
-The `unused_results` lint checks for the unused result of an
-expression in a statement.
+`unused_results` lint 检查语句中表达式未使用的 result 。
 
 ### Example
 
@@ -1944,18 +1877,9 @@ note: the lint level is defined here
 
 ### Explanation
 
-Ignoring the return value of a function may indicate a mistake. In
-cases were it is almost certain that the result should be used, it is
-recommended to annotate the function with the [`must_use` attribute].
-Failure to use such a return value will trigger the [`unused_must_use`
-lint] which is warn-by-default. The `unused_results` lint is
-essentially the same, but triggers for *all* return values.
+忽略函数的返回值可能表明存在错误。在几乎可以肯定 result 应该被使用的情况下，建议使用[`must_use` attribute]来注释函数。未使用这样的返回值将触发默认警告的[`unused_must_use` lint]。`unused_results` lint 本质上是一样的，但它会触发*所有*返回值。
 
-This lint is "allow" by default because it can be noisy, and may not be
-an actual problem. For example, calling the `remove` method of a `Vec`
-or `HashMap` returns the previous value, which you may not care about.
-Using this lint would require explicitly ignoring or discarding such
-values.
+该 lint 默认等级为 “allow” ，因为其可能会带来干扰，且可能并不是一个真正的问题。例如，调用 `Vec` 或 `HashMap` 的  `remove` 方法会返回先前的值，你可能并不关心这个值，使用这个 lint 将会要求显式地忽略或丢弃这些值。
 
 [`must_use` attribute]: https://doc.rust-lang.org/reference/attributes/diagnostics.html#the-must_use-attribute
 [`unused_must_use` lint]: warn-by-default.html#unused-must-use
@@ -2006,8 +1930,7 @@ remaining fields, change the unused field(s) to have unit type.
 
 ## variant-size-differences
 
-The `variant_size_differences` lint detects enums with widely varying
-variant sizes.
+`variant_size_differences` lint 检测具有不同变量大小的枚举。
 
 ### Example
 
@@ -2038,18 +1961,11 @@ note: the lint level is defined here
 
 ### Explanation
 
-It can be a mistake to add a variant to an enum that is much larger
-than the other variants, bloating the overall size required for all
-variants. This can impact performance and memory usage. This is
-triggered if one variant is more than 3 times larger than the
-second-largest variant.
+向枚举中添加一个比其他变量大得多的变量可能是个错误，这会增加所有变量所需空间的总大小。这可能会影响性能和内存使用。如果第一大的变量比第二大的变量所需空间大三倍以上，就会触发这个 lint。
 
-Consider placing the large variant's contents on the heap (for example
-via [`Box`]) to keep the overall size of the enum itself down.
+可以考虑将较大变量的内容放在堆上（例如通过 [`Box`]），以保持枚举体自身大小处于较小量值 。
 
-This lint is "allow" by default because it can be noisy, and may not be
-an actual problem. Decisions about this should be guided with
-profiling and benchmarking.
+该 lint 默认等级为 “allow” ，因为其可能会造成干扰，且可能并不是一个真正的问题。应通过基准测试和分析指导来考虑这个问题。
 
 [`Box`]: https://doc.rust-lang.org/std/boxed/index.html
 
