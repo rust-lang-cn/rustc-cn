@@ -1,5 +1,5 @@
-# Lint listing
+# Lint Listing
 
-This section lists out all of the lints, grouped by their default lint levels.
+本章节列出了所有的 lint，以它们的默认 lint 等级分类。
 
-You can also see this list by running `rustc -W help`.
+你也可以通过运行 `rustc -W help` 查看此清单。
