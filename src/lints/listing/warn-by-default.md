@@ -4373,8 +4373,7 @@ preferred style for writing these expressions.
 
 ## unused-comparisons
 
-The `unused_comparisons` lint detects comparisons made useless by
-limits of the types involved.
+`unused_comparisons` lint 检测由于所涉及类型的限制而变得无用的比较。
 
 ### Example
 
@@ -4399,8 +4398,7 @@ warning: comparison is useless due to type limits
 
 ### Explanation
 
-A useless comparison may indicate a mistake, and should be fixed or
-removed.
+无用的比较可能表明存在错误，应该加以修正或删除。
 
 ## unused-doc-comments
 
