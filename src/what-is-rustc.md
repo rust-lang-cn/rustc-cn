@@ -1,6 +1,6 @@
 # 什么是 rustc?
 
-欢迎来到 "The rustc book"! `rustc` 是 Rust 编程语言的编译器，由项目本身提供。
+欢迎来到 "The rustc book"! `rustc` 是 Rust 编程语言的编译器，它由rust编译构建。
 编译器获取源代码并生成二进制代码，作为库 或可执行文件。
 
 大多数 Rust 程序员不会 `rustc` 直接调用，而是通过 [Cargo](../cargo/index.html) 进行调用。
