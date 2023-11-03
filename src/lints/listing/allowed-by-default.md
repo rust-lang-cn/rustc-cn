@@ -477,22 +477,11 @@ help: use `.addr()` to obtain the address of a pointer
 
 ### Explanation
 
-This lint is part of the strict provenance effort, see [issue #95228].
-Casting a pointer to an integer is a lossy operation, because beyond
-just an *address* a pointer may be associated with a particular
-*provenance*. This information is used by the optimiser and for dynamic
-analysis/dynamic program verification (e.g. Miri or CHERI platforms).
+这个 lint 是「严格的出处 strict_provenance」管理的一部分，详见 [issue #95228]。将指针转换为整数是有损失的，因为除了*地址*之外，指针还可能与特定的 *出处* 相关联。此信息由优化器用于动态分析/动态程序验证（例如 Miri 或 CHERI 平台）。
 
-Since this cast is lossy, it is considered good style to use the
-[`ptr::addr`] method instead, which has a similar effect, but doesn't
-"expose" the pointer provenance. This improves optimisation potential.
-See the docs of [`ptr::addr`] and [`ptr::expose_addr`] for more information
-about exposing pointer provenance.
+由于此转换是有损的，因此建议使用 [`ptr::addr`] 方法，该方法具有类似的效果，但不会 “暴露” 指针的出处。这提高了优化的可能性。有关暴露指针出处的更多信息，请参阅 [`ptr::addr`] 和 [`ptr::expose_addr`] 的文档。
 
-If your code can't comply with strict provenance and needs to expose
-the provenance, then there is [`ptr::expose_addr`] as an escape hatch,
-which preserves the behaviour of `as usize` casts while being explicit
-about the semantics.
+如果你的代码无法遵守严格的出处规定并且需要暴露出处，那么可以使用 [`ptr::expose_addr`] 作为逃生舱，它保留了 `as usize` 转换的行为，同时明确了语义。
 
 [issue #95228]: https://github.com/rust-lang/rust/issues/95228
 [`ptr::addr`]: https://doc.rust-lang.org/core/ptr/fn.addr
@@ -738,8 +727,7 @@ note: the lint level is defined here
 
 ## multiple-supertrait-upcastable
 
-The `multiple_supertrait_upcastable` lint detects when an object-safe trait has multiple
-supertraits.
+`multiple_supertrait_upcastable` lint 用于检测在一个对象安全的 `trait` 是否有多个 `supertraits`。
 
 ### Example
 
@@ -771,15 +759,11 @@ note: the lint level is defined here
 
 ### Explanation
 
-To support upcasting with multiple supertraits, we need to store multiple vtables and this
-can result in extra space overhead, even if no code actually uses upcasting.
-This lint allows users to identify when such scenarios occur and to decide whether the
-additional overhead is justified.
+为了支持具有多个 `supertraits` 的向上转型，我们需要存储多个虚函数表（vtable），这可能导致额外的空间开销，即使实际上没有代码使用向上转型。这个 lint 允许用户识别何时出现此类情况，并决定额外的开销是否合理。
 
 ## must-not-suspend
 
-The `must_not_suspend` lint guards against values that shouldn't be held across suspend points
-(`.await`)
+`must_not_suspend` lint 用于防止那些不应跨越挂起点 `.await` 持有的值。
 
 ### Example
 
@@ -825,14 +809,9 @@ note: the lint level is defined here
 
 ### Explanation
 
-The `must_not_suspend` lint detects values that are marked with the `#[must_not_suspend]`
-attribute being held across suspend points. A "suspend" point is usually a `.await` in an async
-function.
+`must_not_suspend` lint 用于检测被标记为 `#[must_not_suspend]` 属性的值在挂起点之间被持有。挂起点通常是异步函数中的 `.await`。
 
-This attribute can be used to mark values that are semantically incorrect across suspends
-(like certain types of timers), values that have async alternatives, and values that
-regularly cause problems with the `Send`-ness of async fn's returned futures (like
-`MutexGuard`'s)
+这个属性可用于标记在挂起时语义上不正确的值（如某些类型的计时器）、有异步替代方案的值，以及经常导致异步函数返回的 `future` 的 `Send` 性问题的值（如`MutexGuard`）。
 
 
 ## non-ascii-idents

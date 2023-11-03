@@ -256,7 +256,6 @@ It now only warns, rather than errors. We can go further and allow all lints:
 
 ```bash
 $ rustc lib.rs --cap-lints allow
-$
 ```
 
 在 Cargo 中这个特性被使用的很多; 它会在我们编译依赖时设置 `--cap-lints allow` 命令, 以便在有任何警告信息的时候, 不会影响到我们的构建输出。

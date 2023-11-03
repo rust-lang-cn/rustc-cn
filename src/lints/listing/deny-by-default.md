@@ -42,8 +42,7 @@ These lints are all set to the 'deny' level by default.
 
 ## ambiguous-associated-items
 
-The `ambiguous_associated_items` lint detects ambiguity between
-[associated items] and [enum variants].
+`ambiguous_associated_items` lint 检测[枚举变量][enum variants]和[关联项][associated items]之间的不确定项。  
 
 [associated items]: https://doc.rust-lang.org/reference/items/associated-items.html
 [enum variants]: https://doc.rust-lang.org/reference/items/enumerations.html
@@ -95,18 +94,11 @@ note: `V` could also refer to the associated type defined here
 
 ### Explanation
 
-Previous versions of Rust did not allow accessing enum variants
-through [type aliases]. When this ability was added (see [RFC 2338]), this
-introduced some situations where it can be ambiguous what a type
-was referring to.
+早期 Rust 版本不允许通过类型别名访问枚举变量，当添加此功能时（请参阅 [RFC 2338][RFC-2338]），这引入了某些情况，即类型所指的可能不明确。
 
-To fix this ambiguity, you should use a [qualified path] to explicitly
-state which type to use. For example, in the above example the
-function can be written as `fn f() -> <Self as Tr>::V { 0 }` to
-specifically refer to the associated type.
+要解决该歧义，应使用[路径限定][qualified path]明确声明要使用的类型。例如，以上示例中函数可以被写作 `fn f() -> <Self as Tr>::V { 0 } ` 以明确引用关联的类型。
 
-This is a [future-incompatible] lint to transition this to a hard
-error in the future. See [issue #57644] for more details.
+这是一个[将来不兼容][future-incompatible]的 lint，将来会转化为固有错误。更多细节请参阅 [issue #57644][issue-#57644]
 
 [issue #57644]: https://github.com/rust-lang/rust/issues/57644
 [type aliases]: https://doc.rust-lang.org/reference/items/type-aliases.html#type-aliases
