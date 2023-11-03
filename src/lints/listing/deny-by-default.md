@@ -94,11 +94,11 @@ note: `V` could also refer to the associated type defined here
 
 ### Explanation
 
-早期 Rust 版本不允许通过类型别名访问枚举变量，当添加此功能时（请参阅 [RFC 2338][RFC-2338]），这引入了某些情况，即类型所指的可能不明确。
+早期 Rust 版本不允许通过类型别名访问枚举变量，当添加此功能时（请参阅 [RFC 2338][RFC 2338]），这引入了某些情况，即类型所指的可能不明确。
 
 要解决该歧义，应使用[路径限定][qualified path]明确声明要使用的类型。例如，以上示例中函数可以被写作 `fn f() -> <Self as Tr>::V { 0 } ` 以明确引用关联的类型。
 
-这是一个[将来不兼容][future-incompatible]的 lint，将来会转化为固有错误。更多细节请参阅 [issue #57644][issue-#57644]
+这是一个[将来不兼容][future-incompatible]的 lint，将来会转化为固有错误。更多细节请参阅 [issue #57644][issue #57644]
 
 [issue #57644]: https://github.com/rust-lang/rust/issues/57644
 [type aliases]: https://doc.rust-lang.org/reference/items/type-aliases.html#type-aliases
