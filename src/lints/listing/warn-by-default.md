@@ -1779,8 +1779,7 @@ warning: `extern` block uses type `String`, which is not FFI-safe
 
 ## improper-ctypes-definitions
 
-The `improper_ctypes_definitions` lint detects incorrect use of
-[`extern` function] definitions.
+`improper_ctypes_definitions` lint 检测对 [`extern` function] 定义的错误使用。 
 
 [`extern` function]: https://doc.rust-lang.org/reference/items/functions.html#extern-function-qualifier
 
@@ -1808,17 +1807,11 @@ warning: `extern` fn uses type `str`, which is not FFI-safe
 
 ### Explanation
 
-There are many parameter and return types that may be specified in an
-`extern` function that are not compatible with the given ABI. This
-lint is an alert that these types should not be used. The lint usually
-should provide a description of the issue, along with possibly a hint
-on how to resolve it.
+在 `extern` 函数中可能指定了许多与给定的 ABI 不兼容的参数和返回类型。该 lint 是一个关于这些类型都不应该使用的警告。该 lint 应该提供问题的描述，并尽可能提示如何解决问题。
 
 ## incomplete-features
 
-The `incomplete_features` lint detects unstable features enabled with
-the [`feature` attribute] that may function improperly in some or all
-cases.
+`incomplete_features` lint 检测使用 [`feature` 属性][`feature` attribute]启用的不稳定 feature，这可能在一些或全部情况下不能正常工作。
 
 [`feature` attribute]: https://doc.rust-lang.org/nightly/unstable-book/
 
@@ -1844,15 +1837,11 @@ warning: the feature `generic_const_exprs` is incomplete and may not be safe to 
 
 ### Explanation
 
-Although it is encouraged for people to experiment with unstable
-features, some of them are known to be incomplete or faulty. This lint
-is a signal that the feature has not yet been finished, and you may
-experience problems with it.
+尽管鼓励人们尝试不稳定的性能，其中的一些已知不完整或有缺陷。该 lint 是一个关于 feature 尚未完成的信号，并且你可能会遇到一些问题。
 
 ## indirect-structural-match
 
-The `indirect_structural_match` lint detects a `const` in a pattern
-that manually implements [`PartialEq`] and [`Eq`].
+`indirect_structural_match` lint 检测手动实现 [`PartialEq`] 和 [`Eq`] 模式中的 `const`。
 
 [`PartialEq`]: https://doc.rust-lang.org/std/cmp/trait.PartialEq.html
 [`Eq`]: https://doc.rust-lang.org/std/cmp/trait.Eq.html
@@ -1899,18 +1888,14 @@ note: the lint level is defined here
 
 ### Explanation
 
-The compiler unintentionally accepted this form in the past. This is a
-[future-incompatible] lint to transition this to a hard error in the
-future. See [issue #62411] for a complete description of the problem,
-and some possible solutions.
+编译器过去无意间接受了此种形式。这是个[将来不兼容][future-incompatible]的 lint ，将来会转化为固有错误。完整的问题描述和一些可能的解决办法请参阅 [issue #62411]。
 
 [issue #62411]: https://github.com/rust-lang/rust/issues/62411
 [future-incompatible]: ../index.md#future-incompatible-lints
 
 ## inline-no-sanitize
 
-The `inline_no_sanitize` lint detects incompatible use of
-[`#[inline(always)]`][inline] and [`#[no_sanitize(...)]`][no_sanitize].
+`inline_no_sanitize` lint 检测 [`#[inline(always)]`][inline] 和 [`#[no_sanitize(...)]`][no_sanitize] 之间的不兼容性。
 
 [inline]: https://doc.rust-lang.org/reference/attributes/codegen.html#the-inline-attribute
 [no_sanitize]: https://doc.rust-lang.org/nightly/unstable-book/language-features/no-sanitize.html
@@ -1949,9 +1934,7 @@ note: inlining requested here
 
 ### Explanation
 
-The use of the [`#[inline(always)]`][inline] attribute prevents the
-the [`#[no_sanitize(...)]`][no_sanitize] attribute from working.
-Consider temporarily removing `inline` attribute.
+[`#[inline(always)]`][inline] 属性的使用会阻止 [`#[no_sanitize(...)]`][no_sanitize] 属性正常工作。考虑暂时移除 `inline` 属性。
 
 ## internal-features
 
@@ -2146,8 +2129,7 @@ even itself – so those comparisons are always false.
 
 ## invalid-value
 
-The `invalid_value` lint detects creating a value that is not valid,
-such as a null reference.
+`invalid_value` lint 检测创建的无效值，例如 NULL 引用。
 
 ### Example
 
@@ -2177,14 +2159,10 @@ warning: the type `&i32` does not permit zero-initialization
 
 ### Explanation
 
-In some situations the compiler can detect that the code is creating
-an invalid value, which should be avoided.
+一些情况下，编译器可以检测到代码创建了无效的值，这应该是避免的。
 
-In particular, this lint will check for improper use of
-[`mem::zeroed`], [`mem::uninitialized`], [`mem::transmute`], and
-[`MaybeUninit::assume_init`] that can cause [undefined behavior]. The
-lint should provide extra information to indicate what the problem is
-and a possible solution.
+这个 lint 会检测 [`mem::zeroed`]，[`mem::uninitialized`]，[`mem::transmute`] 和 [`MaybeUninit::assume_init`] 的不当使用，这些不当使用可能导致[未定义行为][undefined behavior]。该 lint 应提供额外信息，以指示存在什么问题以及可能的解决方案。
+
 
 [`mem::zeroed`]: https://doc.rust-lang.org/std/mem/fn.zeroed.html
 [`mem::uninitialized`]: https://doc.rust-lang.org/std/mem/fn.uninitialized.html
@@ -2194,8 +2172,7 @@ and a possible solution.
 
 ## irrefutable-let-patterns
 
-The `irrefutable_let_patterns` lint detects [irrefutable patterns]
-in [`if let`]s, [`while let`]s, and `if let` guards.
+`irrefutable_let_patterns` lint 检测 在 [`if let`] 和 [`while let`] 语句中的[不可辩驳模式][irrefutable patterns]。
 
 ### Example
 
@@ -2222,16 +2199,9 @@ warning: irrefutable `if let` pattern
 
 ### Explanation
 
-There usually isn't a reason to have an irrefutable pattern in an
-`if let` or `while let` statement, because the pattern will always match
-successfully. A [`let`] or [`loop`] statement will suffice. However,
-when generating code with a macro, forbidding irrefutable patterns
-would require awkward workarounds in situations where the macro
-doesn't know if the pattern is refutable or not. This lint allows
-macros to accept this form, while alerting for a possibly incorrect
-use in normal code.
+通常没理由在 `if let` 或 `while let` 语句中使用不可辩驳模式，因为这样的话模式总是会匹配成功，要是这样的话 [`let`] 或 [`loop`] 语句就足够了。然而，当用宏生成代码时，在宏不知道模式是否是可辨驳的情况下，禁止不可辩驳模式是一种笨拙的解决办法。该 lint 允许宏接受此形式，并警告普通代码这可能是不正确的使用。
 
-See [RFC 2086] for more details.
+更多细节请参阅 [RFC 2086]。
 
 [irrefutable patterns]: https://doc.rust-lang.org/reference/patterns.html#refutability
 [`if let`]: https://doc.rust-lang.org/reference/expressions/if-expr.html#if-let-expressions
@@ -2272,8 +2242,7 @@ user to resolve them in code.
 
 ## late-bound-lifetime-arguments
 
-The `late_bound_lifetime_arguments` lint detects generic lifetime
-arguments in path segments with late bound lifetime parameters.
+`late_bound_lifetime_arguments` lint 检测后绑定生命周期参数路径段中的泛型生命周期参数。
 
 ### Example
 
@@ -2309,14 +2278,7 @@ warning: cannot specify lifetime arguments explicitly if late bound lifetime par
 
 ### Explanation
 
-It is not clear how to provide arguments for early-bound lifetime
-parameters if they are intermixed with late-bound parameters in the
-same list. For now, providing any explicit arguments will trigger this
-lint if late-bound parameters are present, so in the future a solution
-can be adopted without hitting backward compatibility issues. This is
-a [future-incompatible] lint to transition this to a hard error in the
-future. See [issue #42868] for more details, along with a description
-of the difference between early and late-bound parameters.
+如果将先绑定生命周期参数与同一参数列表中的后绑定生命周期参数混合在一起，则不清楚如何为其提供参数。目前，如果存在后绑定参数，提供显式参数将触发此 lint。因此将来解决方案可以被采用而不会遇到向后兼容性问题。这是个[将来不兼容][future-incompatible]的 lint，将来会转化为固有错误。更多细节以及先绑定和后绑定之间差异的描述请参阅 [issue #42868]。
 
 [issue #42868]: https://github.com/rust-lang/rust/issues/42868
 [future-incompatible]: ../index.md#future-incompatible-lints
@@ -2412,8 +2374,7 @@ Mapping to `()` is almost always a mistake.
 
 ## mixed-script-confusables
 
-The `mixed_script_confusables` lint detects visually confusable
-characters in identifiers between different [scripts].
+`mixed_script_confusables` lint 检测在不同[脚本]标识符间的可视性易混淆的字符。
 
 [scripts]: https://en.wikipedia.org/wiki/Script_(Unicode)
 
@@ -2441,19 +2402,11 @@ warning: the usage of Script Group `Japanese, Katakana` in this crate consists s
 
 ### Explanation
 
-This lint warns when characters between different scripts may appear
-visually similar, which can cause confusion.
+这个 lint 会发出警告，当不同脚本之间的字符在视觉上可能相似时，这会引起混淆。
 
-If the crate contains other identifiers in the same script that have
-non-confusable characters, then this lint will *not* be issued. For
-example, if the example given above has another identifier with
-katakana characters (such as `let カタカナ = 123;`), then this indicates
-that you are intentionally using katakana, and it will not warn about
-it.
+如果 crate 包含相同脚本中的其他标识符，且具有不混淆的字符，那么将*不会*发出这个lint警告。例如，如果上面给出的示例中另一个标识符含有片假名字符（如`let カタカナ = 123;`），那么这表明您是有意使用片假名，因此它不会对此发出警告。
 
-Note that the set of confusable characters may change over time.
-Beware that if you "forbid" this lint that existing code may fail in
-the future.
+请注意，易混淆字符集可能会随时间而变化。注意，如果你将该 lint 等级调整为 “禁止”，则现有代码可能在将来会编译失败。
 
 ## named-arguments-used-positionally
 
@@ -2505,8 +2458,7 @@ For backwards compatibility, this is not a hard error.
 
 ## no-mangle-generic-items
 
-The `no_mangle_generic_items` lint detects generic items that must be
-mangled.
+`no_mangle_generic_items` lint 用于检测必须使用混淆的泛型项。
 
 ### Example
 
@@ -2536,16 +2488,13 @@ warning: functions generic over types or consts must be mangled
 
 ### Explanation
 
-A function with generics must have its symbol mangled to accommodate
-the generic parameter. The [`no_mangle` attribute] has no effect in
-this situation, and should be removed.
+使用泛型的函数必须将其符号混淆以适应泛型参数。[`no_mangle`][`no_mangle` attribute] 属性在这种情况下没有效果，应该被移除。
 
 [`no_mangle` attribute]: https://doc.rust-lang.org/reference/abi.html#the-no_mangle-attribute
 
 ## non-camel-case-types
 
-The `non_camel_case_types` lint detects types, variants, traits and
-type parameters that don't have camel case names.
+`non_camel_case_types` lint 检测没有使用驼峰命名的类型、变量、trait 和类型参数。
 
 ### Example
 
@@ -2568,11 +2517,7 @@ warning: type `my_struct` should have an upper camel case name
 
 ### Explanation
 
-The preferred style for these identifiers is to use "camel case", such
-as `MyStruct`, where the first letter should not be lowercase, and
-should not use underscores between letters. Underscores are allowed at
-the beginning and end of the identifier, as well as between
-non-letters (such as `X86_64`).
+标识符的首选样式是使用 ”驼峰大小写“，例如 `MyStruct`，其中首字母不应小写，且字母之间不应使用下划线。在标识符的开头和结尾以及非字母之间（例如 `X86_64`），都可以使用下划线。
 
 ## non-fmt-panics
 
@@ -2637,8 +2582,7 @@ Rust 2021 always interprets the first argument as format string.
 
 ## non-shorthand-field-patterns
 
-The `non_shorthand_field_patterns` lint detects using `Struct { x: x }`
-instead of `Struct { x }` in a pattern.
+`non_shorthand_field_patterns` lint 检测在模式中使用 `Struct { x: x }` 而非 `Struct { x }`。
 
 ### Example
 
@@ -2683,13 +2627,11 @@ warning: the `y:` in this pattern is redundant
 
 ### Explanation
 
-The preferred style is to avoid the repetition of specifying both the
-field name and the binding name if both identifiers are the same.
+首选的样式是避免在两个标识符相同的情况下重复指定字段名和绑定名。
 
 ## non-snake-case
 
-The `non_snake_case` lint detects variables, methods, functions,
-lifetime parameters and modules that don't have snake case names.
+`non_snake_case` lint 检测没有使用蛇形命名的变量、方法、函数、生命周期参数和模块。
 
 ### Example
 
@@ -2712,14 +2654,11 @@ warning: variable `MY_VALUE` should have a snake case name
 
 ### Explanation
 
-The preferred style for these identifiers is to use "snake case",
-where all the characters are in lowercase, with words separated with a
-single underscore, such as `my_value`.
+标识符首选样式是使用蛇形命名，即所有字符均为小写，单词之间用单个下划线分隔，例如 `my_value`。
 
 ## non-upper-case-globals
 
-The `non_upper_case_globals` lint detects static items that don't have
-uppercase identifiers.
+`non_upper_case_globals` lint 检测没有使用大写标识符的 static 项。
 
 ### Example
 
@@ -2742,15 +2681,11 @@ warning: static variable `max_points` should have an upper case name
 
 ### Explanation
 
-The preferred style is for static item names to use all uppercase
-letters such as `MAX_POINTS`.
+静态项命名的首选样式是都使用大写，例如 `MAX_POINTS`。
 
 ## nontrivial-structural-match
 
-The `nontrivial_structural_match` lint detects constants that are used in patterns,
-whose type is not structural-match and whose initializer body actually uses values
-that are not structural-match. So `Option<NotStructuralMatch>` is ok if the constant
-is just `None`.
+`nontrivial_structural_match` lint 用于检测在模式中使用的常量，其类型不是结构匹配，并且其初始化主体实际使用了非结构匹配的值。因此，如果常量仅为`None`，则 `Option<NotStructuralMatch>` 是可以的。
 
 ### Example
 
@@ -2790,10 +2725,7 @@ note: the lint level is defined here
 
 ### Explanation
 
-Previous versions of Rust accepted constants in patterns, even if those constants' types
-did not have `PartialEq` derived. Thus the compiler falls back to runtime execution of
-`PartialEq`, which can report that two constants are not equal even if they are
-bit-equivalent.
+早期版本的 Rust 接受在模式中使用常量，即使这些常量的类型没有派生 `PartialEq`。因此，编译器会回退到运行时执行 `PartialEq`，这可能导致即使两个常量位等价，也会报告它们不相等。
 
 ## noop-method-call
 
@@ -2935,7 +2867,7 @@ with `..=` the left and right bounds are inclusive.
 
 ## path-statements
 
-The `path_statements` lint detects path statements with no effect.
+`path_statements` lint 检测无效的路径语句（path statements）。
 
 ### Example
 
@@ -2960,7 +2892,7 @@ warning: path statement with no effect
 
 ### Explanation
 
-It is usually a mistake to have a statement that has no effect.
+通常来说，一个没有任何效果的语句是错误的。
 
 ## private-bounds
 
@@ -3060,8 +2992,7 @@ the item will be unusable from outer modules due to type privacy.
 
 ## redundant-semicolons
 
-The `redundant_semicolons` lint detects unnecessary trailing
-semicolons.
+`redundant_semicolons` lint 检测不必要的尾部分号。
 
 ### Example
 
@@ -3084,8 +3015,7 @@ warning: unnecessary trailing semicolon
 
 ### Explanation
 
-Extra semicolons are not needed, and may be removed to avoid confusion
-and visual clutter.
+多余的分号是不需要的，可以将其删除，以避免混淆和视觉混乱。
 
 ## refining-impl-trait
 
@@ -3129,8 +3059,7 @@ written in the trait signature.
 
 ## renamed-and-removed-lints
 
-The `renamed_and_removed_lints` lint detects lints that have been
-renamed or removed.
+`renamed_and_removed_lints` lint 用于检测已被重命名或移除的 lint。
 
 ### Example
 
@@ -3153,9 +3082,7 @@ warning: lint `raw_pointer_derive` has been removed: using derive with raw point
 
 ### Explanation
 
-To fix this, either remove the lint or use the new name. This can help
-avoid confusion about lints that are no longer valid, and help
-maintain consistency for renamed lints.
+要修复此问题，要么移除此 lint，要么使用推荐的新名字。这可以帮助避免与不再有效的 lint 的混淆，并且保持重命名后的 lint 的一致性。
 
 ## repr-transparent-external-private-fields
 
@@ -3322,8 +3249,7 @@ one as a module is not allowed.
 
 ## stable-features
 
-The `stable_features` lint detects a [`feature` attribute] that
-has since been made stable.
+`stable_features` lint 用于检测已经被标记为稳定的[ `feature` 属性][`feature` attribute]。
 
 [`feature` attribute]: https://doc.rust-lang.org/nightly/unstable-book/
 
@@ -3349,9 +3275,7 @@ warning: the feature `test_accepted_feature` has been stable since 1.0.0 and no 
 
 ### Explanation
 
-When a feature is stabilized, it is no longer necessary to include a
-`#![feature]` attribute for it. To fix, simply remove the
-`#![feature]` attribute.
+当一个 feature 稳定后，就不再需要包含 `#![feature]` 属性了。要修复此问题，只需简单地移除 `#![feature]` 属性就行。
 
 ## suspicious-auto-trait-impls
 
@@ -3434,8 +3358,7 @@ reference, instead of cloning the inner type which should be what was intended.
 
 ## temporary-cstring-as-ptr
 
-The `temporary_cstring_as_ptr` lint detects getting the inner pointer of
-a temporary `CString`.
+`temporary_cstring_as_ptr` lint 检测临时获取 `CString` 的内部指针。
 
 ### Example
 
@@ -3464,16 +3387,11 @@ warning: getting the inner pointer of a temporary `CString`
 
 ### Explanation
 
-The inner pointer of a `CString` lives only as long as the `CString` it
-points to. Getting the inner pointer of a *temporary* `CString` allows the `CString`
-to be dropped at the end of the statement, as it is not being referenced as far as the typesystem
-is concerned. This means outside of the statement the pointer will point to freed memory, which
-causes undefined behavior if the pointer is later dereferenced.
+`CString` 的内部指针的生命周期仅限于它所指向的 `CString`。获取*临时* `CString` 的内部指针允许在语句结束时释放 `CString`，因为就类型系统而言，它没有被引用。这意味着在语句之外，指针将指向已释放的内存，如果稍后对指针进行解引用，就会导致未定义的行为。
 
 ## trivial-bounds
 
-The `trivial_bounds` lint detects trait bounds that don't depend on
-any type parameters.
+`trivial_bounds` lint 检测没有依赖任何参数的 triat 约束。
 
 ### Example
 
@@ -3497,25 +3415,16 @@ warning: trait bound i32: Copy does not depend on any type or lifetime parameter
 
 ### Explanation
 
-Usually you would not write a trait bound that you know is always
-true, or never true. However, when using macros, the macro may not
-know whether or not the constraint would hold or not at the time when
-generating the code. Currently, the compiler does not alert you if the
-constraint is always true, and generates an error if it is never true.
-The `trivial_bounds` feature changes this to be a warning in both
-cases, giving macros more freedom and flexibility to generate code,
-while still providing a signal when writing non-macro code that
-something is amiss.
+通常，你不会写出一个你知道它永远是对的，或者永远不对的 trait 约束。然而，使用宏时，宏可能不知道在生成代码时约束是否成立。当前，如果约束始终正确，编译器不会警告你；如果约束不对，编译器会生成错误。在这两种情况下，`trivial_bounds` feature 都将其更改为警告，从而使得宏有更大的自由度和灵活性来生成代码，同时在产生存在问题的非宏代码时会发出相应信号表明存在问题。
 
-See [RFC 2056] for more details. This feature is currently only
-available on the nightly channel, see [tracking issue #48214].
+更多细节请参阅 [RFC 2056]。该 feature 目前仅在 nightly channel 有效，跟踪问题请参阅 [tracking issue #48214]。
 
 [RFC 2056]: https://github.com/rust-lang/rfcs/blob/master/text/2056-allow-trivial-where-clause-constraints.md
 [tracking issue #48214]: https://github.com/rust-lang/rust/issues/48214
 
 ## type-alias-bounds
 
-The `type_alias_bounds` lint detects bounds in type aliases.
+`type_alias_bounds` lint 检测类型别名中的约束。
 
 ### Example
 
@@ -3543,14 +3452,11 @@ help: the bound will not be checked when the type alias is used, and should be r
 
 ### Explanation
 
-The trait bounds in a type alias are currently ignored, and should not
-be included to avoid confusion. This was previously allowed
-unintentionally; this may become a hard error in the future.
+类型别名中的 trait 约束 当前是被忽略的，并且不应该包含在内以免造成混淆。以前会无意中允许这样做，这在将来可能会转换为固有错误。
 
 ## tyvar-behind-raw-pointer
 
-The `tyvar_behind_raw_pointer` lint detects raw pointer to an
-inference variable.
+`tyvar_behind_raw_pointer` lint 检测指向推断变量（inference variable）的原生指针（raw pointer）。
 
 ### Example
 
@@ -3579,15 +3485,9 @@ warning: type annotations needed
 
 ### Explanation
 
-This kind of inference was previously allowed, but with the future
-arrival of [arbitrary self types], this can introduce ambiguity. To
-resolve this, use an explicit type instead of relying on type
-inference.
+这种推断以前是允许的，但是随着将来 [arbitrary self type] 的引入，这可能会引起歧义。要解决此问题，请使用显式类型而非依赖类型推导。
 
-This is a [future-incompatible] lint to transition this to a hard
-error in the 2018 edition. See [issue #46906] for more details. This
-is currently a hard-error on the 2018 edition, and is "warn" by
-default in the 2015 edition.
+这是个[将来不兼容][future-incompatible]的 lint，在 2018 版本中会转化为固有错误。更多细节请参阅 [issue #46906]。目前在 2018 版本中是个固有错误，在 2015 版本中默认等级是“警告”。
 
 [arbitrary self types]: https://github.com/rust-lang/rust/issues/44874
 [issue #46906]: https://github.com/rust-lang/rust/issues/46906
@@ -3595,8 +3495,7 @@ default in the 2015 edition.
 
 ## uncommon-codepoints
 
-The `uncommon_codepoints` lint detects uncommon Unicode codepoints in
-identifiers.
+`uncommon_codepoints` lint 检测在标识符中不常见的 Unicode 字符码（codepoint）。
 
 ### Example
 
@@ -3620,24 +3519,17 @@ warning: identifier contains uncommon Unicode codepoints
 
 ### Explanation
 
-This lint warns about using characters which are not commonly used, and may
-cause visual confusion.
+这个 lint 会警告你使用了非常规字符，可能会导致视觉混淆。
 
-This lint is triggered by identifiers that contain a codepoint that is
-not part of the set of "Allowed" codepoints as described by [Unicode®
-Technical Standard #39 Unicode Security Mechanisms Section 3.1 General
-Security Profile for Identifiers][TR39Allowed].
+该 lint 由包含不属于 “Allowed” 字符码集的字符码的标识符所触发，该 “Allowed” 字符码集被描述为 [Unicode® Technical Standard #39 Unicode Security Mechanisms Section 3.1 General Security Profile for Identifiers][TR39Allowed]。
 
-Note that the set of uncommon codepoints may change over time. Beware
-that if you "forbid" this lint that existing code may fail in the
-future.
+请注意，非常规代码点的集合可能会随时间变化。如果你 “禁止” 了这个 lint，现有的代码可能在将来失效。因此要小心处理。
 
 [TR39Allowed]: https://www.unicode.org/reports/tr39/#General_Security_Profile
 
 ## unconditional-recursion
 
-The `unconditional_recursion` lint detects functions that cannot
-return without calling themselves.
+`unconditional_recursion` lint 用于检测那些在不调用自身就无法返回的函数。
 
 ### Example
 
@@ -3665,9 +3557,7 @@ warning: function cannot return without recursing
 
 ### Explanation
 
-It is usually a mistake to have a recursive call that does not have
-some condition to cause it to terminate. If you really intend to have
-an infinite loop, using a `loop` expression is recommended.
+进行没有一定条件终止的递归调用通常是个错误。如果确实想要进行无限循环，推荐使用 `loop` 表达式。
 
 ## undefined-naked-function-abi
 
@@ -3836,7 +3726,7 @@ annotation will function as a no-op.
 
 ## uninhabited-static
 
-The `uninhabited_static` lint detects uninhabited statics.
+`uninhabited_static` lint 检测 uninhabited  静态项。
 
 ### Example
 
@@ -3865,14 +3755,11 @@ warning: static of uninhabited type
 
 ### Explanation
 
-Statics with an uninhabited type can never be initialized, so they are impossible to define.
-However, this can be side-stepped with an `extern static`, leading to problems later in the
-compiler which assumes that there are no initialized uninhabited places (such as locals or
-statics). This was accidentally allowed, but is being phased out.
+具有未初始化类型的静态变量永远不能被初始化，所以它们是不可能被定义的。然而，这可以通过 `extern static` 来规避，导致编译器在后续阶段出现问题，因为它假设没有初始化的静态变量或局部变量。这种情况是意外被允许的，但正在逐步被淘汰。
 
 ## unknown-lints
 
-The `unknown_lints` lint detects unrecognized lint attributes.
+`unknown_lints` lint 检测无法识别的 lint 属性。
 
 ### Example
 
@@ -3895,10 +3782,7 @@ warning: unknown lint: `not_a_real_lint`
 
 ### Explanation
 
-It is usually a mistake to specify a lint that does not exist. Check
-the spelling, and check the lint listing for the correct name. Also
-consider if you are using an old version of the compiler, and the lint
-is only available in a newer version.
+指定一个不存在的 lint 通常是个错误。检查拼写和 lint 列表中的正确名称是否相同。同时考虑是否是在使用旧版本的编译器，而此 lint 仅在新版本中可用。
 
 ## unknown-or-malformed-diagnostic-attributes
 
@@ -3936,9 +3820,7 @@ is only available in a newer version.
 
 ## unnameable-test-items
 
-The `unnameable_test_items` lint detects [`#[test]`][test] functions
-that are not able to be run by the test harness because they are in a
-position where they are not nameable.
+`unnameable_test_items` lint 检测不能由测试工具运行的 [`#[test]`][test] 函数，因为它们处于不可命名的地方。
 
 [test]: https://doc.rust-lang.org/reference/attributes/testing.html#the-test-attribute
 
@@ -3970,20 +3852,14 @@ warning: cannot test inner items
 
 ### Explanation
 
-In order for the test harness to run a test, the test function must be
-located in a position where it can be accessed from the crate root.
-This generally means it must be defined in a module, and not anywhere
-else such as inside another function. The compiler previously allowed
-this without an error, so a lint was added as an alert that a test is
-not being used. Whether or not this should be allowed has not yet been
-decided, see [RFC 2471] and [issue #36629].
+为了让测试工具能够进行测试，测试函数必须位于可以从 crate 根访问的位置。通常来说，这意味着必须在模块中定义它，而不是在其他地方，例如在另一个函数中定义。编译器以前允许这样做而没有发出错误消息，因此添加了一个 lint 发出未使用测试的警告。如今尚未确定是否应该允许这么做，请参阅 [RFC 2471] 和 [issue #36629]。
 
 [RFC 2471]: https://github.com/rust-lang/rfcs/pull/2471#issuecomment-397414443
 [issue #36629]: https://github.com/rust-lang/rust/issues/36629
 
 ## unreachable-code
 
-The `unreachable_code` lint detects unreachable code paths.
+`unreachable_code` lint 检测无法到达的代码路径。
 
 ### Example
 
@@ -4011,12 +3887,11 @@ warning: unreachable statement
 
 ### Explanation
 
-Unreachable code may signal a mistake or unfinished code. If the code
-is no longer in use, consider removing it.
+无法到达的代码可能意味着是个错误或代码未完成。如果代码不再使用，请考虑移除它。
 
 ## unreachable-patterns
 
-The `unreachable_patterns` lint detects unreachable patterns.
+`unreachable_patterns` lint 检测无法到达的模式。
 
 ### Example
 
@@ -4045,15 +3920,11 @@ warning: unreachable pattern
 
 ### Explanation
 
-This usually indicates a mistake in how the patterns are specified or
-ordered. In this example, the `y` pattern will always match, so the
-five is impossible to reach. Remember, match arms match in order, you
-probably wanted to put the `5` case above the `y` case.
+这通常意味着模式的指定或顺序有误。在上例中，`y` 模式总是会匹配，所以 5 是不可能到达的。记住，match 分支是按顺序匹配的，你可以将 `5` 调整到 `y` 的上面。
 
 ## unstable-name-collisions
 
-The `unstable_name_collisions` lint detects that you have used a name
-that the standard library plans to add in the future.
+`unstable_name_collisions` lint 检测使用了标准库计划在将来添加的名称。
 
 ### Example
 
@@ -4088,16 +3959,7 @@ warning: a method with this name may be added to the standard library in the fut
 
 ### Explanation
 
-When new methods are added to traits in the standard library, they are
-usually added in an "unstable" form which is only available on the
-[nightly channel] with a [`feature` attribute]. If there is any
-preexisting code which extends a trait to have a method with the same
-name, then the names will collide. In the future, when the method is
-stabilized, this will cause an error due to the ambiguity. This lint
-is an early-warning to let you know that there may be a collision in
-the future. This can be avoided by adding type annotations to
-disambiguate which trait method you intend to call, such as
-`MyIterator::is_sorted(my_iter)` or renaming or removing the method.
+当标准库中的 trait 添加了新方法之时，它们通常在具有 [`feature` 属性][`feature` attribute] 的 [nightly channel] 中以 “unstable” 形式添加。如果有任何之前已存在的代码扩展了具有同名方法的 trait，则这些名称将会发生冲突。将来，当方法稳定后，由于歧义将会造成错误。该 lint 是一个让你知道将来可能会发生碰撞的预警。可以通过添加类型注解来消除要调用的 trait 方法的歧义避免此歧义，例如 `MyIterator::is_sorted(my_iter)` 或重名或删除该方法。
 
 [nightly channel]: https://doc.rust-lang.org/book/appendix-07-nightly-rust.html
 [`feature` attribute]: https://doc.rust-lang.org/nightly/unstable-book/
@@ -4202,8 +4064,7 @@ compiler.
 
 ## unused-allocation
 
-The `unused_allocation` lint detects unnecessary allocations that can
-be eliminated.
+`unused_allocation` lint 检测可以被消除的不必要的（内存）分配。
 
 ### Example
 
@@ -4228,13 +4089,11 @@ warning: unnecessary allocation, use `&` instead
 
 ### Explanation
 
-When a `box` expression is immediately coerced to a reference, then
-the allocation is unnecessary, and a reference (using `&` or `&mut`)
-should be used instead to avoid the allocation.
+当一个 `box` 表达式立即被强转为引用时，说明这个分配时不必要的，且应该使用引用（ 使用 `&` 或 `&mut` ）来避免引用。
 
 ## unused-assignments
 
-The `unused_assignments` lint detects assignments that will never be read.
+`unused_assignments` lint 检测从未被读取的赋值。
 
 ### Example
 
@@ -4259,10 +4118,7 @@ warning: value assigned to `x` is never read
 
 ### Explanation
 
-Unused assignments may signal a mistake or unfinished code. If the
-variable is never used after being assigned, then the assignment can
-be removed. Variables with an underscore prefix such as `_x` will not
-trigger this lint.
+未使用的赋值可能意味着是个错误或未完成的代码。如果变量自赋值之后就从未被使用，那么这个赋值也可以被移除。带有下划线前缀的变量例如 `_x` 将不会触发此 lint 。
 
 ## unused-associated-type-bounds
 
@@ -4301,8 +4157,7 @@ objects, associated types can be removed from the trait object.
 
 ## unused-attributes
 
-The `unused_attributes` lint detects attributes that were not used by
-the compiler.
+`unused_attributes` lint 检测编译器未使用的属性。
 
 ### Example
 
@@ -4325,20 +4180,13 @@ warning: `#[ignore]` only has an effect on functions
 
 ### Explanation
 
-Unused [attributes] may indicate the attribute is placed in the wrong
-position. Consider removing it, or placing it in the correct position.
-Also consider if you intended to use an _inner attribute_ (with a `!`
-such as `#![allow(unused)]`) which applies to the item the attribute
-is within, or an _outer attribute_ (without a `!` such as
-`#[allow(unused)]`) which applies to the item *following* the
-attribute.
+未使用的[属性][attributes]可能意味着属性放在了错误的位置。考虑移除它，或将其放在正确的地方。还应考虑是否使用属性所在项的内部属性（用 `!`，例如 `#![allow(unused)]`），或者应用于属性后面项的外部属性（没有 `!`，例如 `[allow(unused)]`）。
 
 [attributes]: https://doc.rust-lang.org/reference/attributes.html
 
 ## unused-braces
 
-The `unused_braces` lint detects unnecessary braces around an
-expression.
+`unused_braces` lint 检测表达式周边不必要的大括号表达式。
 
 ### Example
 
@@ -4368,8 +4216,7 @@ help: remove these braces
 
 ### Explanation
 
-The braces are not needed, and should be removed. This is the
-preferred style for writing these expressions.
+该大括号是不需要的，应该将其移除。这是编写这些表达式的首选样式。
 
 ## unused-comparisons
 
@@ -4402,8 +4249,7 @@ warning: comparison is useless due to type limits
 
 ## unused-doc-comments
 
-The `unused_doc_comments` lint detects doc comments that aren't used
-by `rustdoc`.
+`unused_doc_comments` lint 检测并未用于 `rustdoc` 的文档注释。
 
 ### Example
 
@@ -4430,25 +4276,21 @@ warning: unused doc comment
 
 ### Explanation
 
-`rustdoc` does not use doc comments in all positions, and so the doc
-comment will be ignored. Try changing it to a normal comment with `//`
-to avoid the warning.
+`rustdoc` 并不会使用所有地方的文档注释，因此某些文档注释将会被忽略。尝试使用 `//` 将其改为普通注释，以免出现警告。
 
 ## unused-features
 
-The `unused_features` lint detects unused or unknown features found in
-crate-level [`feature` attributes].
+`unused_features` lint 用于检测在 crate-level [`feature`属性][`feature` attributes] 中发现的未使用或未知的特性。
 
 [`feature` attributes]: https://doc.rust-lang.org/nightly/unstable-book/
 
-Note: This lint is currently not functional, see [issue #44232] for
-more details.
+注意：该 lint 目前还无法运作，更多细节请参阅 [issue #44232]。
 
 [issue #44232]: https://github.com/rust-lang/rust/issues/44232
 
 ## unused-imports
 
-The `unused_imports` lint detects imports that are never used.
+`unused_imports` lint 检测从未被使用的 import 项。
 
 ### Example
 
@@ -4471,14 +4313,11 @@ warning: unused import: `std::collections::HashMap`
 
 ### Explanation
 
-Unused imports may signal a mistake or unfinished code, and clutter
-the code, and should be removed. If you intended to re-export the item
-to make it available outside of the module, add a visibility modifier
-like `pub`.
+未使用的 import 项可能意味着是个错误或未完成的代码，并且会使代码混乱，应该将其移除。如果要重导出项使得在模块外可用，请添加可见修饰符如 `pub` 。
 
 ## unused-labels
 
-The `unused_labels` lint detects [labels] that are never used.
+`unused_labels` lint  检测未使用的 [标签][labels]。
 
 [labels]: https://doc.rust-lang.org/reference/expressions/loop-expr.html#loop-labels
 
@@ -4503,17 +4342,13 @@ warning: unused label
 
 ### Explanation
 
-Unused labels may signal a mistake or unfinished code. To silence the
-warning for the individual label, prefix it with an underscore such as
-`'_my_label:`.
+未使用的标记可能意味着是个错误或未完成的代码。要使单个标记的警告沉默，在前面添加下划线，如 `'_my_label:`。
 
 ## unused-macros
 
-The `unused_macros` lint detects macros that were not used.
+`unused_macros` lint 用于检测未被使用的宏。
 
-Note that this lint is distinct from the `unused_macro_rules` lint,
-which checks for single rules that never match of an otherwise used
-macro, and thus never expand.
+注意，这个 lint 与 `unused_macro_rules` lint 是不同的，后者检查的是其他已使用的宏中单个规则不匹配，因此不展开的情况。
 
 ### Example
 
@@ -4541,17 +4376,13 @@ warning: unused macro definition: `unused`
 
 ### Explanation
 
-Unused macros may signal a mistake or unfinished code. To silence the
-warning for the individual macro, prefix the name with an underscore
-such as `_my_macro`. If you intended to export the macro to make it
-available outside of the crate, use the [`macro_export` attribute].
+未使用的宏可能意味着是个错误或未完成的代码。使单个宏的该警告沉默，在前面添加下划线，如 `_my_macro`。如果想要导出宏以使其在 crate 之外可用，请使用 [`macro_export` 属性][`macro_export` attribute]。
 
 [`macro_export` attribute]: https://doc.rust-lang.org/reference/macros-by-example.html#path-based-scope
 
 ## unused-must-use
 
-The `unused_must_use` lint detects unused result of a type flagged as
-`#[must_use]`.
+`unused_must_use` lint 检测被标记为 `#[must_use]` 却没被使用的类型的 result 。
 
 ### Example
 
@@ -4585,15 +4416,13 @@ help: use `let _ = ...` to ignore the resulting value
 
 ### Explanation
 
-The `#[must_use]` attribute is an indicator that it is a mistake to
-ignore the value. See [the reference] for more details.
+`#[must_use]` 属性是一个指示器，它表明忽略该值是一个错误。详见[参考][the reference]获取更多细节。
 
 [the reference]: https://doc.rust-lang.org/reference/attributes/diagnostics.html#the-must_use-attribute
 
 ## unused-mut
 
-The `unused_mut` lint detects mut variables which don't need to be
-mutable.
+`unused_mut` lint 不需要可变的可变变量。
 
 ### Example
 
@@ -4618,13 +4447,11 @@ warning: variable does not need to be mutable
 
 ### Explanation
 
-The preferred style is to only mark variables as `mut` if it is
-required.
+首选样式是仅在需要时才将变量标记为 mut。
 
 ## unused-parens
 
-The `unused_parens` lint detects `if`, `match`, `while` and `return`
-with parentheses; they do not need them.
+`unused_parens` lint 检测 `if`，`match`，`while` 和 `return` 带有圆括号，它们不需要圆括号。
 
 ### Examples
 
@@ -4652,12 +4479,11 @@ help: remove these parentheses
 
 ### Explanation
 
-The parentheses are not needed, and should be removed. This is the
-preferred style for writing these expressions.
+圆括号是不需要的，应该被移除。这是这些表达式的首选样式。
 
 ## unused-unsafe
 
-The `unused_unsafe` lint detects unnecessary use of an `unsafe` block.
+`unused_unsafe` lint 检测不必要的 `unsafe` 块的使用。
 
 ### Example
 
@@ -4680,13 +4506,11 @@ warning: unnecessary `unsafe` block
 
 ### Explanation
 
-If nothing within the block requires `unsafe`, then remove the
-`unsafe` marker because it is not required and may cause confusion.
+如果块中没有内容需要 `unsafe`，应该移除 `unsafe` 标记，因为其不是必要并且可能会造成混乱。
 
 ## unused-variables
 
-The `unused_variables` lint detects variables which are not used in
-any way.
+`unused_variables` lint 检测未以任何方式使用的变量。
 
 ### Example
 
@@ -4709,9 +4533,7 @@ warning: unused variable: `x`
 
 ### Explanation
 
-Unused variables may signal a mistake or unfinished code. To silence
-the warning for the individual variable, prefix it with an underscore
-such as `_x`.
+未使用变量可能意味着是个错误或未完成的代码。要对单个变量使该警告沉默，前缀加上下划线例如 `_x` 。
 
 ## useless-ptr-null-checks
 
@@ -4751,8 +4573,7 @@ will always return false.
 
 ## warnings
 
-The `warnings` lint allows you to change the level of other
-lints which produce warnings.
+`warnings` lint 允许你更改那些将会产生警告的 lint 的等级 为其他等级。
 
 ### Example
 
@@ -4781,15 +4602,11 @@ note: the lint level is defined here
 
 ### Explanation
 
-The `warnings` lint is a bit special; by changing its level, you
-change every other warning that would produce a warning to whatever
-value you'd like. As such, you won't ever trigger this lint in your
-code directly.
+warnings lint 有点特殊；通过改变它的级别，你可以将所有其他会产生警告的警告改成你想要的任何值。因此，你不会在你的代码中直接触发这个 lint。
 
 ## where-clauses-object-safety
 
-The `where_clauses_object_safety` lint detects for [object safety] of
-[where clauses].
+`where_clauses_object_safety` lint 检测 [where 子句][where clauses]的[对象安全][object safety]。
 
 [object safety]: https://doc.rust-lang.org/reference/items/traits.html#object-safety
 [where clauses]: https://doc.rust-lang.org/reference/items/generics.html#where-clauses
@@ -4834,16 +4651,14 @@ note: for a trait to be "object safe" it needs to allow building a vtable to all
 
 ### Explanation
 
-The compiler previously allowed these object-unsafe bounds, which was
-incorrect. This is a [future-incompatible] lint to transition this to
-a hard error in the future. See [issue #51443] for more details.
+编译器之前允许这些对象不安全的约束，这是不安全的。这是一个[未来不兼容][future-incompatible]的 lint，用于在未来将此问题过渡为严重错误。详见 [issue #51443] 了解更多细节。
 
 [issue #51443]: https://github.com/rust-lang/rust/issues/51443
 [future-incompatible]: ../index.md#future-incompatible-lints
 
 ## while-true
 
-The `while_true` lint detects `while true { }`.
+`while_true` lint 检测 `while true { }`。
 
 ### Example
 
@@ -4868,7 +4683,4 @@ warning: denote infinite loops with `loop { ... }`
 
 ### Explanation
 
-`while true` should be replaced with `loop`. A `loop` expression is
-the preferred way to write an infinite loop because it more directly
-expresses the intent of the loop.
-
+`while true` 应该被 `loop` 所代替。`loop` 表达式是编写无限循环的首选方式，因为其直接表达了无限循环的意图。
