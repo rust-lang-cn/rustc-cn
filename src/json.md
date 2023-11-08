@@ -1,31 +1,22 @@
 # JSON Output
 
-This chapter documents the JSON structures emitted by `rustc`. JSON may be
-enabled with the [`--error-format=json` flag][option-error-format]. Additional
-options may be specified with the [`--json` flag][option-json] which can
-change which messages are generated, and the format of the messages.
+本章节介绍由 `rustc` 所发出的 JSON 的结构。可以通过 [`--error-format=json` flag][option-error-format] 启用 JSON。
+可以使用 [`--json` flag][option-json] 指定其他可以更改生成的消息以及消息的格式的选项。
 
-JSON messages are emitted one per line to stderr.
+JSON 消息每行都被发送到 stderr。
 
-If parsing the output with Rust, the
-[`cargo_metadata`](https://crates.io/crates/cargo_metadata) crate provides
-some support for parsing the messages.
+如果使用 Rust 解析输出，[`cargo_metadata`](https://crates.io/crates/cargo_metadata) crate 提供了解析消息的一些支持。
 
-When parsing, care should be taken to be forwards-compatible with future changes
-to the format. Optional values may be `null`. New fields may be added. Enumerated
-fields like "level" or "suggestion_applicability" may add new values.
+当解析时，应注意与将来的格式更改保持向前兼容（译者注：向前兼容指的是以前的兼容以后的，而向后兼容就是以后的兼容以前的）。
+可选值可以为 `null` 。新的字段可能会添加。枚举字段如 "level" 或 "suggestion_applicability" 可以添加新的值。
 
 ## Diagnostics
 
-Diagnostic messages provide errors or possible concerns generated during
-compilation. `rustc` provides detailed information about where the diagnostic
-originates, along with hints and suggestions.
+诊断消息会提供错误或在编译中可能产生的问题。 `rustc` 提供有关诊断来源的详细信息，以及提示和建议。
 
-Diagnostics are arranged in a parent/child relationship where the parent
-diagnostic value is the core of the diagnostic, and the attached children
-provide additional context, help, and information.
+诊断以 parent/child 关系排列，其中 parent 诊断是诊断的核心，附加的 children 提供了其他的上下文，帮助和信息。
 
-Diagnostics have the following format:
+诊断有如下格式：
 
 ```javascript
 {
@@ -61,7 +52,7 @@ Diagnostics have the following format:
             /* The file where the span is located.
                Note that this path may not exist. For example, if the path
                points to the standard library, and the rust src is not
-               available in the sysroot, then it may point to a non-existent
+               available in the sysroot, then it may point to a nonexistent
                file. Beware that this may also point to the source of an
                external crate.
             */
@@ -210,10 +201,8 @@ Diagnostics have the following format:
 
 ## Artifact notifications
 
-Artifact notifications are emitted when the [`--json=artifacts`
-flag][option-json] is used. They indicate that a file artifact has been saved
-to disk. More information about emit kinds may be found in the [`--emit`
-flag][option-emit] documentation.
+当使用[`--json=artifacts` flag][option-json]时，会发出artifact通知。
+这表明文件工件已保存到磁盘。有关 emit kinds 的更多信息，请参阅`--emit`标志文档。
 
 ```javascript
 {
@@ -223,9 +212,31 @@ flag][option-emit] documentation.
        - "link": The generated crate as specified by the crate-type.
        - "dep-info": The `.d` file with dependency information in a Makefile-like syntax.
        - "metadata": The Rust `.rmeta` file containing metadata about the crate.
-       - "save-analysis": A JSON file emitted by the `-Zsave-analysis` feature.
     */
     "emit": "link"
+}
+```
+
+## Future-incompatible reports
+
+如果使用 [`--json=future-incompat`][option-json] 标志，那么如果 crate 可能在未来停止编译，将发出一个单独的 JSON 结构。
+这包含有关可能在将来变成硬错误的特定警告的诊断信息。
+即使诊断被抑制（例如使用 `#[allow]` 属性或 `--cap-lints` 选项），这仍将包括诊断信息。
+
+```javascript
+{
+    /* An array of objects describing a warning that will become a hard error
+       in the future.
+    */
+    "future_incompat_report":
+    [
+        {
+            /* A diagnostic structure as defined in
+               https://doc.rust-lang.org/rustc/json.html#diagnostics
+            */
+            "diagnostic": {...},
+        }
+    ]
 }
 ```
 

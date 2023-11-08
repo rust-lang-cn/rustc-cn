@@ -1,12 +1,8 @@
 # Contributing to rustc
 
-We'd love to have your help improving `rustc`! To that end, we've written [a
-whole book][rustc_dev_guide] on its
-internals, how it works, and how to get started working on it. To learn
-more, you'll want to check that out.
+我们希望你能帮助我们改进 `rustc`！为此，我们编写了 [a whole book][rustc_dev_guide] 介绍其内部构造，工作原理，以及如何开始工作。想要了解更多信息，你需要查阅它。
 
-If you would like to contribute to _this_ book, you can find its source in the
-rustc source at [src/doc/rustc][rustc_book].
+如果你想对这本书做贡献， 你可以在 rustc 源代码中的 [src/doc/rustc][rustc_book] 找到其原文。
 
 [rustc_dev_guide]: https://rustc-dev-guide.rust-lang.org/
 [rustc_book]: https://github.com/rust-lang/rust/tree/master/src/doc/rustc

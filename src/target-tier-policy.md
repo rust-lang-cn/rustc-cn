@@ -3,6 +3,7 @@
 ## Table of Contents
 
 * [General](#general)
+* [Adding a new target](#adding-a-new-target)
 * [Tier 3 target policy](#tier-3-target-policy)
 * [Tier 2 target policy](#tier-2-target-policy)
   * [Tier 2 with host tools](#tier-2-with-host-tools)
@@ -11,106 +12,64 @@
 
 ## General
 
-Rust provides three tiers of target support:
+Rust 提供三个层次的 target 支持：
 
-- Rust provides no guarantees about tier 3 targets; they exist in the codebase,
-  but may or may not build.
-- Rust's continuous integration checks that tier 2 targets will always build,
-  but they may or may not pass tests.
-- Rust's continuous integration checks that tier 1 targets will always build
-  and pass tests.
+- Rust 对第 3 层 target 不提供任何保证；它们存在于代码库中，但可能会或不会构建。
+- Rust 的持续集成检查第 2 层 target 是否始终能够构建，但可能会或不会通过测试。
+- Rust 的持续集成检查第 1 层 target 是否始终能够构建并通过测试。
 
-Adding a new tier 3 target imposes minimal requirements; we focus primarily on
-avoiding disruption to other ongoing Rust development.
+添加新的第 3 层 target 的要求很低；我们主要关注避免对其他正在进行的 Rust 开发造成中断。
 
-Tier 2 and tier 1 targets place work on Rust project developers as a whole, to
-avoid breaking the target. The broader Rust community may also feel more
-inclined to support higher-tier targets in their crates (though they are not
-obligated to do so). Thus, these tiers require commensurate and ongoing efforts
-from the maintainers of the target, to demonstrate value and to minimize any
-disruptions to ongoing Rust development.
+第 2 层和第 1 层 target 对整个 Rust 项目开发人员的工作提出了要求，以避免破坏 target 。更广泛的 Rust 社区也可能更倾向于支持他们 crates 中的更高层次的 target （尽管他们没有义务这样做）。因此，这些层次需要 target 维护者进行相应和持续的努力，以证明价值并尽量减少对正在进行的 Rust 开发的任何中断。
 
-This policy defines the requirements for accepting a proposed target at a given
-level of support.
+本政策定义了接受给定支持级别的拟议 target 的要求。
 
-Each tier builds on all the requirements from the previous tier, unless
-overridden by a stronger requirement. Targets at tier 2 and tier 1 may also
-provide *host tools* (such as `rustc` and `cargo`); each of those tiers
-includes a set of supplementary requirements that must be met if supplying host
-tools for the target. A target at tier 2 or tier 1 is not required to supply
-host tools, but if it does, it must meet the corresponding additional
-requirements for host tools.
+每个层次都建立在前一个层次的所有要求之上，除非被更严格的要求所覆盖。第 2 层和第 1 层的 target 也可以提供 *主机工具*（如`rustc`和`cargo`）；每个层次都包括一组补充要求，如果为 target 提供主机工具，则必须满足这些要求。第 2 层或第 1 层的 target 不需要提供主机工具，但如果提供，则必须满足相应的主机工具附加要求。
 
-The policy for each tier also documents the Rust governance teams that must
-approve the addition of any target at that tier. Those teams are responsible
-for reviewing and evaluating the target, based on these requirements and their
-own judgment. Those teams may apply additional requirements, including
-subjective requirements, such as to deal with issues not foreseen by this
-policy. (Such requirements may subsequently motivate additions to this policy.)
+每个层次的政策还记录了必须批准在该层次添加任何 target 的 Rust 治理团队。这些团队负责根据这些要求和自己的判断对 target 进行审查和评估。这些团队可能会应用额外的要求，包括主观要求，以处理本政策未预见的问题。（这些要求可能会随后促使对本政策的添加）
 
-While these criteria attempt to document the policy, that policy still involves
-human judgment. Targets must fulfill the spirit of the requirements as well, as
-determined by the judgment of the approving teams. Reviewers and team members
-evaluating targets and target-specific patches should always use their own best
-judgment regarding the quality of work, and the suitability of a target for the
-Rust project. Neither this policy nor any decisions made regarding targets
-shall create any binding agreement or estoppel by any party.
+虽然这些标准试图记录政策，但政策仍然涉及人为判断。 target 必须满足要求的精神，由批准团队的判断决定。审查员和团队成员评估 target 和特定于 target 的补丁时，应始终使用自己最佳的判断来评估工作质量以及 target 是否适合 Rust 项目。本政策或就 target 做出的任何决定均不得创建任何具有约束力的协议或任何一方的不容反悔。
 
-Before filing an issue or pull request (PR) to introduce or promote a target,
-the target should already meet the corresponding tier requirements. This does
-not preclude an existing target's maintainers using issues (on the Rust
-repository or otherwise) to track requirements that have not yet been met, as
-appropriate; however, before officially proposing the introduction or promotion
-of a target, it should meet all of the necessary requirements. A target
-proposal is encouraged to quote the corresponding requirements verbatim as part
-of explaining how the target meets those requirements.
+在提交问题或拉取请求（PR）以引入或推广 target 之前， target 应已经满足相应的层次要求。这并不排除现有 target 的维护者使用问题（在 Rust 存储库或其他地方）来跟踪尚未满足的要求，但在正式提议引入或推广 target 之前，它应满足所有必要的要求。 target 提案必须逐字引用相应的要求，并回应这些要求，作为解释 target 如何满足这些要求的一部分。（对于简单陈述 target 或 target 开发人员不得做某事的要求，确认该要求就足够了。）
 
-For a list of all supported targets and their corresponding tiers ("tier 3",
-"tier 2", "tier 2 with host tools", "tier 1", or "tier 1 with host tools"), see
-[platform support](platform-support.md).
+有关所有受支持的 target 及其对应的层次（“第 3 层”、“第 2 层”、“带主机工具的第 2 层”、“第 1 层” 或 “带主机工具的第1层”）的列表，请参阅 [platform support](platform-support.md)。
 
-Note that a target must have already received approval for the next lower tier,
-and spent a reasonable amount of time at that tier, before making a proposal
-for promotion to the next higher tier; this is true even if a target meets the
-requirements for several tiers at once. This policy leaves the precise
-interpretation of "reasonable amount of time" up to the approving teams; those
-teams may scale the amount of time required based on their confidence in the
-target and its demonstrated track record at its current tier. At a minimum,
-multiple stable releases of Rust should typically occur between promotions of a
-target.
+本政策的几部分需要提供特定于 target 的文档。这些文档通常应出现在本 rustc 手册的平台支持部分的子目录中，并从 [platform support](platform-support.md) 中的 target 条目链接。使用 [TEMPLATE.md](platform-support/TEMPLATE.md) 作为基础，并查看该目录中的其他文档以获取示例。
 
-The availability or tier of a target in stable Rust is not a hard stability
-guarantee about the future availability or tier of that target. Higher-level
-target tiers are an increasing commitment to the support of a target, and we
-will take that commitment and potential disruptions into account when
-evaluating the potential demotion or removal of a target that has been part of
-a stable release. The promotion or demotion of a target will not generally
-affect existing stable releases, only current development and future releases.
+请注意， target 在提议晋升到更高的层次之前，必须已经获得下一个较低层次的批准，并在该层次上花费了合理的时间；即使 target 同时满足多个层次的要求，也是如此。本政策将 “合理的时间” 的精确解释留给批准团队；这些团队可以根据他们对 target 的信心和 target 在当前层次的既往表现来调整所需的时间。至少，在 target 的晋升之间，通常应该发生多个 Rust 的稳定版本发布。
 
-In this policy, the words "must" and "must not" specify absolute requirements
-that a target must meet to qualify for a tier. The words "should" and "should
-not" specify requirements that apply in almost all cases, but for which the
-approving teams may grant an exception for good reason. The word "may"
-indicates something entirely optional, and does not indicate guidance or
-recommendations. This language is based on [IETF RFC
-2119](https://tools.ietf.org/html/rfc2119).
+稳定 Rust 中 target 的可用性或层次并不是对未来该 target 的可用性或层次的硬性稳定性保证。更高级别的 target 层次是对支持 target 的越来越大的承诺，我们将在评估已经成为稳定版本一部分的 target 的可能降级或删除时，考虑这一承诺和潜在的中断。 target 的晋升或降级一般不会影响现有的稳定版本，只会影响当前的开发和未来版本。
+
+在此政策中，“必须” 和 “必须不” 这两个词明确规定了 target 必须符合的绝对要求，才能获得相应层次。而 “应该” 和 “不应该” 这两个词则规定了大多数情况下适用的要求，但批准团队在有充分理由的情况下可以例外处理。最后，“可以” 这个词表示某件事是完全可选的，并不表示指导或建议。这种措辞基于 [IETF RFC 2119](https://tools.ietf.org/html/rfc2119)。
+
+## Adding a new target
+
+新的 target 通常从第 3 层开始，然后可以在稍后晋升。要提议添加新的 target，请在 [`rust-lang/rust`] 上打开一个「拉取请求 pull request」：
+
+- 将 [第 3 层 target 政策](#tier-3-target-policy) 复制到描述中并填写，参见 [示例][tier3example]。
+- 使用 [模板][platform_template] 在 `src/doc/rustc/src/platform-support` 中添加 target 的新描述。
+- 将 target 添加到 [SUMMARY.md][summary]（允许使用通配符）和 [platform-support.md][platformsupport] 中（必须逐字命名所有 target ）。链接到创建的描述页面。
+- 通过评论确保拉取请求分配给 [Rust compiler team][rust_compiler_team] 的成员：
+  ```text
+  r? compiler-team
+  ```
+
+[tier3example]: https://github.com/rust-lang/rust/pull/94872
+[platform_template]: https://github.com/rust-lang/rust/blob/master/src/doc/rustc/src/platform-support/TEMPLATE.md
+[summary]: https://github.com/rust-lang/rust/blob/master/src/doc/rustc/src/SUMMARY.md
+[platformsupport]: https://github.com/rust-lang/rust/blob/master/src/doc/rustc/src/platform-support.md
+[rust_compiler_team]: https://www.rust-lang.org/governance/teams/compiler
+[`rust-lang/rust`]: https://github.com/rust-lang/rust
 
 ## Tier 3 target policy
 
-At this tier, the Rust project provides no official support for a target, so we
-place minimal requirements on the introduction of targets.
+在这一层，Rust 项目不提供对 target 的官方支持，因此我们对引入 target 的要求最低。
 
-A proposed new tier 3 target must be reviewed and approved by a member of the
-compiler team based on these requirements. The reviewer may choose to gauge
-broader compiler team consensus via a [Major Change Proposal (MCP)][MCP].
+拟议的新第3层 target 必须由编译器团队的成员根据这些要求进行审查和批准。审查员可以选择通过 [重大变更提案（MCP）][MCP] 来衡量编译器团队更广泛的共识。
 
-A proposed target or target-specific patch that substantially changes code
-shared with other targets (not just target-specific code) must be reviewed and
-approved by the appropriate team for that shared code before acceptance.
+拟议的 target 或 target 特定补丁，如果对其他共享代码（不仅仅是 target 特定代码）进行了重大更改，必须在接受之前由相应的共享代码团队进行审查和批准。
 
-- A tier 3 target must have a designated developer or developers (the "target
-  maintainers") on record to be CCed when issues arise regarding the target.
-  (The mechanism to track and CC such developers may evolve over time.)
+- 第 3 层 target 必须有一名或多名指定的开发人员（“target 维护者”）记录在案，以便在出现有关 target 的问题时进行抄送。（跟踪和抄送此类开发人员的机制可能会随着时间的推移而发展。）
 - Targets must use naming consistent with any existing targets; for instance, a
   target for the same CPU or OS as an existing Rust target should use the same
   name for that CPU or OS. Targets should normally use the same names and
@@ -124,6 +83,8 @@ approved by the appropriate team for that shared code before acceptance.
     the name of the target makes people extremely likely to form incorrect
     beliefs about what it targets, the name should be changed or augmented to
     disambiguate it.
+  - If possible, use only letters, numbers, dashes and underscores for the name.
+    Periods (`.`) are known to cause issues in Cargo.
 - Tier 3 targets may have unusual requirements to build or use, but must not
   create legal issues or impose onerous legal terms for the Rust project or for
   Rust developers or users.
@@ -139,17 +100,19 @@ approved by the appropriate team for that shared code before acceptance.
     or binary. In other words, the introduction of the target must not cause a
     user installing or running a version of Rust or the Rust tools to be
     subject to any new license requirements.
-  - If the target supports building host tools (such as `rustc` or `cargo`),
-    those host tools must not depend on proprietary (non-FOSS) libraries, other
-    than ordinary runtime libraries supplied by the platform and commonly used
-    by other binaries built for the target. For instance, `rustc` built for the
-    target may depend on a common proprietary C runtime library or console
-    output library, but must not depend on a proprietary code generation
-    library or code optimization library. Rust's license permits such
-    combinations, but the Rust project has no interest in maintaining such
-    combinations within the scope of Rust itself, even at tier 3.
-  - Targets should not require proprietary (non-FOSS) components to link a
-    functional binary or library.
+  - Compiling, linking, and emitting functional binaries, libraries, or other
+    code for the target (whether hosted on the target itself or cross-compiling
+    from another target) must not depend on proprietary (non-FOSS) libraries.
+    Host tools built for the target itself may depend on the ordinary runtime
+    libraries supplied by the platform and commonly used by other applications
+    built for the target, but those libraries must not be required for code
+    generation for the target; cross-compilation to the target must not require
+    such libraries at all. For instance, `rustc` built for the target may
+    depend on a common proprietary C runtime library or console output library,
+    but must not depend on a proprietary code generation library or code
+    optimization library. Rust's license permits such combinations, but the
+    Rust project has no interest in maintaining such combinations within the
+    scope of Rust itself, even at tier 3.
   - "onerous" here is an intentionally subjective term. At a minimum, "onerous"
     legal/licensing terms include but are *not* limited to: non-disclosure
     requirements, non-compete requirements, contributor license agreements
@@ -184,9 +147,9 @@ approved by the appropriate team for that shared code before acceptance.
   target not implementing those portions.
 - The target must provide documentation for the Rust community explaining how
   to build for the target, using cross-compilation if possible. If the target
-  supports running tests (even if they do not pass), the documentation must
-  explain how to run tests for the target, using emulation if possible or
-  dedicated hardware if necessary.
+  supports running binaries, or running tests (even if they do not pass), the
+  documentation must explain how to run such binaries or tests for the target,
+  using emulation if possible or dedicated hardware if necessary.
 - Tier 3 targets must not impose burden on the authors of pull requests, or
   other developers in the community, to maintain the target. In particular,
   do not post comments (automated or manual) on a PR that derail or suggest a
