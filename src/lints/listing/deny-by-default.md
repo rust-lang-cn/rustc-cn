@@ -1,6 +1,6 @@
 # Deny-by-default Lints
 
-These lints are all set to the 'deny' level by default.
+默认情况下，这些 lint 都设置为 `deny` 级别。
 
 * [`ambiguous_associated_items`](#ambiguous-associated-items)
 * [`arithmetic_overflow`](#arithmetic-overflow)
@@ -108,8 +108,7 @@ note: `V` could also refer to the associated type defined here
 
 ## arithmetic-overflow
 
-The `arithmetic_overflow` lint detects that an arithmetic operation
-will [overflow].
+`arithmetic_overflow` lint 检测会[溢出][overflow]的算术运算
 
 [overflow]: https://doc.rust-lang.org/reference/expressions/operator-expr.html#overflow
 
@@ -134,11 +133,7 @@ error: this arithmetic operation will overflow
 
 ### Explanation
 
-It is very likely a mistake to perform an arithmetic operation that
-overflows its value. If the compiler is able to detect these kinds of
-overflows at compile-time, it will trigger this lint. Consider
-adjusting the expression to avoid overflow, or use a data type that
-will not overflow.
+执行值溢出运算很可能是错误，如果编译器能够在编译时检测到这些溢出，就会触发这个 lint。请考虑调整表达式避免溢出，或者使用不会溢出的数据类型。
 
 ## bindings-with-variant-name
 
@@ -306,8 +301,7 @@ change in a future release.
 
 ## conflicting-repr-hints
 
-The `conflicting_repr_hints` lint detects [`repr` attributes] with
-conflicting hints.
+`conflicting_repr_hints` lint 检测带有冲突提示的[`repr` 属性][`repr` attributes]。
 
 [`repr` attributes]: https://doc.rust-lang.org/reference/type-layout.html#representations
 
@@ -337,11 +331,9 @@ error[E0566]: conflicting representation hints
 
 ### Explanation
 
-The compiler incorrectly accepted these conflicting representations in
-the past. This is a [future-incompatible] lint to transition this to a
-hard error in the future. See [issue #68585] for more details.
+过去编译器错误的接受了这些冲突的表示形式。这是个[将来不兼容][future-incompatible]的 lint，将来会转化为固有错误。了解更多细节请参阅 [issue #68585]
 
-To correct the issue, remove one of the conflicting hints.
+想要更正该问题，请移除冲突的提示之一。
 
 [issue #68585]: https://github.com/rust-lang/rust/issues/68585
 [future-incompatible]: ../index.md#future-incompatible-lints
@@ -437,8 +429,7 @@ This lint prevents such incorrect usage of these functions.
 
 ## ill-formed-attribute-input
 
-The `ill_formed_attribute_input` lint detects ill-formed attribute
-inputs that were previously accepted and used in practice.
+`ill_formed_attribute_input` lint 检测以前被接收并且用于实践中的错误格式的属性输入。  
 
 ### Example
 
@@ -464,14 +455,9 @@ error: attribute must be of the form `#[inline]` or `#[inline(always|never)]`
 
 ### Explanation
 
-Previously, inputs for many built-in attributes weren't validated and
-nonsensical attribute inputs were accepted. After validation was
-added, it was determined that some existing projects made use of these
-invalid forms. This is a [future-incompatible] lint to transition this
-to a hard error in the future. See [issue #57571] for more details.
+以前，许多内置属性的输入没有经过验证，无意义的属性输入被接收。在添加了验证之后，明确了一些现有的项目使用了这些无效的格式。这是个[将来不兼容][future-incompatible] 的 lint ，将来会转化为固有错误。更多细节请参阅 [issue #57571]。
 
-Check the [attribute reference] for details on the valid inputs for
-attributes.
+有关有效输入的属性，更多细节请参阅 [attribute reference]。
 
 [issue #57571]: https://github.com/rust-lang/rust/issues/57571
 [attribute reference]: https://doc.rust-lang.org/nightly/reference/attributes.html
@@ -530,8 +516,7 @@ This can be used to implement an unsound API if used incorrectly.
 
 ## incomplete-include
 
-The `incomplete_include` lint detects the use of the [`include!`]
-macro with a file that contains more than one expression.
+`incomplete_include` lint 检测包含多个表达式文件中的 [`include!`][include-macro] 宏。
 
 [`include!`]: https://doc.rust-lang.org/std/macro.include.html
 
@@ -563,22 +548,11 @@ error: include macro expected single expression in source
 
 ### Explanation
 
-The [`include!`] macro is currently only intended to be used to
-include a single [expression] or multiple [items]. Historically it
-would ignore any contents after the first expression, but that can be
-confusing. In the example above, the `println!` expression ends just
-before the semicolon, making the semicolon "extra" information that is
-ignored. Perhaps even more surprising, if the included file had
-multiple print statements, the subsequent ones would be ignored!
+[`include!`][include-macro] 宏当前仅打算用于单个[表达式][expression]或多个[项][items]。从以前看，它会忽略第一个表达式之后的任何内容，但这可能会令人困惑。在上例中，`println!` 表达式（expression）刚好在分号之前结束，从而使分号成为多余的信息而被忽略，更令人惊讶的是，如果包含的文件有多个打印语句，后续的语句将被忽略!
 
-One workaround is to place the contents in braces to create a [block
-expression]. Also consider alternatives, like using functions to
-encapsulate the expressions, or use [proc-macros].
+一个解决办法是将内容放在大括号中创建[块表达式][block expression]。还可以考虑其他办法，例如函数封装表达式或者使用[过程宏][proc-macros]。
 
-This is a lint instead of a hard error because existing projects were
-found to hit this error. To be cautious, it is a lint for now. The
-future semantics of the `include!` macro are also uncertain, see
-[issue #35560].
+这是个 lint 而不是固有错误是因为现有项目已经发现并报过错。谨慎起见，它现在还是个 lint 。`include!` 宏的未来语义还不确定，请参阅 [issue #35560]。
 
 [items]: https://doc.rust-lang.org/reference/items.html
 [expression]: https://doc.rust-lang.org/reference/expressions.html
@@ -747,8 +721,7 @@ mutable.
 
 ## invalid-type-param-default
 
-The `invalid_type_param_default` lint detects type parameter defaults
-erroneously allowed in an invalid location.
+`invalid_type_param_default` lint 检测在无效位置中，错误地允许使用类型参数默认值。
 
 ### Example
 
@@ -773,10 +746,7 @@ error: defaults for type parameters are only allowed in `struct`, `enum`, `type`
 
 ### Explanation
 
-Default type parameters were only intended to be allowed in certain
-situations, but historically the compiler allowed them everywhere.
-This is a [future-incompatible] lint to transition this to a hard
-error in the future. See [issue #36887] for more details.
+默认类型参数仅在某些情况下才允许使用，但是以前编译器在任何地方都允许使用。这是个[将来不兼容][future-incompatible]的 lint，将来会转化为固有错误。更多细节请参阅 [issue #36887]。
 
 [issue #36887]: https://github.com/rust-lang/rust/issues/36887
 [future-incompatible]: ../index.md#future-incompatible-lints
@@ -894,9 +864,7 @@ out an update in your own time.
 
 ## macro-expanded-macro-exports-accessed-by-absolute-paths
 
-The `macro_expanded_macro_exports_accessed_by_absolute_paths` lint
-detects macro-expanded [`macro_export`] macros from the current crate
-that cannot be referred to by absolute paths.
+`macro_expanded_macro_exports_accessed_by_absolute_paths` lint 用于检测当前 crate 中通过宏展开的 [`macro_export`][macro-export]宏，这些宏无法通过绝对路径引用。
 
 [`macro_export`]: https://doc.rust-lang.org/reference/macros-by-example.html#path-based-scope
 
@@ -947,24 +915,16 @@ note: the macro is defined here
 
 ### Explanation
 
-The intent is that all macros marked with the `#[macro_export]`
-attribute are made available in the root of the crate. However, when a
-`macro_rules!` definition is generated by another macro, the macro
-expansion is unable to uphold this rule. This is a
-[future-incompatible] lint to transition this to a hard error in the
-future. See [issue #53495] for more details.
+目的是所有标记为 `#[macro_export]` 属性的宏在 crate 根是可用的。然而，当一个 `macro_rules!` 定义由另一个宏生成之时，宏展开是无法遵循该规则的。这是个[将来不兼容][future-incompatible] 的 lint ，将来会转化为固有错误。更多细节请参阅 [issue #53495]。
 
 [issue #53495]: https://github.com/rust-lang/rust/issues/53495
 [future-incompatible]: ../index.md#future-incompatible-lints
 
 ## missing-fragment-specifier
 
-The `missing_fragment_specifier` lint is issued when an unused pattern in a
-`macro_rules!` macro definition has a meta-variable (e.g. `$e`) that is not
-followed by a fragment specifier (e.g. `:expr`).
+当 `macro_rules!` 宏定义中的未使用模式包含一个元变量（例如 `$e`）且其后没有跟随片段说明符（例如 `:expr`）时，会发出 `missing_fragment_specifier` 警告。
 
-This warning can always be fixed by removing the unused pattern in the
-`macro_rules!` macro definition.
+此警告可以通过移除 `macro_rules!` 宏定义中的未使用模式来修复。
 
 ### Example
 
@@ -996,7 +956,7 @@ error: missing fragment specifier
 
 ### Explanation
 
-To fix this, remove the unused pattern from the `macro_rules!` macro definition:
+要修复此问题，从 `macro_rules!` 定义中移除此未使用模式：
 
 ```rust
 macro_rules! foo {
@@ -1009,8 +969,7 @@ fn main() {
 
 ## mutable-transmutes
 
-The `mutable_transmutes` lint catches transmuting from `&T` to `&mut
-T` because it is [undefined behavior].
+`mutable_transmutes` lint 捕捉从 `&T` 到 `&mut T` 这种[未定义行为][undefined behavior]的转换。
 
 [undefined behavior]: https://doc.rust-lang.org/reference/behavior-considered-undefined.html
 
@@ -1037,8 +996,7 @@ error: transmuting &T to &mut T is undefined behavior, even if the reference is 
 
 ### Explanation
 
-Certain assumptions are made about aliasing of data, and this transmute
-violates those assumptions. Consider using [`UnsafeCell`] instead.
+我们对数据别名做出了一些假设，而这种转换是违反这些假设的。考虑使用 [`UnsafeCell`]。
 
 [`UnsafeCell`]: https://doc.rust-lang.org/std/cell/struct.UnsafeCell.html
 
@@ -1089,8 +1047,7 @@ See the explanation in [Rust By Example] for more details.
 
 ## no-mangle-const-items
 
-The `no_mangle_const_items` lint detects any `const` items with the
-[`no_mangle` attribute].
+`no_mangle_const_items` lint 检测 [`no_mangle` 属性][`no_mangle` attribute]的所有 `const` 项。
 
 [`no_mangle` attribute]: https://doc.rust-lang.org/reference/abi.html#the-no_mangle-attribute
 
@@ -1118,17 +1075,14 @@ error: const items should never be `#[no_mangle]`
 
 ### Explanation
 
-Constants do not have their symbols exported, and therefore, this
-probably means you meant to use a [`static`], not a [`const`].
+常量没有其导出符号，因此这可能意味着你得用 [`static`] 而不是 [`const`]。
 
 [`static`]: https://doc.rust-lang.org/reference/items/static-items.html
 [`const`]: https://doc.rust-lang.org/reference/items/constant-items.html
 
 ## order-dependent-trait-objects
 
-The `order_dependent_trait_objects` lint detects a trait coherency
-violation that would allow creating two trait impls for the same
-dynamic trait object involving marker traits.
+`order_dependent_trait_objects` lint 用于检测 trait 一致性违反的情况，这种情况允许为涉及标记 trait 的相同动态 trait 对象创建两个特性实现。
 
 ### Example
 
@@ -1158,20 +1112,14 @@ error: conflicting implementations of trait `Trait` for type `(dyn Send + Sync +
 
 ### Explanation
 
-A previous bug caused the compiler to interpret traits with different
-orders (such as `Send + Sync` and `Sync + Send`) as distinct types
-when they were intended to be treated the same. This allowed code to
-define separate trait implementations when there should be a coherence
-error. This is a [future-incompatible] lint to transition this to a
-hard error in the future. See [issue #56484] for more details.
+以前的一个 bug 导致编译器将不同顺序的 trait（例如 `Send + Sync` 和 `Sync + Send`）解释为不同的类型，然而它们应该被认为是相同的。这允许代码在出现一致性错误的时候定义单独的 trait 实现。这是个[将来不兼容][future-incompatible]的 lint，将来会转化为固有错误。更多细节请参阅 [issue #56484]。
 
 [issue #56484]: https://github.com/rust-lang/rust/issues/56484
 [future-incompatible]: ../index.md#future-incompatible-lints
 
 ## overflowing-literals
 
-The `overflowing_literals` lint detects literal out of range for its
-type.
+`overflowing_literals` lint 检测超出其所属类型范围的字面量。
 
 ### Example
 
@@ -1195,14 +1143,11 @@ error: literal out of range for `u8`
 
 ### Explanation
 
-It is usually a mistake to use a literal that overflows the type where
-it is used. Either use a literal that is within range, or change the
-type to be within the range of the literal.
+使用溢出其所用类型的字面量通常是错误。要么就使用在其类型范围内的字面量，要么就更改其类型以能容纳该字面量。
 
 ## patterns-in-fns-without-body
 
-The `patterns_in_fns_without_body` lint detects `mut` identifier
-patterns as a parameter in functions without a body.
+`patterns_in_fns_without_body` lint 检测 `mut` [标识符模式]用于没有函数体的函数的参数。
 
 ### Example
 
@@ -1229,8 +1174,7 @@ error: patterns aren't allowed in functions without bodies
 
 ### Explanation
 
-To fix this, remove `mut` from the parameter in the trait definition;
-it can be used in the implementation. That is, the following is OK:
+要想修复此问题， trait 定义中从参数移除 `mut`；也可以使用默认实现。也就是说，以下两种都行：
 
 ```rust
 trait Trait {
@@ -1244,14 +1188,7 @@ impl Trait for i32 {
 }
 ```
 
-Trait definitions can define functions without a body to specify a
-function that implementors must define. The parameter names in the
-body-less functions are only allowed to be `_` or an [identifier] for
-documentation purposes (only the type is relevant). Previous versions
-of the compiler erroneously allowed [identifier patterns] with the
-`mut` keyword, but this was not intended to be allowed. This is a
-[future-incompatible] lint to transition this to a hard error in the
-future. See [issue #35203] for more details.
+特质定义中可以定义没有主体的函数，以指定实现者必须定义的函数。无主体函数中的参数名只允许是 `_` 或用于文档目的的[标识符][identifier]（只有类型是相关的）。编译器的早期版本错误地允许了带有 `mut` 关键字的[标识符模式][identifier patterns]，但这本不被允许。这是一个[未来不兼容][future-incompatible]的 lint，以便在未来将其过渡为严重错误。详见 [issue #35203] 了解更多细节。
 
 [identifier]: https://doc.rust-lang.org/reference/identifiers.html
 [identifier patterns]: https://doc.rust-lang.org/reference/patterns.html#identifier-patterns
@@ -1360,8 +1297,7 @@ more details.
 
 ## pub-use-of-private-extern-crate
 
-The `pub_use_of_private_extern_crate` lint detects a specific
-situation of re-exporting a private `extern crate`.
+`pub_use_of_private_extern_crate` lint 检测私有 `extern crate` 重导出的具体情况。
 
 ### Example
 
@@ -1387,21 +1323,16 @@ error: extern crate `core` is private, and cannot be re-exported (error E0365), 
 
 ### Explanation
 
-A public `use` declaration should not be used to publicly re-export a
-private `extern crate`. `pub extern crate` should be used instead.
+公开的 `use` 声明不应该用于公开地重新导出私有 `extern crate`。应该使用 `pub extern crate`。
 
-This was historically allowed, but is not the intended behavior
-according to the visibility rules. This is a [future-incompatible]
-lint to transition this to a hard error in the future. See [issue
-#34537] for more details.
+历史上是允许的，但是根据可见性规则这是不符合预期的。这是个[将来不兼容][future-incompatible]的 lint，将来会转化为固有错误。更多细节请参阅 [issue #34537]。
 
 [issue #34537]: https://github.com/rust-lang/rust/issues/34537
 [future-incompatible]: ../index.md#future-incompatible-lints
 
 ## soft-unstable
 
-The `soft_unstable` lint detects unstable features that were
-unintentionally allowed on stable.
+`soft_unstable` lint 用于检测稳定版中意外允许的不稳定特性。
 
 ### Example
 
@@ -1432,13 +1363,7 @@ error: use of unstable library feature 'test': `bench` is a part of custom test 
 
 ### Explanation
 
-The [`bench` attribute] was accidentally allowed to be specified on
-the [stable release channel]. Turning this to a hard error would have
-broken some projects. This lint allows those projects to continue to
-build correctly when [`--cap-lints`] is used, but otherwise signal an
-error that `#[bench]` should not be used on the stable channel. This
-is a [future-incompatible] lint to transition this to a hard error in
-the future. See [issue #64266] for more details.
+[`bench`] 属性意外地在 [stable release channel] 上被指定。将此转化为固有错误会破坏一些现有的项目。当使用 [`--cap-lints`] 时该 lint 允许项目正确地构建，否则会发出一个错误提示。`#[bench]` 不应该被用在 stable channel。这是个[将来不兼容][future-incompatible] 的 lint ，将来会转化为固有错误。更多细节请参阅 [issue #64266]。
 
 [issue #64266]: https://github.com/rust-lang/rust/issues/64266
 [`bench` attribute]: https://doc.rust-lang.org/nightly/unstable-book/library-features/test.html
@@ -1576,8 +1501,7 @@ help: if you want to keep them but make them visible in your source code, you ca
 
 ## unconditional-panic
 
-The `unconditional_panic` lint detects an operation that will cause a
-panic at runtime.
+`unconditional_panic` lint 检测将在运行时引起 panic 的操作。
 
 ### Example
 
@@ -1601,10 +1525,7 @@ error: this operation will panic at runtime
 
 ### Explanation
 
-This lint detects code that is very likely incorrect because it will
-always panic, such as division by zero and out-of-bounds array
-accesses. Consider adjusting your code if this is a bug, or using the
-`panic!` or `unreachable!` macro instead in case the panic is intended.
+这个 lint 可以检测出那的代些非常可能是错误码，因为这些代码总是会导致 panic，比如除以零和越界的数组访问。如果这是一个错误，考虑调整你的代码；如果 panic 是故意的，考虑使用 `panic!` 或 `unreachable!` 宏。
 
 ## undropped-manually-drops
 
@@ -1644,8 +1565,7 @@ not drop the inner value of the `ManuallyDrop` either.
 
 ## unknown-crate-types
 
-The `unknown_crate_types` lint detects an unknown crate type found in
-a [`crate_type` attribute].
+`unknown_crate_types` lint 检测在 [`crate_type` 属性][`crate_type` attribute]中找到的未知 crate 类型。
 
 ### Example
 
@@ -1669,14 +1589,13 @@ error: invalid `crate_type` value
 
 ### Explanation
 
-An unknown value give to the `crate_type` attribute is almost
-certainly a mistake.
+给 `crate_type` 属性赋未知值可以肯定是一个错误。
 
 [`crate_type` attribute]: https://doc.rust-lang.org/reference/linkage.html
 
 ## useless-deprecated
 
-The `useless_deprecated` lint detects deprecation attributes with no effect.
+`useless_deprecated` lint 检测无效且弃用的属性。
 
 ### Example
 
@@ -1706,5 +1625,5 @@ error: this `#[deprecated]` annotation has no effect
 
 ### Explanation
 
-Deprecation attributes have no effect on trait implementations.
+弃用属性对 trait 的实现没有影响的。
 
